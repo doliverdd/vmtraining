@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2012 (1.2)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Exercises</TITLE>
+<META NAME="description" CONTENT="Exercises">
+<META NAME="keywords" CONTENT="chapter_shell">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2012">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="chapter_shell.css">
+
+<LINK REL="previous" HREF="node11.html">
+<LINK REL="up" HREF="node7.html">
+<LINK REL="next" HREF="node13.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html162"
+  HREF="node13.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html160"
+  HREF="node7.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html156"
+  HREF="node11.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html163"
+  HREF="node13.html">About this document ...</A>
+<B> Up:</B> <A NAME="tex2html161"
+  HREF="node7.html">Shell Scripts</A>
+<B> Previous:</B> <A NAME="tex2html157"
+  HREF="node11.html">case</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00125000000000000000"></A>
+<A NAME="subsection:shellScriptEx"></A>
+<BR>
+Exercises
+</H2>
+
+<OL>
+<LI>Write a script that searches through a set of files in a directory and
+processes the names according to the following rules
+   
+<UL>
+<LI>If the file is a directory print a warning message.
+</LI>
+<LI>If the file is not empty create a file in the results subdirectory
+of the directory from which the script is written.  Do not create the results
+directory ahead of time, but check to see if it exists and create it if 
+necessary.
+</LI>
+<LI>If the file is empty delete it.
+</LI>
+<LI>keep track of how many of each type of file is encountered.
+   
+</LI>
+</UL>
+   Create a directory and some subdirectories, empty files and non-empty files
+to check your script.  Be careful that you don't delete too much. On trick
+is to write the script with just warning messages first to see if it will do
+what you think it will.
+</LI>
+<LI>Check the Pattern-Matching Operators in Appendix <A HREF="#chapter:bashref"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="file:/usr/share/latex2html/icons/crossref.png"></A>
+and see if you can write a script that will take a PATH variable and print
+each directory on a line.  (Hint: substitute a <code>\n</code> character for the :
+delimiter) Can you extend this to a script that will check to see if the
+directory exists?
+</LI>
+<LI>Read the name of a file from the keyboard.  Assume that the file contains
+a string on each line of the file.
+Find the first and last strings alphabetically and put them
+in a file called first_last.  
+Check Appendix <A HREF="#chapter:bashref"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="file:/usr/share/latex2html/icons/crossref.png"></A> for string operators. Make up 
+a file and test your script.
+Try the same thing but get the whole file in alphabetic order by using the 
+sort command.
+</LI>
+<LI>Advanced Exercise - Command line parameters to the script may be accessed
+by using $#. The name of the script is located in $0, the next word on
+the command line is $1 and so on. Write a script that takes four parameters
+The first is a maximum size.  The second, third and fourth parameters are 
+names of files.  If the combined size of the file named by the second parameter
+and the file named by the third parameter is less than the maximum size, then
+they are combined into the name given in the fourth parameter.  The original 
+files are then removed.
+
+<P>
+</LI>
+</OL>
+
+<P>
+
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html162"
+  HREF="node13.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html160"
+  HREF="node7.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html156"
+  HREF="node11.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html163"
+  HREF="node13.html">About this document ...</A>
+<B> Up:</B> <A NAME="tex2html161"
+  HREF="node7.html">Shell Scripts</A>
+<B> Previous:</B> <A NAME="tex2html157"
+  HREF="node11.html">case</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+root
+2015-12-02
+</ADDRESS>
+</BODY>
+</HTML>

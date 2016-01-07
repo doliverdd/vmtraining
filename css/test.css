@@ -1,0 +1,116 @@
+body {
+	font-family: 'Open Sans', serif;
+	font-size:100%;
+}
+a	{
+
+	color:#006849;
+	font: bold;
+}
+a:hover  {
+	color:#7fb539;
+}
+
+img:hover {
+	background-color:#7fb539;
+}
+.mbutton {
+	width:25%;
+	height:30%;
+	color:#006849;
+	
+
+}
+.modal {
+
+	height:15%;
+	width:25%;
+	background-color:white;
+	color:#006849;
+	position:absolute;
+	left:40%;
+	top:15%;
+	display:none;
+	background-color:#F8F8F8 ;
+	box-shadow: 10px 10px 5px #888888;
+}
+.mcontent {
+
+	height:95%;
+	width:95%;
+	background-color:#F8F8F8;
+	color:#006849;
+	position:absolute;
+	
+
+}
+.mcontain {
+
+	height:95%;
+	width:95%;
+	background-color:#F8F8F8;
+	color:#006849;
+	padding-left:2%;
+
+}
+.mclose {
+
+	
+	background-color:#F8F8F8;
+	color:black;
+	position:absolute;
+	left:98%;
+	top:5%;
+	
+
+}
+span:hover {
+	text-decoration:none;
+	text-shadow: 2px 2px 2px #555;
+   	font-size:125%;
+	cursor:pointer;
+}
+.foot {
+	color:white;
+	background-color:#12825f;
+	width:100%;
+	height:5%;
+	text-align:center;
+	padding-top:4px;
+	
+}
+h1 {
+	font-family: 'Open Sans', serif;	
+	font-size:300%;
+	color:#006849;
+}
+h2 {
+	font-family: 'Open Sans', serif;
+	font-size:125%;
+	color:#006849;
+}
+h3 {
+	font-family: 'Open Sans', serif;	
+	font-size:150%;
+	color:#006849;
+	
+}
+h4 {
+	font-family: 'Open Sans', serif;
+	font-size:125%;
+	color:#314942;
+}
+h5 {
+	font-family: 'Open Sans', serif;
+	font-size:85%;
+}
+
+table {
+	border-collapse: collapse;
+	width: 30%;
+}
+table, th, td {
+	border: 1px solid black;
+}
+
+

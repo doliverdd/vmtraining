@@ -1,0 +1,403 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2012 (1.2)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>LAPACK, BLAS, ATLAS and all that</TITLE>
+<META NAME="description" CONTENT="LAPACK, BLAS, ATLAS and all that">
+<META NAME="keywords" CONTENT="chapter_libs">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2012">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="chapter_libs.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="node1.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html54"
+  HREF="node4.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html52"
+  HREF="node1.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html46"
+  HREF="node2.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html55"
+  HREF="node4.html">Building LAPACK</A>
+<B> Up:</B> <A NAME="tex2html53"
+  HREF="node1.html">High-performance libraries</A>
+<B> Previous:</B> <A NAME="tex2html47"
+  HREF="node2.html">What are high-performance libraries?</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00120000000000000000">
+LAPACK, BLAS, ATLAS and all that</A>
+</H1>
+
+<P>
+Linear Algebra PACKage (LAPACK) is a transportable library of standardized
+FORTRAN 77 routines for solving systems of simultaneous linear equations,
+eigenvalue problems, and singular value problems.  It is used in a vast 
+majority of large-scale
+scientific programs.  The most up-to-date version is held in the online
+repository <BR><TT>www.netlib.org</TT> together with a number of other widely used
+libraries.  LAPACK has been around since 1991 when the National Science
+Foundation and the US Department of Energy decided to sponsor an effort
+to make EISPACK and LINPACK libraries run efficiently on shared memory vector
+and parallel processors. Without going into details this is achieved by moving
+the block matrix operations to the innermost loops which can then be optimized
+for a specific architecture to account for the memory hierarchy (this is
+mostly done in BLAS - read on...), thus achieving the highest cache reuse.
+Functionality is provided for real and complex matrices, in both single and
+double precision.  FORTRAN 95 (LAPACK95) interface is also available as well
+as the C version of LAPACK (CLAPACK) and its C++ (lapack++) interface (now
+superseded by the Template Numerical Toolkit (TNT)).
+
+<P>
+The structure of LAPACK and how to find a needed routine is described in
+the <I>LAPACK User's Guide</I> at 
+<TT>netlib.org/lapack/lug/index.html</TT> 
+Just one look at <I>Driver Routines</I> and <I>Computational Routines</I>
+sections of this guide will give you a good sense of what tasks can be 
+accomplished with this library.  For a set of LAPACK <I>Working Notes</I>
+go to 
+<TT>www.netlib.org/lapack/lawns
+<BR>
+/downloads</TT>
+Within LAPACK, each driver (which solves a complete problem and whose use is
+always recommended) and computational routine (which solves a smaller 
+algebraic
+task) are classified according to the scheme XYYZZZ, where X is equal to S,D,C 
+and Z (single, double precision, complex and complex *16), YY indicates the 
+matrix type, and ZZZ indicates the operation performed.  LAPACK also
+contains a certain number of auxiliary routines (usually low-level
+computations not included in BLAS).  Refer to the <I>LAPACK User's Guide</I>
+for a naming scheme of these routines.  In order to illustrate the process
+of selecting the needed routine from LAPACK let us assume for the moment
+(we will come back to this example later on) that we need to solve a
+real generalized symmetric-definite eigenproblem.  Say, we want to 
+use double precision and therefore the first symbol of XYYZZZ is D.
+SY stands for symmetric so the YY is SY.  Finally, inspection of the 
+<I>LAPACK User's Guide</I> <IMG
+ WIDTH="45" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"> Generalized Eigenvalue and Singular 
+Value Problems <IMG
+ WIDTH="45" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"> Generalized Symmetric Definite Eigenproblems 
+(GSEP) tells us that the proper choice of ZZZ is, in our case, GV (ZZZ may
+or may not contain all three symbols).  To verify this choice the user
+should look directly at the dsygv.f code in 
+<TT>/usr/local/netlibtest1/LAPACK/SRC</TT>
+or type <TT>man dsygv</TT>  A word of caution:  the man pages for
+LAPACK are not included with the <TT>netlib.org</TT> distribution.  
+The easiest way of acquiring them on a RedHat system is through a 
+<TT>rpm</TT>  To do this point your browser to 
+<TT>rpmfind.net/linux/RPM/ASP/i386/RPMS.9/ <BR>
+lapack-man-3.0-20.i386.html</TT>
+and download the <TT>rpm</TT>  Become a superuser and issue the 
+command <TT>rpm -ivh lapack-man-3.0-20.i386.rpm</TT>
+This will install the LAPACK man pages under <TT>/usr/share/man/manl</TT>
+While we are at it go ahead and install BLAS man pages from 
+<TT>rpmfind.net/linux/RPM/ASP/i386/RPMS.9/blas-man-
+<BR>
+3.0-20.i386.html</TT>
+You will learn about BLAS very soon! (Beware, these BLAS man pages are
+incomplete.) 
+
+<P>
+LAPACK works by making dense calls to the Basic Linear Algebra Subprograms
+(BLAS) - a collection of routines that perform specific vector and matrix
+operations.  For that reason the performance of LAPACK depends on BLAS.
+BLAS, you guessed it, must be highly optimized and run very fast on YOUR
+computer.  You have two good options to accomplish this:
+
+<P>
+
+<OL>
+<LI>Get vendor or ISV (Independent Software Vendor) BLAS optimized for your
+processor architecture.  This library is usually already compiled for you.
+In our experience these BLAS are the fastest.
+</LI>
+<LI>Compile the Automatically Tuned Linear Algebra Software (ATLAS) on your
+machine.  This contains BLAS and some LAPACK.  BLAS themselves consist of 
+``levels":
+
+<OL>
+<LI><IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$\bf {level 1}$"> BLAS include elementary linear algebraic vector 
+operations, 
+usually involving just one level of looping and therefore having complexity of 
+<I>O</I><IMG
+ WIDTH="43" HEIGHT="15" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$(N)$">. Dot product, constant times a vector plus vector, plane rotation,
+vector copy
+and swap, belong to such operations.  At the time of the development of these
+original BLAS<A NAME="tex2html1"
+  HREF="footnode.html#foot283"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="file:/usr/share/latex2html/icons/footnote.png"></SUP></A>(late 1970's) it was believed that almost all most common linear 
+algebra algorithms can be built from these highly portable and efficient routines
+without much penalty.
+</LI>
+<LI><IMG
+ WIDTH="28" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$\bf {level 2}$"> BLAS.  It soon become clear that for higher-level 
+algorithms
+optimization on at least matrix-vector level becomes necessary.  This
+could not be provided by level 1 BLAS and therefore level 2 BLAS were 
+implemented 
+in the late 1980's.<A NAME="tex2html2"
+  HREF="footnode.html#foot284"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="file:/usr/share/latex2html/icons/footnote.png"></SUP></A> These BLAS include an extended but limited set of 
+highly portable and 
+efficient matrix-vector operations which occur frequently in most common 
+linear
+algebra algorithms.  These operations consist of  matrix-vector multiply, 
+rank-1 and
+rank-2 updates and solutions of triangular equations of certain forms. All
+these operations have complexity of <I>O</I><IMG
+ WIDTH="43" HEIGHT="15" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$(N^2)$">. Of course, with the 
+increase
+of complexity grows the need for a selective optimization for various, 
+sometimes very diverse computer architectures.  
+</LI>
+<LI><IMG
+ WIDTH="36" HEIGHT="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.png"
+ ALT="$\bf {level 3}$"> BLAS.  This need becomes even more urgent for the level 3
+BLAS which, as you properly guessed, concern matrix-matrix operations such as 
+matrix-matrix multiply-and-add operations, rank-k and rank-2k updates of
+a symmetric matrix, matrix-triangular matrix multiply operations, solving
+triangular systems of equations with multiple right-hand sides of certain
+forms, and their complex analogues.  If these operation names appear cryptic 
+to you 
+or you want to learn more about them please refer to the cited paper 
+which contains 
+description of what they are.<A NAME="tex2html3"
+  HREF="footnode.html#foot285"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="file:/usr/share/latex2html/icons/footnote.png"></SUP></A> 
+All of these operations have, of course,  
+complexity of <I>O</I><IMG
+ WIDTH="43" HEIGHT="15" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$(N^3)$"> and, similarly to level 2 BLAS, are 
+limited in scope.
+We will not be concerned in this bootcamp about the naming convention
+for BLAS since this aspect is transparent for users like us who mostly 
+employ higher-level LAPACK driver routines rather than call particular 
+members of BLAS.
+
+<P>
+With the advent of cache and computers with hierarchical memory it was realized 
+that a usual approach of using modified level 2 BLAS routines developed for
+vector machines cannot be used efficiently on these type of architectures and 
+the paradigm of coding long vectors started being replaced by 
+<I>cache blocking</I>.  Modern level 3 BLAS fully exploit this 
+paradigm. 
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="fig:memory"></A><A NAME="40"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 6.1:</STRONG>
+Rate of memory access</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER">[width=7.0cm] memory.eps
+</DIV></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+A cache-based memory system has small blocks of very
+fast, low-latency, memory called cache (L1, L2, L3,
+etc., depending on how close to the CPU it is located) placed between
+main memory and CPU registers.  The idea is to have a quick access to 
+most frequently referenced data and sets of instructions.  However, cache
+memory is not cheap and there are other design constraints (usually cache
+is put directly on die) that do not 
+allow it to grow above a certain size.  Today, on desktop machines,
+this size is somewhere in the order of 32 kB-128 kB and 256 kB-8,192 kB 
+for L1 and L2 cache, respectively.  Intel P4 Extreme Edition 
+adds a 2,048 kB L3 cache. Typically, data transfer rate between
+memory subsystems scales as shown in Fig. (<A HREF="#fig:memory">6.1</A>).
+
+<P>
+When ALU needs new data or a new instruction from a code stream the 
+processor CPU's front-end first checks whether this item is already stored 
+in the cache. If not, it is fetched from the main memory in a block 
+equal to the size of a <I>cache line</I> and placed in cache according to a 
+predefined cache placement policy.  This method of cache operation design 
+corresponds to the principle of spatial locality which 
+states that, as a general rule, if the CPU needs an item from memory at 
+any given moment it most likely needs its neighbors, too.
+
+<P>
+Such hierarchical memory system has problems of its own.  A lot of
+industrial resources as well as research is being dedicated to study
+associativity (cache placement policy), optimal cash line size, 
+replacement strategy and, in
+particular, data prefetching techniques to minimize cache pollution
+and main memory traffic, and to maximize cache hit rates.  In large-scale
+scientific programs, especially the ones which involve large, dense 
+matrices or other large dynamical sets of data, it is difficult to
+arrive at one, efficient, generally applicable caching strategy.
+For instance, when you think about
+simple multiplication of two large matrices (rows vs. columns) 
+then normal caching, even when combined with loop unrolling, software 
+pipelining, or more sophisticated hardware prefetching<A NAME="tex2html5"
+  HREF="footnode.html#foot286"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="file:/usr/share/latex2html/icons/footnote.png"></SUP></A> 
+schemes,
+will not prevent us from inevitable instances of cache data
+eviction. As a result it is not uncommon to observe for such programs
+a performance drop by up to 50%. Here, the technique which comes
+to our rescue is cache blocking.  
+
+<P>
+Cache blocking can be described as
+dividing a large problem into smaller blocks, resulting in reduced
+data granularity and therefore reduced number of requests to fetch 
+data from the main
+memory.  Such transportable ``on-die" calculations are the target of 
+Automated Empirical Optimization of Software (AEOS) approach described
+later in this chapter.
+It should be mentioned that in addition to ``controlling/enabling" 
+the utilization of the spatial locality principle, cache blocking can 
+improve the utilization of the 
+temporal locality principle (general rule that if an item in memory
+is accessed it will likely be accessed in a near future), as well.
+Of course, cache blocking and all the other cache optimization techniques
+mentioned above are NOT transparent to processor architecture.    
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="fig:tiling"></A><A NAME="49"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 6.2:</STRONG>
+This cache blocking technique sets the
+inner loop to be traversed only tile_size times at a time.</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER">[width=7.0cm] tiling.eps
+</DIV></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+An almost trivial example of cache blocking (or rather, in this
+instance, cache optimization) is a
+loop interchange in a matrix operation code.  Depending whether you
+use FORTAN (row-major ordering) or  C (column-major ordering) 
+you will want to interchange outer
+indices with inner indices to minimize cache misses.  (Usually a compiler
+is able to perform this task automatically.) A simple example
+of a non-trivial cache blocking coding is shown in Fig. (<A HREF="#fig:tiling">6.2</A>)
+where the inner loop is traversed only tile_size times at a time. 
+
+<P>
+As mentioned above level 3 BLAS have achieved their remarkable efficiency 
+through extensive, but at the same time very shrewd, use of cache blocking 
+techniques.  In fact, level 3 BLAS are so efficient that, as mentioned earlier,
+employing them in a matrix-matrix problem significantly improves code
+performance as compared to the same problem solved with the exclusive use of 
+level 1 and level 2 BLAS routines.
+
+<P>
+</LI>
+</OL>
+
+<P>
+We have already hinted that optimal cache blocking can be a very challenging
+issue, especially when we need
+to ensure a high level of code transferability.  The latest and greatest 
+tool which addresses this challenge in the area of BLAS software is ATLAS, 
+a member of the AEOS family.  AEOS codes
+self-adapt to various architectural parameters such as memory hierarchies, 
+number and types of functional units and registers, cache sizes, CPU latencies,
+etc.  They do it by isolating performance-critical routines 
+and by adapting them 
+to differing environments by parameters adjustment, multiple implementation 
+and source generation. The best codes are then selected by robust, 
+context-sensitive, empirical timers.  The AEOS paradigm requires, 
+that the entire process of optimization be accessible not only to an
+expert but also to a regular user.  ATLAS meets these requirements by
+performing automatic parameterization and multiple implementation of the 
+level 1 and 2 BLAS routines 
+and by performing automatic parameterization, multiple implementation and 
+source code adaptation 
+(which involves generation of different code implementations for a given 
+operation) of a level 3 BLAS simple building-block matmul kernel.<A NAME="tex2html7"
+  HREF="footnode.html#foot287"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="file:/usr/share/latex2html/icons/footnote.png"></SUP></A> 
+From this optimized matmul kernel (actually, occurring in three slightly 
+different forms) the full level 3 BLAS operation for general
+matrix multiply and add (GEMM) can be built.  It can be shown that all 
+level 3 BLAS operations can be further constructed from GEMM and some 
+level 1 and level 2 BLAS (GEMV) operations.<A NAME="tex2html8"
+  HREF="footnode.html#foot288"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="file:/usr/share/latex2html/icons/footnote.png"></SUP></A>
+<P>
+</LI>
+</OL>
+
+<P>
+NOTE:  If you do not follow one of the above paths the <I>Model 
+Implementation</I> of
+BLAS, which is included in the LAPACK distribution (both source and binaries),
+will be used by LAPACK.  However, in this case you will suffer a high and,
+unless you are doing something trivial, unacceptable performance penalty.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html54"
+  HREF="node4.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html52"
+  HREF="node1.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html46"
+  HREF="node2.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html55"
+  HREF="node4.html">Building LAPACK</A>
+<B> Up:</B> <A NAME="tex2html53"
+  HREF="node1.html">High-performance libraries</A>
+<B> Previous:</B> <A NAME="tex2html47"
+  HREF="node2.html">What are high-performance libraries?</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+root
+2015-12-02
+</ADDRESS>
+</BODY>
+</HTML>

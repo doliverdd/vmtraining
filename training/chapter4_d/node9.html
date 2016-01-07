@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2012 (1.2)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Loops</TITLE>
+<META NAME="description" CONTENT="Loops">
+<META NAME="keywords" CONTENT="chapter4_d">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2012">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="chapter4_d.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="node7.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html134"
+  HREF="node10.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html132"
+  HREF="node7.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html126"
+  HREF="node8.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html135"
+  HREF="node10.html">if ... then ...</A>
+<B> Up:</B> <A NAME="tex2html133"
+  HREF="node7.html">Shell Scripts</A>
+<B> Previous:</B> <A NAME="tex2html127"
+  HREF="node8.html">Some Simple Scripts</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00122000000000000000">
+Loops</A>
+</H2>
+There are three types of loop structures in bash; for, while, and until.  For
+almost all cases until and while are interchangable, so we will deal only with
+for and while in these notes.
+
+<P>
+The for loop in bash is not the same as C or pascal where the value of 
+some variable is set and then incremented.  In bash the for statement is used
+to loop through some list.  For example suppose that you had some data
+files in a directory called data.  And you wanted to create a subdirectory of 
+the results directory for each of these files.  
+This script is meant to
+be run from the directory containing subdirectories data and results.
+<PRE>
+#!/bin/bash
+# create a directory for each data file
+                                                                                
+for dir in `ls data` ; do
+mkdir results/$dir
+done
+</PRE>
+
+<P>
+This script introduces another interesting aspect of the bash shell the <code>`</code>
+character.  This is not an apostrophe, but a backtick.  On most keyboards it is
+above the <code>~</code> character on the upper left. When bash encounters these marks
+it evaluates the expression inside and substitutes the results in place.  So
+this script in effect lists the files in data and then loops through the list
+assigning one at a time to the variable dir.  
+
+<P>
+While loops in bash are the construction closer to typical programming loops.
+But before we look at a bash example, we need to discuss the <code>[</code> operator.
+In bash <code>[</code> is a link to the test program.  This program is most often used
+to check arithmatic conditions, logical conditions or file characteristics. 
+Here is an example of <code>[</code> used in a while loop to create datafiles
+with numerical extensions.
+<PRE>
+#!/bin/bash
+export i=1
+while [ $i -lt 10 ]; do
+touch data/datafile_${i}
+echo file data/datafile_${i} created 
+i=$(( $i+1 ))
+done
+</PRE>
+
+<P>
+Here <code>[</code> is used to test to see if the value of <code>$i</code> is less than
+10.  If not it creates a file in the data subdirectory. (Of course in 
+real situations you may want to be more flexible with the path.  How could we
+do that?) This script uses echo to announce the creation of the file.  While
+this is not necessary in this simple example, it is a good habit to get into.
+Shell scripts can become quite complex, and may run for some time.  Echoing the
+completion of tasks can make debugging easier.  Also if the script will run for
+a long time the output can be redirected to a file for logging purposes.
+This script also introduces the arithmetic operator <code>$(( ))</code>.  Since bash 
+is not a typed language, it uses this construction to delineate arithmetic 
+operations.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html134"
+  HREF="node10.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html132"
+  HREF="node7.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html126"
+  HREF="node8.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html135"
+  HREF="node10.html">if ... then ...</A>
+<B> Up:</B> <A NAME="tex2html133"
+  HREF="node7.html">Shell Scripts</A>
+<B> Previous:</B> <A NAME="tex2html127"
+  HREF="node8.html">Some Simple Scripts</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+root
+2015-12-02
+</ADDRESS>
+</BODY>
+</HTML>

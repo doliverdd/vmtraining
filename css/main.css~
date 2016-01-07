@@ -1,0 +1,226 @@
+body {
+	font-family: 'Open Sans', serif;
+	font-size:110%;
+	width:80%;
+	margin-left:10%;
+}
+a	{
+
+	color:#006849;
+	font: bold;
+}
+a:hover  {
+	color:#7fb539;
+}
+
+img:hover {
+	background-color:#7fb539;
+}
+
+/*classes for the modal popups */
+
+.mbutton {
+	width:25%;
+	height:25%;
+	color:#006849;
+	position:absolute;
+	left:10%;
+	bottom:1%;
+	font-size:75%
+	
+
+}
+.modal {
+
+	height:20%;
+	width:25%;
+	background-color:white;
+	color:#006849;
+	position:absolute;
+	left:40%;
+	top:15%;
+	display:none;
+	background-color:#F8F8F8 ;
+	box-shadow: 10px 10px 5px #888888;
+}
+.pad {
+	padding-bottom:5px;
+	
+}
+.mcontent {
+
+	height:95%;
+	width:95%;
+	background-color:#F8F8F8;
+	color:#006849;
+	position:absolute;
+	
+
+}
+.mcontain {
+
+	height:95%;
+	width:95%;
+	background-color:#F8F8F8;
+	color:#006849;
+	padding-left:10%;
+	padding-bottom:5px;
+
+}
+.bcontain {
+
+	width:80%;
+	margin:32px;
+	!important;
+
+}
+.mclose {
+
+	
+	background-color:#F8F8F8;
+	color:black;
+	position:absolute;
+	left:98%;
+	top:5%;
+	
+
+}
+
+/* decoration for the close button on the modal popup */
+
+span:hover {
+	text-decoration:none;
+	text-shadow: 2px 2px 2px #555;
+   	font-size:125%;
+	cursor:pointer;
+}
+
+/* footer class */
+
+.foot {
+	color:white;
+	background-color:#12825f;
+	width:100%;
+	height:5%;
+	text-align:center;
+	padding-top:4px;
+	
+}
+
+/* headers  */
+
+h1 {
+	font-family: 'Open Sans', serif;	
+	font-size:300%;
+	color:#006849;
+}
+h2 {
+	font-family: 'Open Sans', serif;
+	font-size:125%;
+	color:#006849;
+}
+h3 {
+	font-family: 'Open Sans', serif;	
+	font-size:150%;
+	color:#006849;
+	
+}
+h4 {
+	font-family: 'Open Sans', serif;
+	font-size:125%;
+	color:#314942;
+}
+h5 {
+	font-family: 'Open Sans', serif;
+	font-size:85%;
+}
+
+/* right side call-outs and row/columns for grid */
+
+.card4 {
+	box-shadow:0 4px 8px 0 rgba(0,0,0,0.2);
+	0 6px 20px 0 rgba(0,0,0,0.19);
+	!important;
+	border:1px solid #ccc;
+}
+.row {
+	height:2%;
+	float:left;
+}
+.col-50 {
+	width:50%;
+	float:left;
+	
+}
+.col-70 {
+	width:70%;
+	float:left;
+	
+}
+.col-30 {
+	width:30%;
+	padding-left:5px;
+	float:left;
+	padding-left:5%;
+
+}
+
+/* navigation/paging classes */
+
+.pag {
+	display:inline-block;
+	padding:0;
+	margin:0;
+}
+.pag li {
+	display:inline;
+
+}
+.pag li a {
+
+	text-decoration:none;
+	color:#000;
+	float:left;
+	padding:8px 16px;
+	
+}
+.pag li a:focus {
+	background-color:#ccc;
+}
+.pag a:hover {
+	background-color:#ccc;
+}
+
+/* table styling */
+
+table {
+	border-collapse: collapse;
+	width: 30%;
+}
+table, th, td {
+	border: 1px solid black;
+}
+th {
+	text-align: left;
+	font-family: 'Open Sans', serif;
+	font-size:125%;
+	color:#006849;
+}	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

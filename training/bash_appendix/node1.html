@@ -1,0 +1,286 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2012 (1.2)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>BASH REFERENCE</TITLE>
+<META NAME="description" CONTENT="BASH REFERENCE">
+<META NAME="keywords" CONTENT="bash_appendix">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2012">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="bash_appendix.css">
+
+<LINK REL="next" HREF="node2.html">
+<LINK REL="previous" HREF="bash_appendix.html">
+<LINK REL="up" HREF="bash_appendix.html">
+<LINK REL="next" HREF="node2.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html15"
+  HREF="node2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html13"
+  HREF="bash_appendix.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html7"
+  HREF="bash_appendix.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html16"
+  HREF="node2.html">About this document ...</A>
+<B> Up:</B> <A NAME="tex2html14"
+  HREF="bash_appendix.html">bash_appendix</A>
+<B> Previous:</B> <A NAME="tex2html8"
+  HREF="bash_appendix.html">bash_appendix</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00100000000000000000"></A>
+<A NAME="2"></A>
+<A NAME="chapter:bashref"></A>
+<BR>
+BASH REFERENCE
+</H1>
+<TABLE CELLPADDING=3 BORDER="1" WIDTH=288>
+<TR><TD ALIGN="LEFT" COLSPAN=2><B>File Attribute Operators</B></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">-d <I>file</I></TD>
+<TD ALIGN="LEFT"><I>file</I> exists and is a directory</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">-e <I>file</I></TD>
+<TD ALIGN="LEFT"><I>file</I> exists</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">-f <I>file</I></TD>
+<TD ALIGN="LEFT"><I>file</I> exists and is a regular <I>file</I></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">-r <I>file</I></TD>
+<TD ALIGN="LEFT">You have read permissions on the <I>file</I></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">-s <I>file</I></TD>
+<TD ALIGN="LEFT"><I>file</I> exists and is not empty</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">-w <I>file</I></TD>
+<TD ALIGN="LEFT">You have write permissions on the <I>file</I></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">-x <I>file</I></TD>
+<TD ALIGN="LEFT">You have execute permissions on the <I>file</I></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">-O <I>file</I></TD>
+<TD ALIGN="LEFT">You own the <I>file</I></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">-G <I>file</I></TD>
+<TD ALIGN="LEFT">Files group id matches one of yours</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><I>file1</I> -nt <I>file2</I></TD>
+<TD ALIGN="LEFT"><I>file1</I> is newer than <I>file2</I></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><I>file1</I> -ot <I>file2</I></TD>
+<TD ALIGN="LEFT"><I>file1</I> is older than <I>file2</I></TD>
+</TR>
+</TABLE>
+<TABLE CELLPADDING=3 BORDER="1" WIDTH=288>
+<TR><TD ALIGN="LEFT" COLSPAN=2><B>Arithmetic Test Operators</B></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">-lt</TD>
+<TD ALIGN="LEFT">Less than</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">-le</TD>
+<TD ALIGN="LEFT">Less than or equal</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">-eq</TD>
+<TD ALIGN="LEFT">Equal</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">-ge</TD>
+<TD ALIGN="LEFT">Greater than or equal</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">-gt</TD>
+<TD ALIGN="LEFT">Greater than</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">-ne</TD>
+<TD ALIGN="LEFT">Not equal</TD>
+</TR>
+</TABLE>
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1" WIDTH=288>
+<TR><TD ALIGN="LEFT" COLSPAN=2><B>Relational Operators </B></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><code>&lt;</code></TD>
+<TD ALIGN="LEFT">Less than</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><code>&gt;</code></TD>
+<TD ALIGN="LEFT">Greater than</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><code>&lt;</code>=</TD>
+<TD ALIGN="LEFT">Less than or equal to</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><code>&gt;</code>=</TD>
+<TD ALIGN="LEFT">Greater than or equal to</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">==</TD>
+<TD ALIGN="LEFT">Equal to</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">!=</TD>
+<TD ALIGN="LEFT">Not equal to</TD>
+</TR>
+</TABLE>
+<TABLE CELLPADDING=3 BORDER="1" WIDTH=288>
+<TR><TD ALIGN="LEFT" COLSPAN=2><B>String Comparison Operators </B></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><I>str1</I> = <I>str2</I></TD>
+<TD ALIGN="LEFT"><I>str1</I> equals <I>str2</I></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><I>str1</I> != <I>str2</I></TD>
+<TD ALIGN="LEFT"><I>str1</I> does not equal <I>str2</I></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><I>str1</I> <code>&lt;</code> <I>str2</I></TD>
+<TD ALIGN="LEFT"><I>str1</I> is less than <I>str2</I></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><I>str1</I> <code>&gt;</code> <I>str2</I></TD>
+<TD ALIGN="LEFT"><I>str1</I> is greater than <I>str2</I></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">-n <I>str1</I></TD>
+<TD ALIGN="LEFT"><I>str1</I> is not null</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">-z <I>str1</I></TD>
+<TD ALIGN="LEFT"><I>str1</I> is null</TD>
+</TR>
+</TABLE>
+<TABLE CELLPADDING=3 BORDER="1" WIDTH=288>
+<TR><TD ALIGN="LEFT" COLSPAN=2><B>Arithmetic Operators </B></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">+</TD>
+<TD ALIGN="LEFT">Plus</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">-</TD>
+<TD ALIGN="LEFT">Minus</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><code>*</code></TD>
+<TD ALIGN="LEFT">Multiplication</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">/</TD>
+<TD ALIGN="LEFT">Division</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><code>%</code></TD>
+<TD ALIGN="LEFT">Remainder</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><code>&lt;&lt;</code></TD>
+<TD ALIGN="LEFT">Bit-shift left</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><code>&gt;&gt;</code></TD>
+<TD ALIGN="LEFT">Bit-shift right</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><code>&amp;</code></TD>
+<TD ALIGN="LEFT">Bitwise and</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><code>|</code></TD>
+<TD ALIGN="LEFT">Bitwise or</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><code>~</code></TD>
+<TD ALIGN="LEFT">Bitwise not</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><code>!</code></TD>
+<TD ALIGN="LEFT">Bitwise not</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><code>^</code></TD>
+<TD ALIGN="LEFT">Bitwise exclusive or</TD>
+</TR>
+</TABLE>
+<TABLE CELLPADDING=3 BORDER="1" WIDTH=288>
+<TR><TD ALIGN="LEFT" COLSPAN=2><B>Pattern-Matching Operators</B></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><code>${variable#pattern}</code></TD>
+<TD ALIGN="LEFT">If the pattern matches the</TD>
+</TR>
+<TR><TD ALIGN="LEFT" COLSPAN=2>beginning of the variables value, delete the shortest part</TD>
+</TR>
+<TR><TD ALIGN="LEFT" COLSPAN=2>that matches and return the rest.</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><code>${variable##pattern}</code></TD>
+<TD ALIGN="LEFT">If the pattern matches the</TD>
+</TR>
+<TR><TD ALIGN="LEFT" COLSPAN=2>beginning of the variables value, delete the longest part</TD>
+</TR>
+<TR><TD ALIGN="LEFT" COLSPAN=2>that matches and return the rest.</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><code>${variable%pattern}</code></TD>
+<TD ALIGN="LEFT">If the pattern matches the</TD>
+</TR>
+<TR><TD ALIGN="LEFT" COLSPAN=2>end of the variables value, delete the shortest part</TD>
+</TR>
+<TR><TD ALIGN="LEFT" COLSPAN=2>that matches and return the rest.</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><code>${variable%%pattern}</code></TD>
+<TD ALIGN="LEFT">If the pattern matches the</TD>
+</TR>
+<TR><TD ALIGN="LEFT" COLSPAN=2>end of the variables value, delete the longest part</TD>
+</TR>
+<TR><TD ALIGN="LEFT" COLSPAN=2>that matches and return the rest.</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><code>${variable/pattern/string}</code></TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><code>${variable//pattern/string}</code></TD>
+<TD ALIGN="LEFT">The longest match</TD>
+</TR>
+<TR><TD ALIGN="LEFT" COLSPAN=2>to pattern in variable is replaced by string.</TD>
+</TR>
+<TR><TD ALIGN="LEFT" COLSPAN=2>In the first form only the first match replaced.</TD>
+</TR>
+<TR><TD ALIGN="LEFT" COLSPAN=2>In the second form all matches are replaced. If</TD>
+</TR>
+<TR><TD ALIGN="LEFT" COLSPAN=2>The pattern begins with # the match must</TD>
+</TR>
+<TR><TD ALIGN="LEFT" COLSPAN=2>be at the begining. % means the match</TD>
+</TR>
+<TR><TD ALIGN="LEFT" COLSPAN=2>must be at the end.  If the string is null</TD>
+</TR>
+<TR><TD ALIGN="LEFT" COLSPAN=2>then the matches are deleted.</TD>
+</TR>
+</TABLE>
+
+<P>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html15"
+  HREF="node2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html13"
+  HREF="bash_appendix.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html7"
+  HREF="bash_appendix.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html16"
+  HREF="node2.html">About this document ...</A>
+<B> Up:</B> <A NAME="tex2html14"
+  HREF="bash_appendix.html">bash_appendix</A>
+<B> Previous:</B> <A NAME="tex2html8"
+  HREF="bash_appendix.html">bash_appendix</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+root
+2015-12-02
+</ADDRESS>
+</BODY>
+</HTML>

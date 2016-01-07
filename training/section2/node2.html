@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2012 (1.2)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Transferring Data from Arrays</TITLE>
+<META NAME="description" CONTENT="Transferring Data from Arrays">
+<META NAME="keywords" CONTENT="section2">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2012">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="section2.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node1.html">
+<LINK REL="up" HREF="node1.html">
+<LINK REL="next" HREF="node3.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html30"
+  HREF="node3.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html28"
+  HREF="node1.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html22"
+  HREF="node1.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html31"
+  HREF="node3.html">Derived Data Types</A>
+<B> Up:</B> <A NAME="tex2html29"
+  HREF="node1.html">Point to Point Communications</A>
+<B> Previous:</B> <A NAME="tex2html23"
+  HREF="node1.html">Point to Point Communications</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00011000000000000000">
+Transferring Data from Arrays</A>
+</H2>
+We specify the location of the first element to be sent or
+received when we call MPI communication subroutines. For a
+successful communication, rest of the elements to be transferred
+must be contiguous in the memory. Since   Fortran stores the
+elements of a two-dimensional array in column major order, sending
+a column of an array is straightforward.  Let us examine the
+following program that computes the elapsed time for the data
+exchange between two processes.
+
+<P>
+<PRE>
+        PROGRAM COMMUNICATION2
+
+        INCLUDE 'mpif.h'
+        DOUBLE PRECISION A,B,T1,T2,RESON
+        DIMENSION A(2500,2500),B(2500,2500)
+
+        CALL MPI_INIT(IERR)
+
+        CALL MPI_COMM_SIZE(MPI_COMM_WORLD,NPROCS,IERR)
+
+        CALL MPI_COMM_RANK(MPI_COMM_WORLD,MYRANK,IERR)
+
+        RESON=MPI_Wtick()
+        write(*,*) reson, 'clock resolution'
+
+        IF (MYRANK.EQ.0) THEN
+        DO I=1,2500
+        DO j=1,2500
+        A(I,J)=1.0
+        ENDDO
+        ENDDO
+        ENDIF
+
+        IF (MYRANK.EQ.1) THEN
+        DO I=1,2500
+        DO J=1,2500
+        B(I,J)=2.0
+        ENDDO
+        ENDDO
+        ENDIF
+
+        CALL MPI_BARRIER(MPI_COMM_WORLD, ierr)
+
+        IF (MYRANK.EQ.0) THEN
+        T1=MPI_WTIME()
+
+        CALL MPI_SEND(A(1,1),5000,
+   &amp;    MPI_DOUBLE_PRECISION, 1,1,
+   &amp;    MPI_COMM_WORLD,IERR)
+        CALL MPI_RECV(B(1,1),5000,
+   &amp;    MPI_DOUBLE_PRECISION,1,1,
+   &amp;     MPI_COMM_WORLD,IRECV1,IERR)
+
+        T2=MPI_WTIME()
+        write(*,*) t2-t1,myrank,'t2'
+        ENDIF
+
+        IF (MYRANK.EQ.1) THEN
+        T1=MPI_WTIME()
+
+        CALL MPI_SEND(B(1,1),5000,
+  &amp;     MPI_DOUBLE_PRECISION, 0,1,
+  &amp;     MPI_COMM_WORLD,IERR)
+        CALL MPI_RECV(A(1,1),5000,
+  &amp;     MPI_DOUBLE_PRECISION,0,1,
+  &amp;     MPI_COMM_WORLD,IRECV2,IERR)
+
+        T2=MPI_WTIME()
+        write(*,*) t2-t1,myrank
+        ENDIF
+
+        CALL MPI_FINALIZE(IERR)
+        END
+</PRE>
+First, let us explain briefly some of the subroutines we have used
+for the first time. MPI_WTICK is used to determine the clock
+resolution and MPI_WTIME gives the elapsed time.
+
+<P>
+The MPI_BARRIER subroutine blocks each process until each one has
+called it. It is used for synchronization. In other words,  it
+ensures that the processes start sending and receiving at the same
+time. MPI_BARRIER can be used for blocking multiple processes; it
+is a collective communication subroutine.  We will see more about
+collective communications in the next section.
+
+<P>
+In this program, each process transfers the first and second
+columns of the array initialized on them. If we increased the
+number of columns to be transferred more and more, MPI_SEND and
+MPI_RECEIVE would eventually fail. In this case, non-blocking
+calls would still be working.
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html32"
+  HREF="node3.html">Derived Data Types</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html30"
+  HREF="node3.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html28"
+  HREF="node1.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html22"
+  HREF="node1.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html31"
+  HREF="node3.html">Derived Data Types</A>
+<B> Up:</B> <A NAME="tex2html29"
+  HREF="node1.html">Point to Point Communications</A>
+<B> Previous:</B> <A NAME="tex2html23"
+  HREF="node1.html">Point to Point Communications</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+root
+2015-12-02
+</ADDRESS>
+</BODY>
+</HTML>

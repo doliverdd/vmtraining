@@ -1,0 +1,325 @@
+<p>Compiling Basics and Make
+Researchers must often write their own code, or at the very least modify code
+that someone else has written.  In the Linux world this means working with
+one of the compilers that are available, and more often than not, working
+with a makefile (or Makefile).  While
+we have several different compilers available on our systems we will concentrate
+on gcc for this .  Although different compilers have different options,
+the basic usage is the same. Concentrating on one compiler will allow us to avoid several complications.  The material should  
+easily translate to other compilers, and even other languages.
+<p>
+Once programs reach a certain complexity, they may require certain libraries,
+include files, or may be contained in more than one file.  The command to
+compile such a program may consist of several lines.
+These problems are 
+further complicated by trying to remember which files where changed and what
+are the interdependencies.  Fortunately, in the Linux world we have the command
+it make. indexmake With a properly formated it makefile, all of these
+problems are handled automatically.  indexmakefile 
+<p>
+Compiling Basics
+label:compilingBasics
+Lets start with a simple example. Let the following program be in the 
+file HiMom.c. 
+
+main(){
+   printf("Hi Mom\n");
+}
+
+To compile this program we could just type it gcc HiMom.c.  This would
+produce a file called it a.out.  While this file would execute correctly,
+the next time you compiled a program in this directory you would loose this 
+compiled version.  Or worse yet when you came back two days latter would 
+you remember what program was compiled into a.out?  It is best to always use
+the it -o option which lets you name the binary. Compiling the program with
+the -o option would look like it gcc -o HiMom HiMom.c. This would create the
+executable it HiMom. 
+<p>
+Gcc does not print out all of the warnings that it finds compiling the code. 
+It will print out warnings if the code is so questionable that it seems as if
+the program will not execute correctly.  If you want the code to be portable,
+or if you may want to compile with a different compiler it is a good idea to
+compile your code with the it -Wall flag.  This tells the compiler to 
+print all warning messages.  Compiling the HiMom.c code with the command it
+gcc -Wall -o HiMom HiMom.c produces the following.
+
+HiMom.c:1: warning: return type defaults to `int'
+HiMom.c: In function `main':
+HiMom.c:2: warning: implicit declaration 
+						   of function `printf'
+HiMom.c:3: warning: control reaches end of 
+						   non-void function
+
+<p>
+None of these warnings will cause problems with this program, but they might
+be of concern if they were coming from compilation of a subprogram.  Because 
+this is not a class on C programming we won't go into the details of the 
+warning messages, but the "fixed" code is given here for completeness.
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+int main(){
+   printf("Hi Mom\n");
+   exit(0);
+}
+
+<p>
+The characteristics of the executable produced by the compiler may be 
+determined by the use of various flags.  There are too many to cover in any
+depth in a short introductory class, but we will examine a few of the more
+common flags.  There are trade-offs to be made by using different flags.  Be 
+aware that the nature of your code will determine if a particular flag will 
+be of benefit.  This is a matter of experience and sometimes brute force trial
+and error.
+<p>
+There are two very useful flags it -O and it -g that you should use on
+a regular basis. The -g flag produces extra debugging information that can
+be used when running a debugger or program tracer.  This make larger and 
+possibly slower code so it is often used during development and turned off
+for production code.  Most compilers can create binaries with different
+levels of optimization.  To increase the level of optimization use the -O
+flag.  With this flag turned on gcc tries to reduce size and execution time.
+There are various levels of optimization, and you should read the man page for
+more information.
+<p>
+So far we have dealt with compiling a single file that only requires the 
+standard libraries.  This is not usually the case for research codes.  They
+usually need external libraries, and are often contained in multiple files.
+Although the topic of libraries will be discussed in <p> ref<p>:libs,
+we will give a brief introduction here.  
+<p>
+Most larger programs have code in several files that are compiled separately,
+and then linked into the final code. We will use the following example that
+calls a function from another source file.  This is a trivial example that 
+we will build on later. 
+<p>
+
+----------------------------------------------
+File mainProgram.c
+
+/* This program calls a function that returns*/
+/* a value.  It is just for demonstration*/ 
+/* purposes */
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include "subProgram.h"
+int main(){
+   double myDouble;
+   myDouble=calcValue(5);
+   printf("calculated value %10.5f\n",myDouble);
+   exit(0);
+}
+----------------------------------------------
+
+----------------------------------------------
+File subProgram.h
+
+/* a trivial function to use as an example */
+
+double calcValue(int input);
+
+----------------------------------------------
+
+----------------------------------------------
+File subProgram.c
+
+/* Code for a trivial function */
+
+#include "subProgram.h"
+
+double calcValue(int input){
+
+   double returnVal;
+   
+   returnVal = (input * input) - 3.14;
+   
+   return(returnVal);
+}
+----------------------------------------------
+
+<p>
+These files can be compiled with the commands.
+<p>
+
+gcc -c -o subProgram.o subProgram.c
+gcc -c -o mainProgram.o mainProgram.c
+gcc -o myCalculation mainProgram.o subProgram.o
+
+<p>
+On the first two lines the it -c option tells gcc not to run the linker.
+Or in other words compile the file and assume that the undefined (but not 
+undeclared) functions will be available when the files are linked.
+The third command links the .o files and calls the program it myCalculation.
+<p>
+But what if we want to call a function from a library that is not in our 
+standard path. For this example we will use the it gsl or it Gnu Scientific 
+Library. These are freely available libraries of various math functions.  They
+are not always the fastest, but they are widely available.  Lets assume that
+we want to replace our trivial function with a call to the library function that
+computes the Bessel Function of order 0.  Then the subProgram.c file becomes:
+<p>
+
+/* Code for a trivial function */
+
+#include "subProgram.h"
+#include &lt;gsl/gsl_sf_bessel.h&gt; 
+
+double calcValue(double input){
+
+   double returnVal;
+   returnVal = gsl_sf_bessel_J0 (input);
+   
+   return(returnVal);
+}
+
+<p>
+If we compile it with the same line as above we get the error message, "gsl/gsl_sf_bessel.h : No such file or directory".  This is because the gsl include
+files are not in one of the standard include paths. (Although in a default 
+installation they are put into /usr/local/include.) 
+Assume that the gsl libraries are in /opt/gsl/lib and
+the includes are in /opt/gsl/include. We can use the it -I option
+to add this new include directory to the include path for this program. We would
+change the line above to "gcc -c -I /opt/gsl/include -o subProgram.o 
+subProgram.c" and then the compile will work.  But now when we try to link the
+programs with the last gcc line above we get this output.
+<p>
+
+subProgram.o(.text+0x1c): In function `calcValue':
+: undefined reference to `gsl_sf_bessel_J0'
+collect2: ld returned 1 exit status
+
+<p>
+This is because the library file that contains the newline gsl_sf_bessel_J0 function
+is not is one of the standard library paths.  To get a compile without errors
+we must change the last gcc line to be:
+<p>
+
+ gcc -L /opt/gsl/lib -lgsl -lgslcblas 
+		 -o myCalc mainProgram.o subProgram.o
+
+<p>
+The line is broken only for space considerations and would be typed as one command.
+We have added the it -L and the it -l flags. The -L flag is to libraries
+what the -I flag is to include files.  It says to add the directory, in this
+case /opt/gsl/lib, to the paths that are searched for the library files.
+the -l flag names library files that are to be used to find functions.  Althoughwe are not only linking the gsl library, but the gslcblas library file. 
+This must be done because the gsl library makes calls to the gslcblas libraries.
+Make
+As you can see by now the compiling and linking of large research codes can
+begin to be quite complicated.  Imagine that instead of three files in the
+last  we had been dealing with one hundred source and header files. 
+Added to this problem is that if you change one of the source files it is 
+inefficient to have to recompile all of them.  But how can you keep track of 
+the dependencies and how can you know when a file was last compiled?  The 
+answer on Linux systems is it make indexmake.  
+Make is a program that is designed specifically to handle these problems. Among
+other things make can, keep track of 
+dependencies, and determine when program files need to be recompiled.  The
+syntax of a make file is not always clear, but with a little experience it
+can be very helpful.  
+<p>
+Make must know what you want to compile (it targets), what other files
+the program needs (it dependencies), and how you want to compile the
+program (it commands). indextargets indexdependencies indexcommands
+Lets suppose that we have the following rather typical scenario. We want to
+make a program myProgram.  The main file is called myProgram.c and it
+is dependent on two other source files sub1.c and sub2.c.  The programs
+use the math library (-lm) and a library abc which is contained in the /opt/lib
+directory.  The include files for abc are in the /opt/include directory.  
+Additionally each of the c files has an associated header file, and they
+may call functions from each other.  The make file for this may look like:
+<p>
+
+# Makefile for myProgram
+myProgram: sub1.o sub2.o myProgram.o 
+   gcc -o myProgram -L/opt/lib -I/opt/include  \ 
+	  -labc -lm sub1.o sub2.o myProgram.o
+
+myProgram.o: myProgram.c sub1.h sub2.h
+   gcc -c -o myProgram.o -L/opt/lib -I/opt/include \
+      -labc -lm myProgram.c
+
+sub1.o: sub1.c sub1.h
+   gcc -c -o sub1.o -L/opt/lib -I/opt/include \
+      -labc  -lm sub1.c
+
+sub2.o: sub2.c sub2.h
+   gcc -c -o sub2.o -L/opt/lib -I/opt/include \
+      -labc -lm sub2.c
+
+<p>
+Let's look at this file in some detail. The first line is a comment.
+The lines that begin with a program 
+name and a colon followed by a list of files is a target-dependency line.
+What goes before the colon is the it target and the other files are the
+it dependencies.  Make will keep track of which of these files have
+changed since the target was last compiled, and will recompile them before 
+compiling the target. It will not recompile a target if none of the dependencies
+have changed.  Notice the  \<br> at the end of the first gcc line.  This is
+the continuation character for make so these two lines are treated as one. 
+Extra white space is deleted when a continuation character is used.  This 
+leads to one of the most frustrating aspects of the makefile for new users.
+The gcc lines must begin with a tab or make has a problem.  By default, make
+compiles the first target.  If you want to compile one of the other targets
+you can (for example) just type make sub1.o and only that target and it's 
+dependencies (if necessary) will be compiled.
+<p>
+Make allows assigning values to variables.  This can clean up the lines of 
+a make file.  We've done this in the second version of the make file for
+myProgram.
+
+# Makefile for myProgram
+LIBS = -L /opt/lib -labc -lm
+INCLUDES = -I /opt/include
+OBJECTS = sub1.o sub2.o myProgram.o
+myProgram: $(OBJECTS) 
+   gcc -o myProgram $(INCLUDES) $(LIBS) $(OBJECTS)  
+	  
+
+myProgram.o: myProgram.c sub1.h sub2.h
+   gcc -c -o myProgram.o $(LIBS) $(INCLUDES)\
+      myProgram.c
+
+sub1.o: sub1.c sub1.h
+   gcc -c -o sub1.o $(INCLUDES) $(LIBS) sub1.c
+
+sub2.o: sub2.c sub2.h
+   gcc -c -o sub2.o $(INCLUDES) $(LIBS) sub2.c
+
+clean:
+   /bin/rm *.o
+
+<p>
+In this version we assign the library directories, include directories, and
+object files to variables, which are then used in the dependencies and 
+command lines.  This not only makes the file more readable, it also helps 
+when adding or removing files from the project. We've also added a dummy target
+clean.  This is a common practice.  In this case we've removed all of the 
+.o files.  This feature makes it easier to move projects between systems and
+to handle changes in the library files.  In effect what it does is remove all
+of the .o files so that the next run will recompile everything. This dummy
+target adds significant flexibility to make.
+<p>
+Exercises
+<br>
+<br> Add a loop to the main program file in the example that calculates the
+Bessel function to call the sub-program a large number of times.  Experiment
+with the size of the loop so that the executions takes some significant amount
+of time. (Say  &gt;<br> 3 minutes) Use the Linux "time" command to time your 
+runs.(Check
+the man page.) Now try compiling the program with different levels of 
+optimization to see if the code gets faster.
+<br> Create a makefile so that the code from the Bessel function example can
+be compiled with make.  Extend the file so that if you want to compile with
+the -g option you make one target, and if you want to compile without the
+-g option you make another target. 
+<br> Advanced Exercise - Look up the the it -D option for gcc and see
+if you can use this to compile the program with the Bessel option sometimes
+and with some other function of your choice at other times.  (Even just square
+root as an example) Put these changes into the makefile so that you can
+make the version that you want with no changes to the code or makefile.
+
+<p>
+
+

@@ -1,0 +1,280 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2012 (1.2)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Compiling Basics</TITLE>
+<META NAME="description" CONTENT="Compiling Basics">
+<META NAME="keywords" CONTENT="chapter5_d">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2012">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="chapter5_d.css">
+
+<LINK REL="next" HREF="node3.html">
+<LINK REL="previous" HREF="node1.html">
+<LINK REL="up" HREF="node1.html">
+<LINK REL="next" HREF="node3.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html36"
+  HREF="node3.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html34"
+  HREF="node1.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html28"
+  HREF="node1.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html37"
+  HREF="node3.html">Make</A>
+<B> Up:</B> <A NAME="tex2html35"
+  HREF="node1.html">Compiling Basics and Make</A>
+<B> Previous:</B> <A NAME="tex2html29"
+  HREF="node1.html">Compiling Basics and Make</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00110000000000000000"></A>
+<A NAME="section:compilingBasics"></A>
+<BR>
+Compiling Basics
+</H1>
+Lets start with a simple example. Let the following program be in the 
+file HiMom.c. 
+<PRE>
+main(){
+   printf("Hi Mom\n");
+}
+</PRE>
+To compile this program we could just type <I>gcc HiMom.c</I>.  This would
+produce a file called <I>a.out</I>.  While this file would execute correctly,
+the next time you compiled a program in this directory you would loose this 
+compiled version.  Or worse yet when you came back two days latter would 
+you remember what program was compiled into a.out?  It is best to always use
+the <I>-o</I> option which lets you name the binary. Compiling the program with
+the -o option would look like <I>gcc -o HiMom HiMom.c</I>. This would create the
+executable <I>HiMom</I>. 
+
+<P>
+Gcc does not print out all of the warnings that it finds compiling the code. 
+It will print out warnings if the code is so questionable that it seems as if
+the program will not execute correctly.  If you want the code to be portable,
+or if you may want to compile with a different compiler it is a good idea to
+compile your code with the <I>-Wall</I> flag.  This tells the compiler to 
+print all warning messages.  Compiling the HiMom.c code with the command <I>gcc -Wall -o HiMom HiMom.c</I> produces the following.
+<PRE>
+HiMom.c:1: warning: return type defaults to `int'
+HiMom.c: In function `main':
+HiMom.c:2: warning: implicit declaration of function `printf'
+HiMom.c:3: warning: control reaches end of non-void function
+</PRE>
+
+<P>
+None of these warnings will cause problems with this program, but they might
+be of concern if they were coming from compilation of a subprogram.  Because 
+this is not a class on C programming we won't go into the details of the 
+warning messages, but the "fixed" code is given here for completeness.
+<PRE>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+int main(){
+   printf("Hi Mom\n");
+   exit(0);
+}
+</PRE>
+
+<P>
+The characteristics of the executable produced by the compiler may be 
+determined by the use of various flags.  There are too many to cover in any
+depth in a short introductory class, but we will examine a few of the more
+common flags.  There are trade-offs to be made by using different flags.  Be 
+aware that the nature of your code will determine if a particular flag will 
+be of benifit.  This is a matter of experience and sometimes brute force trial
+and error.
+
+<P>
+There are two very useful flags <I>-O</I> and <I>-g</I> that you should use on
+a regular basis. The -g flag produces extra debugging information that can
+be used when running a debugger or program tracer.  This make larger and 
+possibly slower code so it is often used during development and turned off
+for production code.  The most compilers can create binaries with different
+levels of optimization.  To increase the level of optimization use the -O
+flag.  With this flag turned on gcc tries to reduce size and execution time.
+There are various levels of optimization, and you should read the man page for
+more information.
+
+<P>
+So far we have dealt with compiling a single file that only requires the 
+standard libraries.  This is not usually the case for research codes.  The
+usually need exernal libraries, and are often contained in multiple files.
+Although the topic of libraries will be discussed in Chapter <A HREF="#chapter:lib"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="file:/usr/share/latex2html/icons/crossref.png"></A>,
+we will give a brief introduction here.  
+
+<P>
+Most larger programs have code in several files that are compiled separately,
+and then linked into the final code. We will use the following example that
+calls a function from another source file.  This is a trivial example that 
+we will build on later. 
+
+<P>
+<PRE>
+File mainProgram.c
+
+/* This program mearly calls a function that returns a */
+/* value.  It is just for demonstration purposes */
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include "subProgram.h"
+int main(){
+   double myDouble;
+   myDouble=calcValue(5);
+   printf("calculated value %10.5f\n",myDouble);
+   exit(0);
+}
+
+File subProgram.h
+
+/* a trivial function to use as an example */
+
+double calcValue(int input);
+
+file subProgram.c
+
+/* Code for a trivial function */
+
+#include "subProgram.h"
+
+double calcValue(int input){
+
+   double returnVal;
+   
+   returnVal = (input * input) - 3.14;
+   
+   return(returnVal);
+}
+</PRE>
+
+<P>
+These files can be compiled with the commands.
+
+<P>
+<PRE>
+gcc -c -o subProgram.o subProgram.c
+gcc -c -o mainProgram.o mainProgram.c
+gcc -o myCalculation mainProgram.o subProgram.o
+</PRE>
+
+<P>
+On the first two lines the <I>-c</I> option tells gcc not to run the linker.
+Or in other words compile the file and assume that the undefined (but not 
+undeclared) functions will be available when the files are linked.
+The third command links the .o files and calls the program <I>myCalculation</I>.
+
+<P>
+But what if we want to call a function from a library that is not in our 
+standard path. Lets take a look at the <I>gsl</I> or <I>Gnu Scientific 
+Library</I>. These are freely available libraries of various math functions.  They
+are not always the fastest, but they are widely available.  Lets assume that
+we want to replace our trivial function with a call to the library function that
+computes the Bessel Function of order 0.  Then the subProgram.c file becomes:
+
+<P>
+<PRE>
+/* Code for a trivial function */
+
+#include "subProgram.h"
+#include &lt;gsl/gsl_sf_bessel.h&gt; 
+
+double calcValue(double input){
+
+   double returnVal;
+   returnVal = gsl_sf_bessel_J0 (input);
+   
+   return(returnVal);
+}
+</PRE>
+
+<P>
+If we compile it with the same line as above we get the error message, "gsl/gsl_sf_bessel.h : No such file or directory".  This is because the gsl include
+files are not in one of the standard include paths. (Although in a default 
+installation they are put into /usr/local/include.) For the purposes of this
+example we will assume that the gsl libraries are in /usr/local/gsl/lib and
+the includes are in /usr/local/gsl/include. We can use the <I>-I</I> option
+to add this new include directory to the include path for this program. We would
+change the line above to "gcc -c -I /usr/local/gsl/include -o subProgram.o 
+subProgram.c" and then the compile will work.  But now when we try to link the
+programs with the last gcc line above we get this output.
+
+<P>
+<PRE>
+subProgram.o(.text+0x1c): In function `calcValue':
+: undefined reference to `gsl_sf_bessel_J0'
+collect2: ld returned 1 exit status
+</PRE>
+
+<P>
+This is because the library file that contains the gsl_sf_bessel_J0 function
+is not is one of the standard library paths.  So again we must change the last
+gcc line to be:
+
+<P>
+<PRE>
+ gcc -L /usr/local/gsl/lib -lgsl -lgslcblas 
+		 -o myCalc mainProgram.o subProgram.o
+</PRE>
+
+<P>
+The line is broken only for space considerations and is really one command.
+We have added the <I>-L</I> and the <I>-l</I> flags. The -L flag is to libraries
+what the -I flag is to include files.  It says to add the directory, in this
+case /usr/local/gsl/lib, to the paths that are searched for the library files.
+the -l flag names library files that are to be used to find functions.  In 
+this case the gsl_sf_ bessel_J0 function is in the gsl library, but it 
+requires functions from the gslcblas library file. 
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html36"
+  HREF="node3.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html34"
+  HREF="node1.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html28"
+  HREF="node1.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html37"
+  HREF="node3.html">Make</A>
+<B> Up:</B> <A NAME="tex2html35"
+  HREF="node1.html">Compiling Basics and Make</A>
+<B> Previous:</B> <A NAME="tex2html29"
+  HREF="node1.html">Compiling Basics and Make</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+root
+2015-12-02
+</ADDRESS>
+</BODY>
+</HTML>

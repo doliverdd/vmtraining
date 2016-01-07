@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2012 (1.2)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Point to Point Communications</TITLE>
+<META NAME="description" CONTENT="Point to Point Communications">
+<META NAME="keywords" CONTENT="chapter_d_C">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2012">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="chapter_d_C.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="node1.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html117"
+  HREF="node7.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html115"
+  HREF="node1.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html109"
+  HREF="node5.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html118"
+  HREF="node7.html">Transferring Data from Arrays</A>
+<B> Up:</B> <A NAME="tex2html116"
+  HREF="node1.html">Introduction to MPI Programming</A>
+<B> Previous:</B> <A NAME="tex2html110"
+  HREF="node5.html">Exercises</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00120000000000000000">
+Point to Point Communications</A>
+</H1>
+In this section, we will examine point to point message passing
+which allows data transfer from one process to another.  Unlike
+collective communications, point to point message passing involves
+only a pair of processes.
+
+<P>
+Sending a scalar variable or an array from one process requires
+calling an mpi send subroutine. This initiates data transfer from
+the user buffer to the system buffer. The corresponding receive
+call, on the other hand, allows data to be copied from the system
+buffer to the user buffer in the destination process. There is a
+variety of mpi send subroutines allowing communication in
+different modes  - synchronous, buffered, ready, standard blocking
+and non-blocking.  Unlike send, there are only two types of
+receive subroutines: standard blocking and nonblocking. Here, we
+will focus on blocking and nonblocking communications, as they are
+the most commonly used modes.
+
+<P>
+When we use the blocking send subroutine, MPI_SEND, control does
+not return to the program until the data transfer to the system
+buffer is complete. Similarly, control returns from the blocking
+receive subroutine, MPI_RECV only after the data is copied to the
+user buffer. On the other hand, nonblocking communication
+subroutines, MPI_ISEND and MPI_IRECV, indicate that the data
+transfer has only begun. Control immediately returns to the
+program while data transfer continues in the background. Note that
+incorrect communications occur if we change the buffer content
+before data transfer is complete. Therefore, somewhere in the
+program, we have to make sure that the communication is over by
+calling  MPI_WAIT. The format for  MPI_WAIT is as follows:
+
+<P>
+<PRE>
+CALL MPI_WAIT(IREQUEST,ISTATUS,IERR) Irequest    Request
+Identifier Istatus     Status Object Ierr        Fortran Return
+code
+</PRE>
+
+<P>
+Now, let us take a look at the following example program where a
+different scalar variable is initialized on each process.  The
+processes communicate and calculate the sum of these variables.
+
+<P>
+<PRE>
+        PROGRAM COMMUNICATION
+        INCLUDE  'mpif.h'
+        DOUBLE PRECISION a,b,c
+
+c       Start MPI
+        CALL MPI_INIT(IERR)
+
+c       Number of processes
+        CALL MPI_COMM_SIZE(MPI_COMM_WORLD,NPROCS,IERR)
+
+c       Process rank
+        CALL MPI_COMM_RANK(MPI_COMM_WORLD,MYRANK,IERR)
+
+c       Define next and previous processes in terms of ranks
+        INEXT=MYRANK+1
+        IPREV=MYRANK-1
+
+c      Define Null processes
+        IF (MYRANK.EQ.(NPROCS-1)) INEXT=MPI_PROC_NULL
+        IF(MYRANK.EQ.0) IPREV=MPI_PROC_NULL
+
+c       Initialize a in process 0 and b in process 1
+        if (myrank.eq.0) a=1.50d0
+        if (myrank.eq.1) b=2.50d0
+
+c       Data exchange
+         CALL MPI_ISEND(a,1,MPI_DOUBLE_PRECISION,
+     &amp;  INEXT,1,MPI_COMM_WORLD,ISEND1,IERR)
+
+        CALL MPI_ISEND(b,1,MPI_DOUBLE_PRECISION,
+     &amp;  IPREV,1,MPI_COMM_WORLD,ISEND2,IERR)
+
+        CALL MPI_IRECV(a,1,MPI_DOUBLE_PRECISION,
+     &amp;  IPREV,1,MPI_COMM_WORLD,IRECV1,IERR)
+
+        CALL MPI_IRECV(b,1,MPI_DOUBLE_PRECISION,
+     &amp;  INEXT,1,MPI_COMM_WORLD,IRECV2,IERR)
+
+c       Calculate c  and d before MPI_WAIT
+        d=(5.0d0)**(2.d0)+5.0d0
+        c=a+b+d
+        write(*,*) c,d,myrank
+
+        CALL MPI_WAIT(ISEND1,ISTATUS,IERR)
+        CALL MPI_WAIT(ISEND2,ISTATUS,IERR)
+        CALL MPI_WAIT (IRECV1,ISTATUS,IERR)
+        CALL MPI_WAIT (IRECV2,ISTATUS,IERR)
+
+c       Calculate c after MPI_WAIT
+        c=a+b+d
+
+        write(*,*) c,d, '**',myrank
+
+c       Shutdown MPI
+        CALL MPI_FINALIZE(IERR)
+
+        END
+</PRE>
+
+<P>
+This program generates a wrong value for c when it is calculated
+before the MPI_WAIT call.  MPI_WAIT is used to block both
+sending and receiving processes until the communication is
+complete. Since the variable d can be calculated correctly during
+data exchange, it is safe to post MPI_WAIT calls afterwards. On
+the other hand, placing MPI_WAIT just after the immediate Send
+and Receive calls would be the same as using blocking
+communications. Please note that, to reduce synchronization
+overhead, we should post MPI_WAIT in the program as late as
+possible.
+
+<P>
+We use immediate calls because they are faster than blocking
+communications. Also, blocking calls may fail when the sent
+message is too large.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html119"
+  HREF="node7.html">Transferring Data from Arrays</A>
+<UL>
+<LI><A NAME="tex2html120"
+  HREF="node8.html">Derived Data Types</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html121"
+  HREF="node9.html">Exercises</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html117"
+  HREF="node7.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html115"
+  HREF="node1.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html109"
+  HREF="node5.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html118"
+  HREF="node7.html">Transferring Data from Arrays</A>
+<B> Up:</B> <A NAME="tex2html116"
+  HREF="node1.html">Introduction to MPI Programming</A>
+<B> Previous:</B> <A NAME="tex2html110"
+  HREF="node5.html">Exercises</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+root
+2015-12-02
+</ADDRESS>
+</BODY>
+</HTML>

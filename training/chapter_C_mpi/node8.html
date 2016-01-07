@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2012 (1.2)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Derived Data Types</TITLE>
+<META NAME="description" CONTENT="Derived Data Types">
+<META NAME="keywords" CONTENT="chapter_C_mpi">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2012">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="chapter_C_mpi.css">
+
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="node7.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html140"
+  HREF="node9.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html138"
+  HREF="node7.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html134"
+  HREF="node7.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html141"
+  HREF="node9.html">Exercises</A>
+<B> Up:</B> <A NAME="tex2html139"
+  HREF="node7.html">Transferring Data from Arrays</A>
+<B> Previous:</B> <A NAME="tex2html135"
+  HREF="node7.html">Transferring Data from Arrays</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00121100000000000000">
+Derived Data Types</A>
+</H3>
+Now, let us see how to transfer columns in an array.  A new data type
+must be defined in order to send and receive columns because this
+time the data is not contiguous in the memory. The following
+Send/Receive pair can be used to transfer the first column of the
+following array.
+<PRE>
+            1 2 3 4
+            1 2 3 4
+            1 2 3 4
+            1 2 3 4
+</PRE>
+
+<P>
+<PRE>
+   MPI_Type_vector(4,1,4,MPI_INT,&amp;coltype);
+   MPI_Type_commit(&amp;coltype);
+
+   if (my_rank==0)
+     MPI_Send(a,1,coltype,
+         1,tag,MPI_COMM_WORLD);
+
+   if (my_rank==1) 
+      MPI_Recv(a,1,coltype,
+         0,tag,MPI_COMM_WORLD,&amp;status);
+
+   MPI_Type_free(&amp;coltype);
+</PRE>
+
+<P>
+The MPI_Type_vector subroutine is used to define a new data type
+representing equally spaced blocks.  It has the following format:
+
+<P>
+<PRE>
+int MPI_Type_vector(
+               int count,
+               int blocklen,
+               int stride,
+               MPI_Datatype old_type,
+               MPI_Datatype *newtype )
+</PRE>
+
+<P>
+The MPI_Type_commit makes the new data type ready to be used in
+communication. The new data type is freed by the MPI_Type_free
+call. In other words, the MPI_Type_free routine sets the new
+data type to <BR>
+MPI_DATATYPE_NULL.
+
+<P>
+<BR><HR>
+<ADDRESS>
+root
+2015-12-02
+</ADDRESS>
+</BODY>
+</HTML>

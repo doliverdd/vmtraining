@@ -1,0 +1,523 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<HTML>
+<HEAD>
+<TITLE>USF HPC Training</TITLE>
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine">
+<LINK REL="STYLESHEET" HREF="main.css">
+
+</HEAD>
+
+<body class="w3-container w3-margin-32" style="width:80%">
+<img src="header.png" alt="usf header" style = "width:100%"><div style="padding-bottom:2%"></div>
+<ul class="pag">
+<li><a href="index.html">Home</a></li>
+<li><a href="chapter3.html">Previous</a></li>
+  <li><a href="chapter5.html">Next</a></li>
+  </ul>
+
+<h1>Chapter 4</h1>
+<h1>Working With The Command Line Environment</h1>
+
+
+As we noted at the beginning of the last chapter, the standard interface to 
+Linux systems is the command line interface. There are pluses and minuses 
+for both the command line and GUI environments.  In this chapter we will 
+explore two of the advantages.  The first is that the 
+configuration of the environment is very flexible.  This is accomplished by 
+setting the shell environment variables. 
+Not only can this facility make the system more usable, certain software 
+packages require that environment variables are set correctly.
+Another advantage we will be looking at is the use of shell scripts. 
+These are  small easy to write programs that allow you 
+to do repetitive tasks by calling a simple command.  Submission scripts to 
+the queuing software on many systems are often shell scripts, which makes an
+ability to manipulate them (at least at a rudimentary level) necessary within
+the context of HPC and HTC..  
+<h3>Setting up your environment</h3>
+
+As noted above one of the advantages to a command line environment is the 
+ease with which that environment can be manipulated to make computing tasks
+easier.  How the environment is manipulated is determined by 
+which shell you choose.
+There are several shells that may be picked to use as your interface such as,
+bash, csh, tcsh, ksh, and zsh.  The two most common 
+shells are bash and csh. Over
+the past several years these shells have started incorporating some of each 
+others functionality.  tcsh is a shell that is very similar to csh with much
+of the bash functionality.  In this  we will be working exclusively
+with bash.  This is not just a matter
+of preference, but based on the fact that many pre-existing scripts are written
+in bash's predecessor sh.  This means that learning the bash conventions in 
+this  will help us in shell_scripts. 
+<h4> Bash Internal Commands</h4>
+Bash has built-in commands that make using the environment easier.  In this we will discuss several of the most common of these commands. This is
+by no means a complete listing.  You can (and should) use <i>man bash</i> to get
+more information.
+
+<br> The <i>alias</i> command allows you
+to create a short hand or easy mnemonic for longer commands.  For example, one
+repetitive task that most people need is to find out which processes they have
+running.  To do this, one can issue a <i>ps</i> command and then 
+search for his/her own processes.  For user frodo, this could be made easier 
+by "piping" the output of the ps command to the grep command by typing :
+<p>
+<i>ps auxw  | grep frodo</i>
+<p>
+If frodo had to do this several times it might become tiresome. Issuing the 
+command :
+<p>
+<i>alias psf="ps auxw  | grep frodo"</i>
+<p>
+would allow frodo to get the same results by typing:
+<p>
+<i>psf</i><br>
+This command could be made part of frodo's environment by adding it to his
+.bash_profile. 
+<br> <i>Source</i> reads and executes commands from a file.  
+This command is particularly useful when  you are making changes to your 
+bash configuration files and you want to use them in your current session. For 
+example, to test changes in your .bashrc file you would type <i>source .bashrc</i> 
+
+<br> When a process is running in a bash shell, you can
+type in (Control-z), and the process will be suspended.  If you type bg after this
+the job/process will be put in background mode which will free the shell for 
+other tasks.  If you later type fg, the job will be brought back into the
+foreground for this shell.  There are more options for job control in the
+bash shell which you can read about on the man page.
+<br> <i>Ctrl c</i> Abort the current process.
+<br> <i>echo</i> the arguments. This is useful in shell scripting, and
+in checking the value of the environment variables for example 
+<i>echo $PATH</i> will print out the current value of your PATH variable.
+<br> </i>export</i> The arguments are marked for automatic export 
+to the environment of subsequently executed commands.  This is often used 
+to set environment variables so that any process called by the shell 
+will be able to reference them.  
+<br> <i>exit</i>  The exit command causes the shell to quit.
+<br> <i>history</i>  Displays a list of past commands.  This command has many options and can be used to rerun commands.  In most bash installations, commands can be rerun, and you can scroll through this list by using the up and down arrows.  
+<br> <i>kill</i>  The kill command sends a signal to a process. The most common use is it kill -9 pid which will kill the process with process number pid.
+<br> <i>printenv</i> Display the current state of your environment variables.
+<br> <i>pwd</i>  List the current directory.
+enddescription
+<br> Bash Configuration files
+
+Most modifications of the environment may be accomplished through the use of 
+two bash configuration files <i> .bash_profile</i> and <i>.bashrc.</i> (Note the
+periods at the beginning.) The .bash_profile file is a  personal profile 
+that is processed every time you login, and .bashrc is a setup file that 
+is processed when you open a non-login shell. In practice most setups 
+have .bash_profile call .bashrc when opening a login shell. 
+<p>
+Traditionally, the configuration files are used to set up a users environment 
+so that it is the same each time they start a shell.  Remember that a shell is
+in some ways nothing more than the interface to the OS.  They can also be used
+to display system information, or run scripts every time the shell starts. 
+<p>
+As we noted before an alias is just a key short cut for an command that is 
+long or often repeated.  It can also make your environment more user friendly. 
+For example, the <i> cp </i>command will by default copy over a file without 
+a warning.  There is a flag for the cp command <i> cp -i</i> that will cause
+the shell to prompt before overwriting a file.  For most people this is a 
+good idea, and we can put it in the .bashrc file the line to do this is 
+simply type, newline <i>alias cp='cp -i'</i>. 
+<p>
+Much of the control that you can gain over the environment involves setting 
+it environment variables.    One of the most important environment variables is PATH.
+This is the list of directories that the OS searches when a command is
+typed in.  It usually contains the standard system binary directories, for
+example <b>/usr/bin</b> and <b>/usr/local/bin</b>, but may be modified by each user to point
+to directories that they wish to use.  It also sets the order that these
+directories are searched.  Suppose that I want to add the directory
+<b>/usr/lib/mpich/bin</b> (where the MPI commands are found) to my path.  In 
+<b>.bash_profile</b> I can include either of the following sets of lines.
+<br>
+<i>PATH=$PATH:/usr/lib/mpich/bin
+<br>export PATH
+</i>
+<br>or<br>
+<i>
+export PATH=$PATH:/usr/lib/mpich/bin
+</i>
+<p>
+Another common variable to set determines the prompt.  To change the prompt in
+the bash shell, you use the command: <i>PS1="value"</i>. Value can be almost any
+string, and may include the following codes that are often useful:
+<table>
+<tr><th>Value</th><th>Description</th>
+<tr><td>  \d</td><td> - the date (day-of-the-week month day)
+</td></tr><tr><td>  \h</td><td> - the hostname (without the domain)
+</td></tr><tr><td>  \n</td><td> - start a new line
+</td></tr><tr><td>  \u</td><td>> - the current username
+</td></tr><tr><td>  \w</td><td> - the working directory 
+</td></tr></table>
+<h4> Redirection and piping</h4>
+
+On Linux systems almost all files, output and even devices are at their most
+basic level <br>streams</b> Streams are the way that the OS (or kernel) 
+communicates with processes.  The details of this interface are (very far)
+beyond the scope of this class, however, you can think of files being read
+or written from a program as just a sequential "stream" of bytes.  All of the
+input and output commands for files are just methods of controlling this stream.
+One interesting aspect of working with streams is
+that bash allows you to easily redirect the flow of these streams.  Before
+we take a look at how this is done we need a few definitions.
+begindescription
+<h4><i>pipe</i></h4> If you follow a command in Linux with the  |<br> character, the output
+from that command will be fed into the input of the command that follows the
+pipe character.
+<h4><i>standard in or stdin</i></h4> This is the name given to the input to a program.  
+This defaults to the keyboard for most programs.
+<h4><i>standard out or stdout</i></h4> By default program output goes to this  
+file.  For terminal programs this is usually defined to print back to the 
+terminal.
+<h4><i>standard error or stderr</i></h4> This is a default file for printing errors the 
+system produces from a process.  It can be redirected or added to by a program 
+or user.
+<h4><i>redirection</i> </h4>The symbols  &gt;,&gt;&gt;,&lt; can be used to redirect a stream to
+a file or device.  The most common use is to redirect the output of some 
+program to a file.
+
+<p>
+Let's look at some examples. The <i>grep</i> command allows you to find the occurrences
+of a string in a file.  The simple form is "grep string filename".  The 
+command wc prints the byte, word, and line count of a file.  But what if you 
+want to know how many lines in a file contain a certain word? Simple,
+just run the command <i>grep  string file  | wc</i>.  In this command the 
+output of <i>grep</i> is used as the input for <i>wc</i>.  (This is a trivial example, 
+but adding the full capabilities of grep makes this combination very useful.)
+<p>
+The  &gt; redirects output to a file,  &lt;redirects a file to the standard input of a program, and  &gt;&gt; appends the output to the end of
+a file.  For example, assume that you have a program proj1 that outputs some
+data and you want to capture that data to use as input for program proj2,and you
+want to keep a copy on the disk. (Note that "proj1  | proj2" would 
+not work since it 
+would not store a copy of the output.) One way to accomplish this task would 
+be to use the following commands.
+<br><i>
+frodo@mimir:proj1&gt; output<br>
+frodo@mimir:proj2&lt; output</i><br>
+
+If instead, you want to capture the output of multiple runs of proj1, you 
+could replace the  &gt; with  &gt;&gt; in the first line so that the output 
+from proj1 would be appended to the file output.
+<h4>Exercises</h4>
+
+
+<ol class="w3-ol"> <li>Change your prompt to be the date, working directory, and username 
+followed by a $. </li>
+<li>Now add these changes to your .bash_profile to make them
+permanent.</li>
+<li>Find out all of the aliases that are set in your shell.  Read the man
+page on alias to find out how. </li>
+<li>Some interesting bash functions.  If you have run at least a few
+commands from your shell, try hitting the up and down arrows on the keyboard.
+What is happening?
+  Now try to type the first couple of characters in 
+the name of a file in your directory and then hit the tab key.  </li>
+<li>If you are used to DOS, you may have used the rename, del, and dir 
+commands.  Set up aliases in your .bashrc file so that typing these
+commands results in the appropriate actions.</li>
+<li>What is the current value of your PATH variable? Create a directory
+bin in your home directory.</li>
+<li>  Now add this directory to your PATH in 
+.bash_profile.</li>
+<li>  Check your PATH variable again. Is the new directory there?
+If not, try using the command source to enable the changes that you made to 
+.bash_profile.  Where in the PATH is your new directory? Can you put it at 
+the end of the path? At the beginning?</li>
+<li>Try the who command. What does it show? Now suppose that you want to know
+if root is logged on to the system.  Use the who,|, and grep commands
+to only list occurrences of root being logged on.</li></ol>
+<h4>Advanced Exercise</h4>
+Now suppose that you are a system administrator 
+with a system that is having problems.  You want a quick command that will 
+capture the time and date, and who was logged on. You  also want to log this
+information to the file logon.log.  
+Use the touch command to create the logon.log file.  If you want to run two commands at one
+time in bash you can put a ; between them.  
+Run the date command followed by the who command and redirect the output to the logon.log file.  
+In bash you can rerun an earlier command by using the up and down arrows.  Try this to 
+rerun the date/who command.  
+Run the cat command on the logon.log file.  Are
+both listings there? Do you need to change the command so that you keep all of
+the entries in the log file?
+<h4> Advanced Exercise</h4>
+Compile and run the program HelloWorldError in the code directory.  Now try running the program with the command
+
+HelloWorldError &gt; output
+
+Can you explain what happens? Read the man page on bash and find out how to 
+redirect both standard out and standard error to a file, and then try what you
+find with this program.
+
+<h3>Shell Scripts</h3>
+
+Shell scripts can be a very powerful and useful tool in the Linux environment.
+Experienced systems administrators can automate most of their configurations
+using this type of programming.  Users will find that many repetitive tasks
+are easily transformed into scripts.  Shell script programming has several 
+advantages.  For small tasks it is generally quicker than writing 
+higher level code and shell scripts can easily call on the power of built-in
+functions.  Well written scripts are often trivial to modify, so future tasks 
+are not hard to automate. Writing the script can be faster than manually 
+performing the task, and once debugged, scripts less error prone than manually
+performing the tasks. (That last caveat is very important, remember the 
+old adage "To error is human, to really screw things up you need a computer")
+<p>
+Each shell has its own scripting language.  These are not feature
+rich languages, but they have sufficient power for automating many tasks. We
+have picked bash for this course  because its syntax is practically the same
+as sh which is a shell that is on all Linux systems.  For the rest of this 
+ when we refer to shell scripts, we will be specifically referring
+to bash shell scripts. 
+<p>
+We will go over some of the basics of the bash scripting language, and then 
+turn our attention to 
+some practical examples and exercises. Before you try to run any of the
+scripts, you must change the file permissions so that the script is executable.
+Setting the script so that your user can read, write, and execute while others
+have no access or can just read the script is a good starting place.  How
+to do this is left as an exercise for the reader. All of the example scripts
+are contained in the code directory. 
+
+<h4>Some Simple Scripts</h4
+
+#!/bin/bash
+export MY_NAME=frodo
+echo Hello from $MY_NAME
+
+While this script doesn't do very much, it contains enough of the basics to begin
+discussing this type of programming.  One way
+of thinking about shell scripts is that they exist to automate the running
+of Linux commands.  To do that we need some of the usual programming 
+constructions, setting variables, looping, if then else clauses, and I/O.  
+While all of these things exist in shell scripts, they are somewhat more
+rudimentary than in other languages, and the syntax may seem unusual.  Just 
+remember that the lines in the shell script run just as if you had typed them
+into the shell manually.  
+<p>
+The first line of the script invokes the shell that the script will use, in 
+this case bash.  This should always be the first line of your scripts.
+then we set a variable just as if we were setting an environment variable
+in our shell.  In this case we use the syntax it export name=value, which
+not only assigns the value to the variable, but also makes it available for
+other programs that may be run from within this script.  The next line just 
+executes that echo command with the new variable and some other text.
+<p>
+Variables in shell scripts are not typed.  That means that you can assign any
+type of value to the variable at any time.  If you reference a variable that
+has not been initialized, you get the null string.  That's all, the shell gives
+no warnings or errors.  Note that just because variables are not typed doesn't
+mean that you can add a number to an integer. You have to be careful to use 
+assigned variables correctly.  
+<p>
+Now that we know how to get output from a shell script, let's take a look 
+at how to get input.  To do this we use the read command, as in the script 
+below.  This example also illustrates some intricacies of working
+with variables. The  #<br> character is the comment character in shell scripts.
+<p>
+<div class="w3-card w3-black" style="width:40%">
+#!/bin/bash<br>
+export MY_NAME=frodo<br>
+echo Please tell me your name:<br>
+read USERNAME<br>
+echo Hello $USERNAME my name is $MY_NAME<br>
+#The next line split for space reasons<br>
+echo I will create you a file.<br>
+Please tell me the name of your file <br>
+read FILENAME<br>
+touch ${FILENAME}_1<br>
+</div>
+<p>
+In this script we read the name of the user in with the command read.  Once
+we get the name of the file from the user we use the touch command to create
+a file <i>name_1</i>.  But notice the difference in how the variable is 
+handled in the touch command line.  The { and } are used to delineate the
+variable name from the rest of the line.  If we don't do this the script ends
+with an error.
+<p>
+<h4>Loops</h4>
+There are three types of loop structures in bash; for, while, and until.  For
+almost all cases until and while are interchangeable, so we will deal only with
+for and while in these notes.
+<p>
+The for loop in bash is not the same as C where the value of 
+some variable is set and then incremented.  In bash the for statement is used
+to loop through some list.  As an example, suppose that you had some data
+files in a directory called data.  If you wanted to create a subdirectory of 
+the results directory for each of these files you could use the next script.  
+This script is meant to be run from the directory containing 
+
+<div class="w3-card w3-black" style="width:40%">
+#!/bin/bash<br>
+# create a directory for each data file<br>
+                                                                                
+for dir in `ls data` ; do<br>
+mkdir results/$dir<br>
+done
+</div>
+<p>
+This script introduces another interesting aspect of the bash shell, the  `character.  This is not an apostrophe, but a backtick.  On most keyboards it is
+below the  ~ character on the upper left. When bash encounters these marksit evaluates the expression inside and substitutes the results in place.  So
+this script in effect lists the files in data and then loops through the listassigning one at a time to the variable dir.  
+While loops in bash are closer to typical programming loops.  But before we look at a while loop example, we need to discuss the  [ ]operator.  In bash [ ] is a link to the test program.  This program is most often used to check arithmetic conditions, logical conditions or file characteristics. Here is how it can be used in a while loop to create datafiles
+with numerical extensions.
+<div class="w3-card w3-black" style="width:40%">
+#!/bin/bash<br>
+export i=1<br>
+while [ $i -lt 10 ]; do<br>
+touch data/datafile_${i}<br>
+echo file data/datafile_${i} created <br>
+i=$(( $i+1 ))<br>
+done
+</div>
+<p>
+Here  [ ] is used to test to see if the value of  $i is less than
+10.  If not it creates a file in the data subdirectory. (Of course in 
+real situations you may want to be more flexible with the path.  How could we
+do that?) This script uses echo to announce the creation of the file.  While
+this is not necessary in this simple example, it is a good habit to get into.
+Shell scripts can become quite complex, and may run for some time.  Echoing the
+completion of tasks can make debugging easier.  Also if the script will run for
+a long time the output can be redirected to a file for logging purposes.
+This script also introduces the arithmetic operator  $(($i +1 )).  Since bash 
+is not a typed language, it uses this construction to delineate arithmetic 
+operations.
+<p>
+<h3>if ... then ... else</h3>
+No language would be viable without some manner of conditional control of flow.
+In bash this construction takes the form below.
+
+if <i> ... </i>
+then
+  # if-code
+else
+  # else-code
+fi
+
+<p>
+So lets change the script that creates a directory for each data file to check
+and see if the directory exists. 
+
+#!/bin/bash
+# create a directory for each data file
+
+for dir in `ls data` ; do
+   if <i> -e results/${dir} </i>
+   then
+      echo The file/directory results/${dir} exists
+   else
+      mkdir results/$dir
+   fi
+done
+
+<p>
+This example also introduces the file attribute operator. We alluded to this
+before when discussing the test operator.  In this case we are using the 
+operator  -e<br> which test to see if a file exists.
+If the file does exist we print a message, and if not we create the directory.  
+A listing of the other file attribute operators can be found in Appendix 
+ref<p>:bashref.
+<br>case
+The case statement in bash let's you test strings against patterns that may
+contain wildcard characters.  Although this is different than the case or switch
+statement in other languages, the effect of compressing a series of if ... then 
+... elses is the same.  The syntax is listed below.
+<p>
+
+case expression in
+   pattern 1 ) 
+              statements ;;
+   pattern 2 )
+              statements ;;
+   ...
+esac
+
+<p>
+To extend the example on creating results directories, suppose that you have
+data files with the extensions abc, cde, and fgh.  Now suppose that you
+want the results from each type of file to go to a different directory,
+namely results_abc, results_cde, or results_fgh.  You can do this with the
+following script.(This script assumes that directories results_??? exist.)
+
+#!/bin/bash
+# create a directory for each data file
+
+for dir in `ls data` ; do
+   case $dir in
+      *.abc ) mkdir results_abc/$dir ;;
+      *.cde ) mkdir results_cde/$dir ;;
+      *.fgh ) mkdir results_fgh/$dir ;;
+      * ) echo $dir unknown file type ;;
+   esac
+     
+done
+
+<p>
+This script flows goes through the case statement until a match is found, and
+if no match is found then nothing happens.  In bash the case statement exits 
+after performing the statements that follow a match. In this example, the last 
+case catches everything that does not match one of the other rules. This lets 
+us know if some file does not get a directory created. In general it is a good
+idea to include a default case.
+<p>
+<br>Exercises
+<br>
+<br>
+<br> Write a script that searches through a set of files in a directory and
+processes the names according to the following rules
+   begin<br>ize
+	  <br> If the file is a directory print a warning message.
+	  <br> If the file is not empty create a file in the results subdirectory
+of the directory from which the script is written.  Do not create the results
+directory ahead of time, but check to see if it exists and create it if 
+necessary.
+	  <br> If the file is empty delete it.
+	  <br> keep track of how many of each type of file is encountered.
+   end<br>ize
+   Create a directory and some subdirectories, empty files and non-empty files
+to check your script.  Be careful that you don't delete too much. On trick
+is to write the script with just warning messages first to see if it will do
+what you think it will.
+<br> Check the Pattern-Matching Operators in Appendix ref<p>:bashref
+and see if you can write a script that will take a PATH variable and print
+each directory on a line.  (Hint: substitute a  \n<br> character for the :
+delimiter) Can you extend this to a script that will check to see if the
+directory exists?
+<br> Read the name of a file from the keyboard.  Assume that the file contains
+a string on each line of the file.
+Find the first and last strings alphabetically and put them
+in a file called first_last.  
+Check Appendix ref<p>:bashref for string operators. Make up 
+a file and test your script.
+Try the same thing but get the whole file in alphabetic order by using the 
+sort command.
+<br> Advanced Exercise - Command line parameters to the script may be accessed
+by using $#. The name of the script is located in $0, the next word on
+the command line is $1 and so on. Write a script that takes four parameters
+The first is a maximum size.  The second, third and fourth parameters are 
+names of files.  If the combined size of the file named by the second parameter
+and the file named by the third parameter is less than the maximum size, then
+they are combined into the name given in the fourth parameter.  The original 
+files are then removed.
+<p>
+
+<p>
+
+
+<p>
+<ul class="pag">
+<li><a href="index.html">Home</a></li>
+<li><a href="chapter3.html">Previous</a></li>
+  <li><a href="chapter5.html">Next</a></li>
+  
+  
+</ul>
+ <footer class="foot">
+
+                                <h5>HPC Training - University of South Florida</h5>
+                        </footer>
+
+</BODY>
+</HTML>

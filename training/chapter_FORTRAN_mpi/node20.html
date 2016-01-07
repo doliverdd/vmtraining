@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2012 (1.2)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>The ALIGN Directive</TITLE>
+<META NAME="description" CONTENT="The ALIGN Directive">
+<META NAME="keywords" CONTENT="chapter_FORTRAN_mpi">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2012">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="chapter_FORTRAN_mpi.css">
+
+<LINK REL="previous" HREF="node19.html">
+<LINK REL="up" HREF="node18.html">
+<LINK REL="next" HREF="node21.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html288"
+  HREF="node21.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html286"
+  HREF="node18.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html282"
+  HREF="node19.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html289"
+  HREF="node21.html">Data Parallel Execution</A>
+<B> Up:</B> <A NAME="tex2html287"
+  HREF="node18.html">Data Distribution</A>
+<B> Previous:</B> <A NAME="tex2html283"
+  HREF="node19.html">The PROCESSORS Directive</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00151200000000000000">
+The ALIGN Directive</A>
+</H3>
+
+<P>
+The ALIGN directive specifies that a data object is to be mapped
+in the same way as another one. Elements of arrays that are
+aligned are mapped to the same abstract processor. The aim of the
+alignment is to reduce communications between processors. Assume
+that A, B are one dimensional arrays and each has 8 elements.
+<PRE>
+ !HPF$  PROCESSORS P(4)
+ !HPF$  DISTRIBUTE A(BLOCK) ONTO P
+ !HPF$  ALIGN  B(:) WITH A(:)
+</PRE>
+
+<P>
+The alignment says that A(i) and B(i) must
+be placed on the same processor. Now let us take a look at the
+following example:
+<PRE>
+        REAL, DIMENSION(4)   :: A
+        REAL, DIMENSION(8)   :: B
+!HPF$   ALIGN A(i) WITH B(i*2)
+</PRE>
+
+<P>
+In this case, A(1)
+and B(2); A(2) and B(4); ...A(4) and B(8) will reside on the same
+processor.
+
+<P>
+<BR><HR>
+<ADDRESS>
+root
+2015-12-02
+</ADDRESS>
+</BODY>
+</HTML>

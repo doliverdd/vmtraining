@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2012 (1.2)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Redirection and piping</TITLE>
+<META NAME="description" CONTENT="Redirection and piping">
+<META NAME="keywords" CONTENT="chapter4_d">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2012">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="chapter4_d.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node2.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html93"
+  HREF="node6.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html91"
+  HREF="node2.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html85"
+  HREF="node4.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html94"
+  HREF="node6.html">Exercises</A>
+<B> Up:</B> <A NAME="tex2html92"
+  HREF="node2.html">Setting up your environment</A>
+<B> Previous:</B> <A NAME="tex2html86"
+  HREF="node4.html">Bash Configuration files</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00113000000000000000"></A>
+<A NAME="subsection:rap"></A>
+<BR>
+Redirection and piping
+</H2>
+On Linux systems almost all files, output and even devices are at their most
+basic level <I>streams</I>.<A NAME="47"></A> Streams are the way that the OS (or kernel) 
+communitcate with processes.  The details of this interface are (very far)
+beyond the scope of this class, however, you can think of files being read
+or written from a program as just a sequential "stream" of bytes.  All of the
+input and output commands for files are just methods of controlling this stream.
+For our purposes in this section, the interesting thing in this discussion is
+that Linux systems allow you to redirect the flow of these streams.  Before
+we take a look at how this is done we need a few definitions.
+<DL>
+<DT><STRONG>pipe</STRONG></DT>
+<DD>If you follow a command in Linux with the <code>|</code> character the output
+from that command will be fed into the input of the command that follows the
+pipe character.
+</DD>
+<DT><STRONG>standard in or stdin</STRONG></DT>
+<DD>This is the name given to the input to a program.  
+This defaults to the keyboard for most programs.
+</DD>
+<DT><STRONG>standard out or stdout</STRONG></DT>
+<DD>By default program output goes to this default 
+file.  For terminal programs this is ususally defined to print back to the 
+terminal.
+</DD>
+<DT><STRONG>standard error or stderr</STRONG></DT>
+<DD>This is a default file for printing errors the 
+system produces from a process.  It can be redirected or added to by a program 
+or user.
+</DD>
+<DT><STRONG>redirection</STRONG></DT>
+<DD>The symbols <code>&gt;,&gt;&gt;,&lt;</code> can be used to redirect a stream to
+a file or device.  The most common use is to redirect the output of some 
+program to a file.
+</DD>
+</DL>
+
+<P>
+Let look at some examples. The grep command allows you to find the occurances
+of a string in a file.  The simple form is grep <I>string</I> filename.  The 
+command wc prints the byte, word, and line count of a file.  But what if you 
+want to know how many lines in a file contain a certain word? Simple,
+just run the command grep <I>string</I> file <code>|</code> wc. In this case the output
+of grep is used as the input for wc.  (This is a trivial example, but adding
+the full capabilities of grep this combination becomes very useful.)
+
+<P>
+The <code>&gt;</code> writes redirects output to a file, <code>&lt;</code> redirects a file to 
+the standard input of a program, and <code>&gt;&gt;</code> appends the output to the end of
+a file.  For example, assume that you have a program proj1 that outputs some
+data and you want to capture that data to use in a program proj2 and to keep
+a copy on the disk. (Note that proj1 <code>|</code> proj2 would not work since it 
+would not store a copy of the output.) One way to accomplish this would be to
+use the following commands.
+<PRE>
+frodo@mimir:proj1&gt; output
+frodo@mimir:proj2&lt; output
+</PRE>
+If instead of wanting to capture the output of multiple runs of proj1, you 
+could replace the <code>&gt;</code> with <code>&gt;&gt;</code> so that the output would be appended
+to the file output.
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html93"
+  HREF="node6.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html91"
+  HREF="node2.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html85"
+  HREF="node4.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html94"
+  HREF="node6.html">Exercises</A>
+<B> Up:</B> <A NAME="tex2html92"
+  HREF="node2.html">Setting up your environment</A>
+<B> Previous:</B> <A NAME="tex2html86"
+  HREF="node4.html">Bash Configuration files</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+root
+2015-12-02
+</ADDRESS>
+</BODY>
+</HTML>

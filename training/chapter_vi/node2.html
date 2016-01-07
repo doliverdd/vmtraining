@@ -1,0 +1,217 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2012 (1.2)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Exercises</TITLE>
+<META NAME="description" CONTENT="Exercises">
+<META NAME="keywords" CONTENT="chapter_vi">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2012">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="chapter_vi.css">
+
+<LINK REL="previous" HREF="node1.html">
+<LINK REL="up" HREF="node1.html">
+<LINK REL="next" HREF="node3.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html28"
+  HREF="node3.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html26"
+  HREF="node1.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html22"
+  HREF="node1.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html29"
+  HREF="node3.html">About this document ...</A>
+<B> Up:</B> <A NAME="tex2html27"
+  HREF="node1.html">A Gentle Introduction to</A>
+<B> Previous:</B> <A NAME="tex2html23"
+  HREF="node1.html">A Gentle Introduction to</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00101000000000000000"></A>
+<A NAME="subsection:Ex1"></A>
+<BR>
+Exercises
+</H2>
+
+<OL>
+<LI>Make a copy of the greetings.c program called editit.c using the cp command. Then type the command "vi editit.c" This file will only be used for these
+exercises so don't worry if something goes wrong, and feel free to try anything
+you wish.
+</LI>
+<LI>Basic cursor movement
+   
+<OL>
+<LI>In command mode there are several ways of moving the cursor.  Try typing one at a time h,j,k,l and find out what these commands do.  You may also use the arrow keys to move the cursor.  
+</LI>
+<LI>The commands above move the cursor one character at a time. Try the commands $ and 0.
+</LI>
+<LI>You can move to any line of the file using the G command. The form of the G command is #G where # is the line number.  Try going to line 10 of the file. What happens when you leave out the number and just type G? How do you go to the beginning of the file?
+   
+</LI>
+</OL>
+</LI>
+<LI>Insert and Replace - insert mode
+   
+<OL>
+<LI>There are two basic commands to enter text.  The i command begins 
+adding text before the cursor, and a add text after the cursor.  Be careful 
+until you get used to switching modes. Once you enter i or a you are in 
+insert mode, and you must hit
+escape to exit to command mode. Move the cursor to the G in the word greetings
+on line 28 of your file.  Insert the word Joyous before Greetings by using the i command.  Now hit the Escape key.  Move the cursor to the semicolon at the end of the line and add the comment "/* new message */" at the end of the line by 
+using the "a" command. After using any commands that enter insert mode remember to return to command mode by hitting the escape key when you are finished.
+</LI>
+<LI>You can use I and A to insert at the beginning of the line and the
+end of the line respectively.  Add a nonsense comment to the end of some line by
+moving to the line in command mode and use the A command. (You can delete
+this comment later in these exercises.)
+</LI>
+<LI>As we noted above Linux is case sensitive.  VI has a nice feature for
+changing case.  Move the cursor to the G in Greetings again and change the case by entering <code>~</code> in command mode.
+</LI>
+<LI>There are several replace commands in VI. r replaces a single character. Try changing some character using this command.  R replaces multiple characters of text until the escape key is hit.  Try changing "Joyous greetings" to "happy news on line 28 using the R command. 
+</LI>
+<LI>You can also replace words using the cw command.  Position the cursor on the h in happy (You did remember to go to command mode didn't you?). Type cw and change the word to "very excited".
+   
+</LI>
+</OL>
+</LI>
+<LI>Deletion - command mode
+   
+<OL>
+<LI>VI can delete characters, words, lines, or multiple lines if you know the right commands and if you are in command mode.  Before we introduce the 
+deletion commands, you should know about the u command.  u is the undo command. Depending on which version of VI you are using you can undo one, or multiple commands.  In vim, you can undo multiple commands.  Try entering a few letters, and
+then return to command mode and type u.
+</LI>
+<LI>We won't give specific instructions for this part, but try the following commands:
+	  
+<OL>
+<LI>x - deletes the character under the cursor.
+</LI>
+<LI>dw - deletes from the cursor to the end of the current word.
+</LI>
+<LI>D - deletes from the cursor position to the end of the line.
+</LI>
+<LI>dd - deletes the current line.
+</LI>
+<LI>#dd - deletes # lines beginning with the one under the cursor.
+	  
+</LI>
+</OL>
+</LI>
+<LI>Many of the powerful commands of VI are entered beginning with a ":". In fact, some books on VI (Yes there are whole books devoted to the subject) 
+consider this another mode.  When you enter a colon you go to the bottom of the screen to enter the rest of your command.  These commands often involve a range
+of line numbers.  The range is entered as "n,m", where n and m are line numbers.
+Try entering ":" followed by 3,10d.
+   
+</LI>
+</OL> 
+</LI>
+<LI>Copying and, search and replace - command mode
+	  
+<OL>
+<LI>VI copies by use of a buffer.  If you want to copy some lines from
+command mode you type #yy and # lines are "yanked" into the buffer.  These
+lines can be place somewhere else in the file by moving the cursor where you want the lines and typing p.  p is the put command it not only works after yy, but after any of the deletion commands, so one way of moving things is to delete
+them and then move the cursor and type p.  There are other ways to copy and 
+paste in VI as well.  If you are interested check out the :t and :m commands.
+</LI>
+<LI>Search and replace are very powerful in VI,
+because they can use rational expressions.  The use of rational expressions is 
+beyond the scope of this manual, and so we will stick to some simple uses.
+You can search forward in a file by typing <I>searchstring</I>. You
+can search backward in a file by typing ?<I>searchstring</I>.
+</LI>
+<LI>To replace in VI we use the ":s" command.  The full syntax of the 
+command is: <BR><P></P>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ \begin{displaymath}
+:n,ms/search string/replacement string/g
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="10" HEIGHT="29" BORDER="0"
+ SRC="img2.png"
+ ALT="\begin{displaymath}:n,ms/search string/replacement string/g\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+or 
+<BR><P></P>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ \begin{displaymath}
+:\%s/search string/replacement string/g
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="300" HEIGHT="16" BORDER="0"
+ SRC="img3.png"
+ ALT="\begin{displaymath}:\%s/search string/replacement string/g\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+This command needs some explanation.  Not all of the fields in the command are mandatory. In the first version the n,m refers to doing the replacement from lines
+n to m. If the n,m is left out, the replacement will only be for the current line.  In the second version the % means replace across the whole file.  The g in both cases is not manditory, and means replace all occurrences in each line.  If the g is
+left off, only the first occurrence on any line will be replaced.  Try replacing some words across multiple lines and for the whole file.  
+
+<P>
+</LI>
+</OL>
+</LI>
+</OL>
+
+<P>
+
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html28"
+  HREF="node3.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html26"
+  HREF="node1.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html22"
+  HREF="node1.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html29"
+  HREF="node3.html">About this document ...</A>
+<B> Up:</B> <A NAME="tex2html27"
+  HREF="node1.html">A Gentle Introduction to</A>
+<B> Previous:</B> <A NAME="tex2html23"
+  HREF="node1.html">A Gentle Introduction to</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+root
+2015-12-02
+</ADDRESS>
+</BODY>
+</HTML>

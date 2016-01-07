@@ -1,0 +1,1618 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2012 (1.2)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>vimqrc</TITLE>
+<META NAME="description" CONTENT="vimqrc">
+<META NAME="keywords" CONTENT="vimqrc">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2012">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="vimqrc.css">
+
+<LINK REL="next" HREF="node1.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html2"
+  HREF="node1.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up_g.png"> 
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev_g.png">   
+<BR>
+<B> Next:</B> <A NAME="tex2html3"
+  HREF="node1.html">About this document ...</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<P>
+
+=-1.56cm
+=-1.54cm
+
+=27.9cm
+=8.5cm
+=19cm
+
+=L
+
+=
+  L
+    =
+<DIV ALIGN="LEFT">
+</DIV>
+    =M
+  M
+    =
+<DIV ALIGN="LEFT">
+</DIV>
+    =R
+
+  to
+<DIV ALIGN="LEFT">
+</DIV>
+
+  
+    =L
+  
+  &gt;-20000
+
+  
+
+<P>
+<B>VIM QUICK REFERENCE CARD</B>
+<P>
+<HR>
+<P>
+<I>Basic movement</I>
+<P>
+<TT>h l k j</TT>character left, right; line up, down
+<P>
+<TT>b w</TT>word/token left, right
+<P>
+<TT>ge e</TT>end of word/token left, right
+<P>
+<TT>&#123; &#125;</TT>beginning of previous, next paragraph
+<P>
+<TT>( )</TT>beginning of previous, next sentence
+<P>
+<TT>0 gm</TT>beginning, middle of line
+<P>
+<TT>^ $</TT>first, last character of line
+<P>
+<TT>G gg</TT>line , default the last, first
+<P>
+<TT>%</TT>percentage  of the file <I>( must be provided)</I>
+<P>
+<TT><IMG
+ WIDTH="11" HEIGHT="11" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$n\vert$"></TT>column  of current line
+<P>
+<TT>%</TT>match of next brace, bracket, comment, <TT>#define</TT>
+<P>
+<TT>H L</TT>line  from start, bottom of window
+<P>
+<TT>M</TT>middle line of window
+<P>
+
+<P>
+<I>Insertion &amp; replace <IMG
+ WIDTH="16" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$\to$"> insert mode</I>
+<P>
+<TT>i a</TT>insert before, after cursor
+<P>
+<TT>I A</TT>insert at beginning, end of line
+<P>
+<TT>gI</TT>insert text in first column
+<P>
+<TT>o O</TT>open a new line below, above the current line
+<P>
+<TT>r<IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"></TT>replace character under cursor with <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$">
+<P>
+<TT>gr<IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"></TT>like <TT>r</TT>, but without affecting layout
+<P>
+<TT>R</TT>replace characters starting at the cursor
+<P>
+<TT>gR</TT>like <TT>R</TT>, but without affecting layout
+<P>
+<TT>c<IMG
+ WIDTH="8" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$m$"></TT>change text of movement command <IMG
+ WIDTH="8" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$m$">
+<P>
+<TT>cc<IMG
+ WIDTH="16" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="{\tinyit{or}}">S</TT>change current line
+<P>
+<TT>C</TT>change to the end of line
+<P>
+<TT>s</TT>change one character and insert
+<P>
+<TT>~</TT>switch case and advance cursor
+<P>
+<TT>g~<IMG
+ WIDTH="8" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$m$"></TT>switch case of movement command <IMG
+ WIDTH="8" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$m$">
+<P>
+<TT>gu<IMG
+ WIDTH="8" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$m$"> gU<IMG
+ WIDTH="8" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$m$"></TT>lowercase, uppercase text of movement <IMG
+ WIDTH="8" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$m$">
+<P>
+<TT><IMG
+ WIDTH="8" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$m$"> <IMG
+ WIDTH="14" HEIGHT="22" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$&gt;$"><IMG
+ WIDTH="8" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$m$"></TT>shift left, right text of movement <IMG
+ WIDTH="8" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$m$">
+<P>
+<TT> <IMG
+ WIDTH="14" HEIGHT="22" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$&gt;$"><IMG
+ WIDTH="14" HEIGHT="22" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$&gt;$"></TT>shift  lines left, right
+<P>
+
+<P>
+<I>Deletion</I>
+<P>
+<TT>x X</TT>delete character under, before cursor
+<P>
+<TT>d<IMG
+ WIDTH="8" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$m$"></TT>delete text of movement command <IMG
+ WIDTH="8" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$m$">
+<P>
+<TT>dd D</TT>delete current line, to the end of line
+<P>
+<TT>J gJ</TT>join current line with next, without space
+<P>
+<TT>:<IMG
+ WIDTH="14" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$r$">d<!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>delete range <IMG
+ WIDTH="14" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$r$"> lines
+<P>
+<TT>:<IMG
+ WIDTH="14" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$r$">d<IMG
+ WIDTH="19" HEIGHT="12" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$x$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>delete range <IMG
+ WIDTH="14" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$r$"> lines into register <IMG
+ WIDTH="19" HEIGHT="12" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$x$">
+<P>
+
+<P>
+<I>Insert mode</I>
+<P>&#94;<TT>V<IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"> </TT>&#94;<TT>V</TT>insert char <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"> literally, decimal value 
+<P>&#94;<TT>A</TT>insert previously inserted text
+<P>&#94;<TT>@</TT>same as &#94;<TT>A</TT> and stop insert <IMG
+ WIDTH="16" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$\to$"> command mode
+<P>&#94;<TT>R<IMG
+ WIDTH="19" HEIGHT="12" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$x$"> </TT>&#94;<TT>R</TT>&#94;<TT>R<IMG
+ WIDTH="19" HEIGHT="12" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$x$"></TT>insert content of register <IMG
+ WIDTH="19" HEIGHT="12" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$x$">, literally
+<P>&#94;<TT>N </TT>&#94;<TT>P</TT>text completion before, after cursor
+<P>&#94;<TT>W</TT>delete word before cursor
+<P>&#94;<TT>U</TT>delete all inserted character in current line
+<P>&#94;<TT>D </TT>&#94;<TT>T</TT>shift left, right one shift width
+<P>&#94;<TT>K<IMG
+ WIDTH="11" HEIGHT="11" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$c_1$"><IMG
+ WIDTH="16" HEIGHT="18" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$c_2$"><IMG
+ WIDTH="16" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="{\tinyit{or}}"><IMG
+ WIDTH="11" HEIGHT="11" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$c_1$"><IMG
+ WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.png"
+ ALT="$\leftarrow$"><IMG
+ WIDTH="16" HEIGHT="18" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$c_2$"></TT>enter digraph <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$\{c_1,c_2\}$">
+<P>&#94;<TT>O<IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"></TT>execute <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"> in temporary command mode
+<P>&#94;<TT>X</TT>&#94;<TT>E </TT>&#94;<TT>X</TT>&#94;<TT>Y</TT>scroll up, down
+<P>
+<TT><IMG
+ WIDTH="53" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$\langle$"></TT><I>esc</I><TT><IMG
+ WIDTH="8" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$\rangle$"><IMG
+ WIDTH="16" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="{\tinyit{or}}"></TT>&#94;<TT>[</TT>abandon edition <IMG
+ WIDTH="16" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$\to$"> command mode
+<P>
+
+<P>
+<I>Copying</I>
+<P>
+<TT>"<IMG
+ WIDTH="19" HEIGHT="12" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$x$"></TT>use register <IMG
+ WIDTH="19" HEIGHT="12" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$x$"> for next delete, yank, put
+<P>
+<TT>:reg<!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>show the content of all registers
+<P>
+<TT>:reg <IMG
+ WIDTH="19" HEIGHT="12" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$x$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>show the content of registers <IMG
+ WIDTH="19" HEIGHT="12" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$x$">
+<P>
+<TT>y<IMG
+ WIDTH="8" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$m$"></TT>yank the text of movement command <IMG
+ WIDTH="8" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$m$">
+<P>
+<TT>yy<IMG
+ WIDTH="16" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="{\tinyit{or}}">Y</TT>yank current line into register
+<P>
+<TT>p P</TT>put register after, before cursor position
+<P>
+<TT>]p [p</TT>like <TT>p</TT>, <TT>P</TT> with indent adjusted
+<P>
+<TT>gp gP</TT>like <TT>p</TT>, <TT>P</TT> leaving cursor after new text
+<P>
+
+<P>
+<I>Advanced insertion</I>
+<P>
+<TT>g?<IMG
+ WIDTH="8" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$m$"></TT>perform rot13 encoding on movement <IMG
+ WIDTH="8" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$m$">
+<P>
+<TT></TT>&#94;<TT>A </TT>&#94;<TT>X</TT><IMG
+ WIDTH="8" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.png"
+ ALT="$+n$">, <IMG
+ WIDTH="23" HEIGHT="24" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$-n$"> to number under cursor
+<P>
+<TT>gq<IMG
+ WIDTH="8" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$m$"></TT>format lines of movement <IMG
+ WIDTH="8" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$m$"> to fixed width
+<P>
+<TT>:<IMG
+ WIDTH="14" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$r$">ce <IMG
+ WIDTH="23" HEIGHT="21" ALIGN="BOTTOM" BORDER="0"
+ SRC="img20.png"
+ ALT="$w$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>center lines in range <IMG
+ WIDTH="14" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$r$"> to width <IMG
+ WIDTH="23" HEIGHT="21" ALIGN="BOTTOM" BORDER="0"
+ SRC="img20.png"
+ ALT="$w$">
+<P>
+<TT>:<IMG
+ WIDTH="14" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$r$">le <IMG
+ WIDTH="13" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img21.png"
+ ALT="$i$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>left align lines in range <IMG
+ WIDTH="14" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$r$"> with indent <IMG
+ WIDTH="13" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img21.png"
+ ALT="$i$">
+<P>
+<TT>:<IMG
+ WIDTH="14" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$r$">ri <IMG
+ WIDTH="23" HEIGHT="21" ALIGN="BOTTOM" BORDER="0"
+ SRC="img20.png"
+ ALT="$w$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>right align lines in range <IMG
+ WIDTH="14" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$r$"> to width <IMG
+ WIDTH="23" HEIGHT="21" ALIGN="BOTTOM" BORDER="0"
+ SRC="img20.png"
+ ALT="$w$">
+<P>
+<TT>!<IMG
+ WIDTH="8" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$m$"><IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>filter lines of movement <IMG
+ WIDTH="8" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$m$"> through command <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$">
+<P>
+<TT>!!<IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>filter  lines through command <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$">
+<P>
+<TT>:<IMG
+ WIDTH="14" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$r$">!<IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>filter range <IMG
+ WIDTH="14" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$r$"> lines through command <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$">
+<P>
+
+<P>
+<I>Visual mode</I>
+<P>
+<TT>v V </TT>&#94;<TT>V</TT>start/stop highlighting characters, lines, block
+<P>
+<TT>o</TT>exchange cursor position with start of highlighting
+<P>
+<TT>gv</TT>start highlighting on previous visual area
+<P>
+<TT>aw as ap</TT>select a word, a sentence, a paragraph
+<P>
+<TT>ab aB</TT>select a block ( ), a block <TT>&#123;</TT> <TT>&#125;</TT>
+<P>
+
+<P>
+<I>Undoing, repeating &amp; registers</I>
+<P>
+<TT>u U</TT>undo last command, restore last changed line
+<P>
+<TT>.</TT>&#94;<TT>R</TT>repeat last changes, redo last undo
+<P>
+<TT>. </TT>repeat last changes with count replaced by 
+<P>
+<TT>q<IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"> q<IMG
+ WIDTH="7" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.png"
+ ALT="$C$"></TT>record, append typed characters in register <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$">
+<P>
+<TT>q</TT>stop recording
+<P>
+<TT>@<IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"></TT>execute the content of register <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$">
+<P>
+<TT>@@</TT>repeat previous <TT>@</TT> command
+<P>
+<TT>:@<IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>execute register <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"> as an <I>Ex</I> command
+<P>
+<TT>:<IMG
+ WIDTH="14" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$r$">g/<IMG
+ WIDTH="14" HEIGHT="16" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.png"
+ ALT="$p$">/<IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>execute <I>Ex</I> command <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"> on range <IMG
+ WIDTH="14" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$r$">
+<P>
+<IMG
+ WIDTH="11" HEIGHT="18" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.png"
+ ALT="$\lfloor$"> where pattern <IMG
+ WIDTH="14" HEIGHT="16" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.png"
+ ALT="$p$"> matches
+<P>
+
+<P>
+<I>Complex movement</I>
+<P>
+<TT>- +</TT>line up, down on first non-blank character
+<P>
+<TT>B W</TT>space-separated word left, right
+<P>
+<TT>gE E</TT>end of space-separated word left, right
+<P>
+<TT>_</TT>down <IMG
+ WIDTH="9" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.png"
+ ALT="$n-1$"> line on first non-blank character
+<P>
+<TT>g0</TT>beginning of <I>screen</I> line
+<P>
+<TT>g^ g$</TT>first, last character of <I>screen</I> line
+<P>
+<TT>gk gj</TT><I>screen</I> line up, down
+<P>
+<TT>f<IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"> F<IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"></TT>next, previous occurence of character <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$">
+<P>
+<TT>t<IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"> T<IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"></TT>before next, previous occurence of <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$">
+<P>
+<TT>; ,</TT>repeat last <TT>fFtT</TT>, in opposite direction
+<P>
+<TT>[[ ]]</TT>start of section backward, forward
+<P>
+<TT>[] ][</TT>end of section backward, forward
+<P>
+<TT>[( ])</TT>unclosed (, ) backward, forward
+<P>
+<TT>[&#123; ]&#125;</TT>unclosed <TT>&#123;</TT>, <TT>&#125;</TT> backward, forward
+<P>
+<TT>[m ]m</TT>start of backward, forward <I>Java</I> method
+<P>
+<TT>[# ]#</TT>unclosed <TT>#if</TT>, <TT>#else</TT>, <TT>#endif</TT> backward, forward
+<P>
+<TT>[* ]*</TT>start, end of <TT>/* */</TT> backward, forward
+<P>
+
+<P>
+<I>Search &amp; substitution</I>
+<P>
+<TT>/<IMG
+ WIDTH="39" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
+ SRC="img26.png"
+ ALT="$s$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"> ?<IMG
+ WIDTH="39" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
+ SRC="img26.png"
+ ALT="$s$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>search forward, backward for <IMG
+ WIDTH="39" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
+ SRC="img26.png"
+ ALT="$s$">
+<P>
+<TT>/<IMG
+ WIDTH="39" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
+ SRC="img26.png"
+ ALT="$s$">/<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img27.png"
+ ALT="$o$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"> ?<IMG
+ WIDTH="39" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
+ SRC="img26.png"
+ ALT="$s$">?<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img27.png"
+ ALT="$o$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>search fwd, bwd for <IMG
+ WIDTH="39" HEIGHT="26" ALIGN="BOTTOM" BORDER="0"
+ SRC="img26.png"
+ ALT="$s$"> with offset <IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img27.png"
+ ALT="$o$">
+<P>
+<TT>n<IMG
+ WIDTH="16" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="{\tinyit{or}}">/<!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>repeat forward last search
+<P>
+<TT>N<IMG
+ WIDTH="16" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="{\tinyit{or}}">?<!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>repeat backward last search
+<P>
+<TT># *</TT>search backward, forward for word under cursor
+<P>
+<TT>g# g*</TT>same, but also find partial matches
+<P>
+<TT>gd gD</TT>local, global definition of symbol under cursor
+<P>
+<TT>:<IMG
+ WIDTH="14" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$r$">s/<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$f$">/<IMG
+ WIDTH="11" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.png"
+ ALT="$t$">/<IMG
+ WIDTH="19" HEIGHT="12" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$x$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>substitute <IMG
+ WIDTH="9" HEIGHT="11" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$f$"> by <IMG
+ WIDTH="11" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.png"
+ ALT="$t$"> in range <IMG
+ WIDTH="14" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$r$">
+<P>
+<IMG
+ WIDTH="11" HEIGHT="18" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.png"
+ ALT="$\lfloor$"> <IMG
+ WIDTH="7" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img30.png"
+ ALT="$x:$"> <TT>g</TT>--all occurrences, <TT>c</TT>--confirm changes
+<P>
+<TT>:<IMG
+ WIDTH="14" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$r$">s <IMG
+ WIDTH="19" HEIGHT="12" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$x$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>repeat substitution with new <IMG
+ WIDTH="14" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$r$"> &amp; <IMG
+ WIDTH="19" HEIGHT="12" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$x$">
+<P>
+
+<P>
+<I>Special characters in search patterns</I>
+<P>
+<TT>.</TT>&#94;<TT> $</TT>any single character, start, end of line
+<P>
+<TT>&#92; &#92;<IMG
+ WIDTH="14" HEIGHT="22" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$&gt;$"></TT>start, end of word
+<P>
+<TT>[<IMG
+ WIDTH="20" HEIGHT="11" ALIGN="MIDDLE" BORDER="0"
+ SRC="img31.png"
+ ALT="$c_1..c_2$">]</TT>a single character in range <IMG
+ WIDTH="20" HEIGHT="11" ALIGN="MIDDLE" BORDER="0"
+ SRC="img31.png"
+ ALT="$c_1..c_2$">
+<P>
+ <TT>[</TT>&#94;<TT><IMG
+ WIDTH="20" HEIGHT="11" ALIGN="MIDDLE" BORDER="0"
+ SRC="img31.png"
+ ALT="$c_1..c_2$">]</TT>a single character not in range
+<P>
+<TT>&#92;i &#92;k &#92;I &#92;K</TT>an identifier, keyword; excl. digits
+<P>
+<TT>&#92;f &#92;p &#92;F &#92;P</TT>a file name, printable char.; excl. digits
+<P>
+<TT>&#92;s &#92;S</TT>a white space, a non-white space
+<P>
+<TT>&#92;e &#92;t &#92;r &#92;b</TT><IMG
+ WIDTH="53" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$\langle$"><I>esc</I><IMG
+ WIDTH="8" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$\rangle$">, <IMG
+ WIDTH="53" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$\langle$"><I>tab</I><IMG
+ WIDTH="8" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$\rangle$">, <IMG
+ WIDTH="53" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$\langle$"><I><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></I><IMG
+ WIDTH="8" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$\rangle$">, <IMG
+ WIDTH="53" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$\langle$"><I><IMG
+ WIDTH="38" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img32.png"
+ ALT="$\gets$"></I><IMG
+ WIDTH="8" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$\rangle$">
+<P>
+<TT>&#92;= * &#92;+</TT>match <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img33.png"
+ ALT="$0..1$">, <IMG
+ WIDTH="26" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.png"
+ ALT="$0..\infty$">, <IMG
+ WIDTH="34" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$1..\infty$"> of preceding atoms
+<P>
+<TT>&#92;<IMG
+ WIDTH="34" HEIGHT="14" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$\vert$"></TT>separate two branches (<IMG
+ WIDTH="6" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img37.png"
+ ALT="$\equiv$"> <I>or</I>)
+<P>
+<TT>&#92;( &#92;)</TT>group patterns into an atom
+<P>
+<TT>&#92;&amp; &#92;</TT>the whole matched pattern, <IMG
+ WIDTH="14" HEIGHT="12" ALIGN="BOTTOM" BORDER="0"
+ SRC="img38.png"
+ ALT="$n^{th}$"> <TT>()</TT> group
+<P>
+<TT>&#92;u &#92;l</TT>next character made upper, lowercase
+<P>
+
+<P>
+<I>Offsets in search commands</I>
+<P>
+<TT><IMG
+ WIDTH="16" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="{\tinyit{or}}">+</TT> line downward in column 1
+<P>
+<TT>-</TT> line upward in column 1
+<P>
+<TT>e+ e-</TT> characters right, left to end of match
+<P>
+<TT>s+ s-</TT> characters right, left to start of match
+<P>
+<TT>;<IMG
+ WIDTH="24" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img39.png"
+ ALT="$sc$"></TT>execute search command <IMG
+ WIDTH="24" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img39.png"
+ ALT="$sc$"> next
+<P>
+
+<P>
+<I>Marks and motions</I>
+<P>
+<TT>m<IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"></TT>mark current position with mark <IMG
+ WIDTH="16" HEIGHT="11" ALIGN="MIDDLE" BORDER="0"
+ SRC="img40.png"
+ ALT="$c\in[a..Z]$">
+<P>
+<TT>`<IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"> `<IMG
+ WIDTH="7" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.png"
+ ALT="$C$"></TT>go to mark <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"> in current, <IMG
+ WIDTH="7" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.png"
+ ALT="$C$"> in any file
+<P>
+<TT>`<IMG
+ WIDTH="66" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img41.png"
+ ALT="$0..9$"></TT>go to last exit position
+<P>
+<TT>``  `"</TT>go to position before jump, at last edit
+<P>
+<TT>`[ `]</TT>go to start, end of previously operated text
+<P>
+<TT>:marks<!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>print the active marks list
+<P>
+<TT>:jumps<!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>print the jump list
+<P>
+<TT></TT>&#94;<TT>O</TT>go to <IMG
+ WIDTH="14" HEIGHT="12" ALIGN="BOTTOM" BORDER="0"
+ SRC="img38.png"
+ ALT="$n^{th}$"> older position in jump list
+<P>
+<TT></TT>&#94;<TT>I</TT>go to <IMG
+ WIDTH="14" HEIGHT="12" ALIGN="BOTTOM" BORDER="0"
+ SRC="img38.png"
+ ALT="$n^{th}$"> newer position in jump list
+<P>
+
+<P>
+<I>Key mapping &amp; abbreviations</I>
+<P>
+<TT>:map <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"> <IMG
+ WIDTH="26" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img42.png"
+ ALT="$e$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>map <IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img43.png"
+ ALT="$c\mapsto e$"> in normal &amp; visual mode
+<P>
+<TT>:map! <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"> <IMG
+ WIDTH="26" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img42.png"
+ ALT="$e$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>map <IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img43.png"
+ ALT="$c\mapsto e$"> in insert &amp; cmd-line mode
+<P>
+<TT>:unmap <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"> :unmap! <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>remove mapping <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$">
+<P>
+<TT>:mk <IMG
+ WIDTH="9" HEIGHT="11" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$f$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>write current mappings, settings... to file <IMG
+ WIDTH="9" HEIGHT="11" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$f$">
+<P>
+<TT>:ab <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"> <IMG
+ WIDTH="26" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img42.png"
+ ALT="$e$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>add abbreviation for <IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img43.png"
+ ALT="$c\mapsto e$">
+<P>
+<TT>:ab <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>show abbreviations starting with <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$">
+<P>
+<TT>:una <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>remove abbreviation <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$">
+<P>
+
+<P>
+<I>Tags</I>
+<P>
+<TT>:ta <IMG
+ WIDTH="11" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.png"
+ ALT="$t$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>jump to tag <IMG
+ WIDTH="11" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.png"
+ ALT="$t$">
+<P>
+<TT>:ta<!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>jump to <IMG
+ WIDTH="14" HEIGHT="12" ALIGN="BOTTOM" BORDER="0"
+ SRC="img38.png"
+ ALT="$n^{th}$"> newer tag in list
+<P>&#94;<TT>] </TT>&#94;<TT>T</TT>jump to the tag under cursor, return from tag
+<P>
+<TT>:ts <IMG
+ WIDTH="11" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.png"
+ ALT="$t$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>list matching tags and select one for jump
+<P>
+<TT>:tj <IMG
+ WIDTH="11" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.png"
+ ALT="$t$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>jump to tag or select one if multiple matches
+<P>
+<TT>:tags<!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>print tag list
+<P>
+<TT>:po<!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"> :</TT>&#94;<TT>T<!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>jump back from, to <IMG
+ WIDTH="14" HEIGHT="12" ALIGN="BOTTOM" BORDER="0"
+ SRC="img38.png"
+ ALT="$n^{th}$"> older tag
+<P>
+<TT>:tl<!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>jump to last matching tag
+<P>&#94;<TT>W&#125; :pt <IMG
+ WIDTH="11" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.png"
+ ALT="$t$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>preview tag under cursor, tag <IMG
+ WIDTH="11" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.png"
+ ALT="$t$">
+<P>&#94;<TT>W]</TT>split window and show tag under cursor
+<P>&#94;<TT>Wz<IMG
+ WIDTH="16" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="{\tinyit{or}}">:pc<!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>close tag preview window
+<P>
+
+<P>
+<I>Scrolling &amp; multi-windowing</I>
+<P>&#94;<TT>E </TT>&#94;<TT>Y</TT>scroll line up, down
+<P>&#94;<TT>D </TT>&#94;<TT>U</TT>scroll half a page up, down
+<P>&#94;<TT>F </TT>&#94;<TT>B</TT>scroll page up, down
+<P>
+<TT>zt<IMG
+ WIDTH="16" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="{\tinyit{or}}">z<!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>set current line at top of window
+<P>
+<TT>zz<IMG
+ WIDTH="16" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="{\tinyit{or}}">z. </TT>set current line at center of window
+<P>
+<TT>zb<IMG
+ WIDTH="16" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="{\tinyit{or}}">z-</TT>set current line at bottom of window
+<P>
+<TT>zh zl</TT>scroll one character to the right, left
+<P>
+<TT>zH zL</TT>scroll half a screen to the right, left
+<P>&#94;<TT>Ws<IMG
+ WIDTH="16" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="{\tinyit{or}}">:split<!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>split window in two
+<P>&#94;<TT>Wn<IMG
+ WIDTH="16" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="{\tinyit{or}}">:new<!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>create new empty window
+<P>&#94;<TT>Wo<IMG
+ WIDTH="16" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="{\tinyit{or}}">:on<!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>make current window one on screen
+<P>&#94;<TT>Wj </TT>&#94;<TT>Wk</TT>move to window below, above
+<P>&#94;<TT>Ww </TT>&#94;<TT>W</TT>&#94;<TT>W</TT>move to window below, above (wrap)
+<P>
+
+<P>
+<I>Ex commands (<!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$">)</I>
+<P>
+<TT>:e <IMG
+ WIDTH="9" HEIGHT="11" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$f$"></TT>edit file <IMG
+ WIDTH="9" HEIGHT="11" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$f$">, unless changes have been made
+<P>
+<TT>:e! <IMG
+ WIDTH="9" HEIGHT="11" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$f$"></TT>edit file <IMG
+ WIDTH="9" HEIGHT="11" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$f$"> always (by default reload current)
+<P>
+<TT>:wn :wN</TT>write file and edit next, previous one
+<P>
+<TT>:n :N</TT>edit next, previous file in list
+<P>
+<TT>:<IMG
+ WIDTH="14" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$r$">w</TT>write range <IMG
+ WIDTH="14" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$r$"> to current file
+<P>
+<TT>:<IMG
+ WIDTH="14" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$r$">w <IMG
+ WIDTH="9" HEIGHT="11" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$f$"></TT>write range <IMG
+ WIDTH="14" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$r$"> to file <IMG
+ WIDTH="9" HEIGHT="11" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$f$">
+<P>
+<TT>:<IMG
+ WIDTH="14" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$r$">w<IMG
+ WIDTH="14" HEIGHT="22" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$&gt;$"><IMG
+ WIDTH="14" HEIGHT="22" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$&gt;$"><IMG
+ WIDTH="9" HEIGHT="11" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$f$"></TT>append range <IMG
+ WIDTH="14" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$r$"> to file <IMG
+ WIDTH="9" HEIGHT="11" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$f$">
+<P>
+<TT>:q :q!</TT>quit and confirm, quit and discard changes
+<P>
+<TT>:wq<IMG
+ WIDTH="16" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="{\tinyit{or}}">:x<IMG
+ WIDTH="16" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="{\tinyit{or}}">ZZ</TT>write to current file and exit
+<P>
+<TT><IMG
+ WIDTH="53" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$\langle$"></TT><I>up</I><TT><IMG
+ WIDTH="8" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$\rangle$"> <IMG
+ WIDTH="53" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$\langle$"></TT><I>down</I><TT><IMG
+ WIDTH="8" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$\rangle$"></TT>recall commands starting with current
+<P>
+<TT>:r <IMG
+ WIDTH="9" HEIGHT="11" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$f$"></TT>insert content of file <IMG
+ WIDTH="9" HEIGHT="11" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$f$"> below cursor
+<P>
+<TT>:r! <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"></TT>insert output of command <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"> below cursor
+<P>
+<TT>:all</TT>open a window for each file in the argument list
+<P>
+<TT>:args</TT>display the argument list
+<P>
+
+<P>
+<I>Ex ranges</I>
+<P>
+<TT>, ; </TT>separates two lines numbers, set to first line
+<P>
+<TT></TT>an absolute line number 
+<P>
+<TT>.$</TT>the current line, the last line in file
+<P>
+<TT>% *</TT>entire file, visual area
+<P>
+<TT>'<IMG
+ WIDTH="11" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.png"
+ ALT="$t$"></TT>position of mark <IMG
+ WIDTH="11" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.png"
+ ALT="$t$">
+<P>
+<TT>/<IMG
+ WIDTH="14" HEIGHT="16" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.png"
+ ALT="$p$">/ ?<IMG
+ WIDTH="14" HEIGHT="16" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.png"
+ ALT="$p$">?</TT>the next, previous line where <IMG
+ WIDTH="14" HEIGHT="16" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.png"
+ ALT="$p$"> matches
+<P>
+<TT>+ -</TT><IMG
+ WIDTH="8" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.png"
+ ALT="$+n$">, <IMG
+ WIDTH="23" HEIGHT="24" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$-n$"> to the preceding line number
+<P>
+
+<P>
+<I>Folding</I>
+<P>
+<TT>zf<IMG
+ WIDTH="8" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$m$"></TT>create fold of movement <IMG
+ WIDTH="8" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$m$">
+<P>
+<TT>:<IMG
+ WIDTH="14" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$r$">fo</TT>create fold for range <IMG
+ WIDTH="14" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$r$">
+<P>
+<TT>zd zE</TT>delete fold at cursor, all in window
+<P>
+<TT>zo zc zO zC</TT>open, close one fold; recursively
+<P>
+<TT>[z ]z</TT>move to start, end of current open fold
+<P>
+<TT>zj zk</TT>move down, up to start, end of next fold
+<P>
+
+<P>
+<I>Miscellaneous</I>
+<P>
+<TT>:sh<!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"> :!<IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>start shell, execute command <IMG
+ WIDTH="17" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"> in shell
+<P>
+<TT>K</TT>lookup keyword under cursor with <TT>man</TT>
+<P>
+<TT>:make<!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>start <TT>make</TT>, read errors and jump to first
+<P>
+<TT>:cn<!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"> :cp<!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>display the next, previous error
+<P>
+<TT>:cl<!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"> :cf<!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>list all errors, read errors from file
+<P>&#94;<TT>L </TT>&#94;<TT>G</TT>redraw screen, show filename and position
+<P>
+<TT>g</TT>&#94;<TT>G</TT>show cursor column, line, and character position
+<P>
+<TT>ga</TT>show A<IMG
+ WIDTH="41" HEIGHT="12" ALIGN="BOTTOM" BORDER="0"
+ SRC="img44.png"
+ ALT="{\smallrm SCII}"> value of character under cursor
+<P>
+<TT>gf</TT>open file which filename is under cursor
+<P>
+<TT>:redir<IMG
+ WIDTH="14" HEIGHT="22" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$&gt;$"><IMG
+ WIDTH="9" HEIGHT="11" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$f$"><!-- MATH
+ $\hookleftarrow$
+ -->
+<IMG
+ WIDTH="9" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$\hookleftarrow$"></TT>redirect output to file <IMG
+ WIDTH="9" HEIGHT="11" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$f$">
+<P>
+<TT>:mkview </TT>save view configuration [to file <IMG
+ WIDTH="9" HEIGHT="11" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$f$">]
+<P>
+<TT>:loadview </TT>load view configuration [from file <IMG
+ WIDTH="9" HEIGHT="11" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$f$">]
+<P>&#94;<TT>@ </TT>&#94;<TT>K </TT>&#94;<TT>_ &#92; F </TT>&#94;<TT>F</TT>unmapped keys
+<P>
+
+<P>
+<HR>
+<P></P>
+<IMG
+ WIDTH="20" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img46.png"
+ ALT="{\smallrm This card may be freely distributed under
+the terms of the GNU general...
+...
+The latest version can be found at
+{\smalltt http://tnerual.eriogerg.free.fr/}}">
+
+<P>
+L
+L
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"></A>
+
+<UL>
+<LI><A NAME="tex2html4"
+  HREF="node1.html">About this document ...</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html2"
+  HREF="node1.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up_g.png"> 
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev_g.png">   
+<BR>
+<B> Next:</B> <A NAME="tex2html3"
+  HREF="node1.html">About this document ...</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+root
+2015-12-02
+</ADDRESS>
+</BODY>
+</HTML>

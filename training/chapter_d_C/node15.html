@@ -1,0 +1,493 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2012 (1.2)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Putting All Together: A Diffusion Problem in MPI</TITLE>
+<META NAME="description" CONTENT="Putting All Together: A Diffusion Problem in MPI">
+<META NAME="keywords" CONTENT="chapter_d_C">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2012">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="chapter_d_C.css">
+
+<LINK REL="next" HREF="node17.html">
+<LINK REL="previous" HREF="node10.html">
+<LINK REL="up" HREF="node1.html">
+<LINK REL="next" HREF="node16.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html209"
+  HREF="node16.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html207"
+  HREF="node1.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html201"
+  HREF="node14.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html210"
+  HREF="node16.html">Exercises</A>
+<B> Up:</B> <A NAME="tex2html208"
+  HREF="node1.html">Introduction to MPI Programming</A>
+<B> Previous:</B> <A NAME="tex2html202"
+  HREF="node14.html">Exercises</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00140000000000000000">
+Putting All Together: A Diffusion Problem in MPI</A>
+</H1>
+In this section, we will apply what we have  learned to a two
+dimensional diffusion problem for which  the prototype system is
+shown in Figure 1. Here, the concentration of a solute in a liquid
+is held constant at 1 at the boundaries of a square domain.
+Initially, the concentration is  2 inside, except a small square
+in the middle.
+
+<DIV ALIGN="CENTER"><A NAME="126"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 5.4:</STRONG>
+The Prototype System</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER">figure1.eps
+</DIV></TD></TR>
+</TABLE>
+</DIV>
+As Fick's Law states, the solute will diffuse from high
+concentration to  low concentration region. To determine the
+concentration at any point and time, we need to solve the
+following partial differential equation.Here, C stands for
+concentration; t for time; x and y for space dimensions; and D for
+diffusivity.
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT">
+
+<!-- MATH
+ \begin{equation}
+\frac{\partial C}{\partial t}  = D\bigg\{\frac{\partial ^2 C}{\partial x^2}+\frac{\partial ^2 C}{\partial y^2}\bigg\}
+\end{equation}
+ -->
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="172" HEIGHT="29" BORDER="0"
+ SRC="img6.png"
+ ALT="\begin{displaymath}
+\frac{\partial C}{\partial t} = D\bigg\{\frac{\partial ^2 C}{\partial x^2}+\frac{\partial ^2 C}{\partial y^2}\bigg\}
+\end{displaymath}"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+(1)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+<BR>
+<P>
+We will use the explicit finite difference method to solve
+this equation. The formulation is as follows:
+
+<DIV ALIGN="CENTER"><A NAME="138"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 5.5:</STRONG>
+Discretization of the Domain</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER">[width=9cm] figure2.eps
+</DIV></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+Second order partial derivatives in the x and y
+direction:
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT">
+
+<!-- MATH
+ \begin{equation}
+\frac{\partial^2 C}{\partial x^2}  = \frac{1}{\partial x^2}\bigg\{C^k_{i+1,j}-2C^k_{i,j}+C^k_{i-1,j}  \bigg\}
+\end{equation}
+ -->
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="166" HEIGHT="41" BORDER="0"
+ SRC="img7.png"
+ ALT="\begin{displaymath}
+\frac{\partial^2 C}{\partial x^2} = \frac{1}{\partial x^2}\bigg\{C^k_{i+1,j}-2C^k_{i,j}+C^k_{i-1,j} \bigg\}
+\end{displaymath}"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+(2)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT">
+
+<!-- MATH
+ \begin{equation}
+\frac{\partial^2 C}{\partial y^2}  = \frac{1}{\partial y^2}\bigg\{C^k_{i,j+1}-2C^k_{i,j}+C^k_{i,j-1}  \bigg\}
+\end{equation}
+ -->
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="263" HEIGHT="41" BORDER="0"
+ SRC="img8.png"
+ ALT="\begin{displaymath}
+\frac{\partial^2 C}{\partial y^2} = \frac{1}{\partial y^2}\bigg\{C^k_{i,j+1}-2C^k_{i,j}+C^k_{i,j-1} \bigg\}
+\end{displaymath}"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+(3)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+<BR>
+<P>
+Time derivative:
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT">
+
+<!-- MATH
+ \begin{equation}
+\frac{\partial C}{\partial t}  = \frac{1}{\triangle t}\bigg\{C^k+1_{i,j}-C^k_{i,j}  \bigg\}
+\end{equation}
+ -->
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="261" HEIGHT="41" BORDER="0"
+ SRC="img9.png"
+ ALT="\begin{displaymath}
+\frac{\partial C}{\partial t} = \frac{1}{\triangle t}\bigg\{C^k+1_{i,j}-C^k_{i,j} \bigg\}
+\end{displaymath}"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+(4)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+<BR>
+<P>
+The partial differential equation in terms of finite difference
+formulas
+
+<P>
+<BR>
+<IMG
+ WIDTH="199" HEIGHT="39" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="\begin{align}
+\frac{1}{\triangle t}\big(C^{k+1}_{i,j}-C^{k}_{i,j}\big) &amp;=D \fra...
+...ac{1}{\triangle y^2}\bigg\{C^k_{i,j+1}-2C^k_{i,j}+C^k_{i,j-1}\bigg\}
+\end{align}">
+<BR>
+<BR>
+<BR>
+<BR>
+<P>
+Rearranging Eq.1.5
+
+<P>
+<BR>
+<IMG
+ WIDTH="481" HEIGHT="40" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="\begin{align}
+C^{k+1}_{i,j} =C^{k}_{i,j}&amp;+D \frac{\triangle t}{\triangle x^2}\bi...
+...le t}{\triangle
+y^2}\bigg\{C^k_{i,j+1}-2C^k_{i,j}+C^k_{i,j-1}\bigg\}
+\end{align}">
+<BR>
+<BR>
+<P>
+The explicit finite difference method  requires small time steps in order to
+ overcome the stability problem which makes it   computationally
+ expensive . However, this method is simple and easy to parallelize. The
+ square domain is divided among two processes  in Figure
+ 1.3. Each process is responsible for one rectangular grid and
+ the boundary elements are transferred to neighboring processes through message
+ passing.Note that, in columnwise distribution, the
+ boundary elements are contiguous in the memory and they can be
+ transferred without using derived data types.
+
+<DIV ALIGN="CENTER"><A NAME="202"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 5.6:</STRONG>
+Dividing the domain between two Processes </CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER">[width=6cm] figure3.eps
+</DIV></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+Now let us examine the program to see how  to divide the domain
+among the processes; express the initial and boundary conditions
+in a parallel program; and also, generate output files.
+
+<P>
+<PRE>
+    PROGRAM DIFFUSION
+
+    include  'mpif.h'
+
+c   N,M: Number of grids in the x and y c   directions c   root:
+Rank of the process to which array c   elements with an initial
+value of 5 are c   mapped c   FLD,WKSP:Concentration of the solute
+c   DF:Diffusivity c   L:Length of one side of the square domain
+
+    integer N, M, root,NT
+    integer COUNT,I,J
+    double precision FLD, WKSP
+    double precision DELTA,DELTAT,DELTAX
+    double precision DELTAY,DELTA1,DELTA2
+    double precision DF,L,T
+
+c   Variables used for opening output files
+    character*12 hostname
+    integer status, hostnm
+    character*32 filename
+
+c   Variables used for timing
+    double precision FUNCTION DSECNDS
+    double precision XL, Y1,Y2
+
+c   Control parameter
+    logical  done
+
+    dimension   FLD(2401,2401),WKSP(2401,2401)
+    integer ISTATUS(MPI_STATUS_SIZE)
+
+c   Start the timer
+    XL=0.0
+    Y1=DSECNDS(XL)
+
+    CALL MPI_INIT(IERR)
+
+c   Initializing the parameters
+    N=2401
+    M=2401
+    T=10.0d0
+    NT=100
+    DELTAT=T/NT
+    L=100.0d0
+    DELTAX=L/(N-1)
+    DELTAY=L/(M-1)
+    DELTA1=DELTAT/(DELTAX**2.0d0)
+    DELTA2=DELTAT/(DELTAY**2.0d0)
+    DF=(10.0d0**(-4.0d0))*25.0d0
+    DONE=.FALSE.
+
+    CALL MPI_COMM_SIZE(MPI_COMM_WORLD,NPROCS,
+  &amp; IERR)
+    CALL MPI_COMM_RANK(MPI_COMM_WORLD,MYRANK,
+  &amp; IERR)
+
+c   The subroutine  RANGE distributes the array c   onto the
+processes. c   JSTA and JEND stand for the first and the c   last
+column mapped to each process.
+
+    CALL RANGE (1,M,NPROCS,MYRANK,JSTA,JEND)
+
+    ROOT=(NPROCS-1)/2
+    JSTA2=JSTA
+    JEND1=JEND
+    IF (MYRANK.EQ.0) JSTA2=2
+    IF (MYRANK.EQ.(NPROCS-1)) JEND1=M-1
+    INEXT=MYRANK+1
+    IPREV=MYRANK-1
+    IF (MYRANK.EQ.(NPROCS-1))INEXT=MPI_PROC_NULL
+    IF(MYRANK.EQ.0) IPREV=MPI_PROC_NULL
+
+c   Initial Conditions
+    DO J=JSTA2,JEND1
+    DO I=2,N-1
+    FLD(I,J)=2.0d0
+    ENDDO
+    ENDDO
+    IF (MYRANK.EQ.ROOT) THEN
+    DO J= 1190,1200
+    DO I=1190,1200
+    FLD(I,J)=5.0d0
+    ENDDO
+    ENDDO
+    ENDIF
+
+c   Boundary Conditions
+    DO J=JSTA,JEND
+    FLD(1,J)=1.0d0
+    FLD(N,J)=1.0d0
+    ENDDO
+    IF (MYRANK.EQ.0) THEN
+    DO I=1,N
+    FLD(I,JSTA)=1.0d0
+    ENDDO
+    ENDIF
+    IF (MYRANK.EQ.(NPROCS-1)) THEN
+    DO I=1,N
+    FLD(I,JEND)=1.0d0
+    ENDDO
+    ENDIF
+
+c   Main Loop
+    DO  COUNT=1,500
+c   Transfer the boundary elements to c   neigboring processes
+    CALL MPI_ISEND(FLD(1,JEND),N,MPI_DOUBLE_
+  &amp; PRECISION, inext,1,MPI_COMM_WORLD,ISEND1,IERR)
+    CALL MPI_ISEND(FLD(1,JSTA),N,MPI_DOUBLE_
+  &amp; PRECISION,iprev,1,MPI_COMM_WORLD,ISEND2,IERR)
+    CALL MPI_IRECV(FLD(1,JSTA-1),N,MPI_DOUBLE_
+  &amp; PRECISION,iprev,1,MPI_COMM_WORLD,IRECV1,IERR)
+    CALL MPI_IRECV(FLD(1,JEND+1),N,MPI_DOUBLE_
+  &amp;  PRECISION,inext,1,MPI_COMM_WORLD,IRECV2,IERR)
+
+    CALL MPI_WAIT(ISEND1,ISTATUS,IERR)
+    CALL MPI_WAIT(ISEND2,ISTATUS,IERR)
+    CALL MPI_WAIT(IRECV1,ISTATUS,IERR)
+    CALL MPI_WAIT(IRECV2,ISTATUS,IERR)
+
+c   Updates the concentration using the finite c   difference
+formula
+    DO J=JSTA2,JEND1
+    DO I=2,N-1
+    WKSP(I,J)=FLD(I,J)+DELTA1*DF*(FLD(I+1,J)
+  &amp; -2.0*FLD(I,J)+FLD(I-1,J))
+  &amp; +DELTA2*DF*(FLD(I,J+1)-2.0*FLD(I,J)+FLD(I,J-1))
+    ENDDO
+    ENDDO
+
+    DO J=JSTA2,JEND1
+    DO I=2,N-1
+    FLD(I,J)=WKSP(I,J)
+    ENDDO
+    ENDDO
+
+c   Check whether the concentration in the middle c   of the small
+square is below 2.5. If so, change c   the control parameter
+"done" to true
+    IF (MYRANK.EQ.ROOT) THEN
+    WRITE(*,*) FLD(1195,1195), 'mdfld'
+    IF (FLD(1195,1195).le.2.5) THEN
+    WRITE(*,*) fld(1195,1195), 'mdfld'
+    DONE=.TRUE.
+    WRITE (*,*) done , myrank, 'done'
+    ENDIF
+    ENDIF
+
+c   Collective Communication ("done" is transferred c   from root
+to all processes)
+    CALL MPI_BCAST(done,1,MPI_LOGICAL,root,
+ &amp;  MPI_COMM_WORLD,ierr)
+    IF (DONE) GO TO 100
+
+    ENDDO
+
+c   Prints the number of iterations necessary for c   the
+concentration go down to 2.5 100 WRITE(*,*) count, myrank, 'count'
+c   Opens a file for each process for I/O as c   "mpi.hostname"
+    STATUS=HOSTNM(HOSTNAME)
+    WRITE(*,*) HOSTNAME,MYRANK
+    FILENAME='mpi.' // hostname
+    OPEN(unit=myrank,file=filename,
+  &amp; status='unknown')
+
+    DO J=JSTA,JEND
+    DO I=1,N
+    WRITE(myrank,*) fld(i,j)
+    ENDDO
+    ENDDO
+
+c   Terminates the parallel execution
+    CALL MPI_FINALIZE(IERR)
+
+c   Prints the elapsed time.
+    Y2=DSECNDS(XL)
+    Y2=Y2-Y1
+    WRITE(*,*) Y2, 'seconds'
+
+    END
+
+    SUBROUTINE RANGE (n1,n2,nprocs,irank,ista,iend)
+c   Number of columns that will be mapped to c   each process
+    iwork1=(n2-n1+1)/nprocs
+c   Determines the offset
+    iwork2=MOD(n2-n1+1,nprocs)
+c   Distributes the extra columns to the processes c   If mod()is
+2 for example, an extra column will c   be mapped to process 0 and
+process 1
+    ista=irank*iwork1+n1+MIN(irank,iwork2)
+    iend=ista+iwork1-1
+    if(iwork2.gt.irank) iend=iend+1
+    return
+    end
+</PRE>
+
+<P>
+The following figures show the initial and final states of the
+system.
+
+<DIV ALIGN="CENTER"><A NAME="208"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 5.7:</STRONG>
+Solute Concentration at t=0 </CAPTION>
+<TR><TD>[width=13cm] result1.eps</TD></TR>
+</TABLE>
+</DIV>
+
+<DIV ALIGN="CENTER"><A NAME="212"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 5.8:</STRONG>
+Solute Concentration after 366 iterations </CAPTION>
+<TR><TD>[width=13cm] result2.eps</TD></TR>
+</TABLE>
+</DIV>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html211"
+  HREF="node16.html">Exercises</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html209"
+  HREF="node16.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html207"
+  HREF="node1.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html201"
+  HREF="node14.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html210"
+  HREF="node16.html">Exercises</A>
+<B> Up:</B> <A NAME="tex2html208"
+  HREF="node1.html">Introduction to MPI Programming</A>
+<B> Previous:</B> <A NAME="tex2html202"
+  HREF="node14.html">Exercises</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+root
+2015-12-02
+</ADDRESS>
+</BODY>
+</HTML>

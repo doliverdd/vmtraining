@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2012 (1.2)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>What are high-performance libraries?</TITLE>
+<META NAME="description" CONTENT="What are high-performance libraries?">
+<META NAME="keywords" CONTENT="chapter_libs">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2012">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="chapter_libs.css">
+
+<LINK REL="next" HREF="node3.html">
+<LINK REL="previous" HREF="node1.html">
+<LINK REL="up" HREF="node1.html">
+<LINK REL="next" HREF="node3.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html44"
+  HREF="node3.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html42"
+  HREF="node1.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html36"
+  HREF="node1.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html45"
+  HREF="node3.html">LAPACK, BLAS, ATLAS and</A>
+<B> Up:</B> <A NAME="tex2html43"
+  HREF="node1.html">High-performance libraries</A>
+<B> Previous:</B> <A NAME="tex2html37"
+  HREF="node1.html">High-performance libraries</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00110000000000000000">
+What are high-performance libraries?</A>
+</H1>
+
+<P>
+Almost all scientific programs include a small number of repeating, common
+snippets of code which perform certain core, usually simple, mathematical
+operations such as multiplying a matrix by a vector.  It is
+therefore reasonable to consider these common snippets separately and mix
+them into a main program as needed, like, using a culinary metaphor,
+when baking a fruit cake.
+
+<P>
+Moreover, if you profile a scientific code you will notice that these snippets
+are, in fact, where the program spends most of its time.  It is therefore
+desirable to have them written very professionally, with precision
+and efficiency in mind, and have them tested thoroughly.
+
+<P>
+These two requirements are met, at least in principle, by libraries which are
+sets of object files that implement specific functions and routines, and which
+can be linked with the main object files to produce executables.
+
+<P>
+In general, we distinguish between two types of libraries:
+
+<OL>
+<LI>Static libraries are linked with the rest of the code when you build
+your executable.  In Unix (and Linux) these libraries have extension .a
+</LI>
+<LI>Dynamic libraries are linked with the ``executable" image at runtime.
+In Unix these libraries have extension .so
+</LI>
+</OL>
+
+<P>
+It is important to realize that you need only one copy of a given
+library on a machine to which each user has an access but which they should
+not be able to modify.  It is usually a bad idea to try to modify a 
+``standard library".
+
+<P>
+In addition to ``standard" libraries, which are produced (and 
+often sold) by reputable organizations and companies, and which are 
+not supposed to contain errors, a user can create his/her own libraries.  
+Say you are a computational chemist, and your favorite algorithm involves 
+some kind of a spatial mesh and you like spherical harmonics.  Chances are, 
+most of the codes you will write in your career will include subroutines 
+which facilitate integration of spherical harmonics on a spatial mesh of
+one kind or another.
+You will probably want to include these routines in your library and use
+them repeatedly, without having to recompile, provided this library,
+too, is error free.  Later we will tell you how to create such a library.
+
+<P>
+Before we get to that we want to tell you how to build and use existing
+libraries because this is the scenario you will be most often confronted
+with.  We will concentrate and practice on one type (arguably the one 
+that is most widely used in today's scientific computations) of high 
+performance libraries - the linear algebra library.  
+After we go through this exercise you may assume that you have a
+general knowledge how to build and link to any library you find 
+useful in your work.  This, of course, if you stick around through
+this entire session.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html44"
+  HREF="node3.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html42"
+  HREF="node1.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html36"
+  HREF="node1.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html45"
+  HREF="node3.html">LAPACK, BLAS, ATLAS and</A>
+<B> Up:</B> <A NAME="tex2html43"
+  HREF="node1.html">High-performance libraries</A>
+<B> Previous:</B> <A NAME="tex2html37"
+  HREF="node1.html">High-performance libraries</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+root
+2015-12-02
+</ADDRESS>
+</BODY>
+</HTML>

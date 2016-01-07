@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2012 (1.2)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>The FORALL Statement</TITLE>
+<META NAME="description" CONTENT="The FORALL Statement">
+<META NAME="keywords" CONTENT="chapter_FORTRAN_mpi">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2012">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="chapter_FORTRAN_mpi.css">
+
+<LINK REL="previous" HREF="node21.html">
+<LINK REL="up" HREF="node21.html">
+<LINK REL="next" HREF="node23.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html307"
+  HREF="node23.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html305"
+  HREF="node21.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html301"
+  HREF="node21.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html308"
+  HREF="node23.html">Additional Information on HPF</A>
+<B> Up:</B> <A NAME="tex2html306"
+  HREF="node21.html">Data Parallel Execution</A>
+<B> Previous:</B> <A NAME="tex2html302"
+  HREF="node21.html">Data Parallel Execution</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00152100000000000000">
+The FORALL Statement</A>
+</H3>
+FORALL is introduced as an alternative to the DO-loop. The
+contents of a FORALL statement can be executed in any order.
+FORALL gives identical results whether applied sequentially or in
+parallel. Using FORALL is especially useful where assignments are
+based on array indices.
+<PRE>
+    FORALL (I=1:1000,J=1:1000) A(I,J)=I+J
+</PRE>
+We can also use FORALL in the following form:
+<PRE>
+    FORALL (I=1:1000, J=1:1000)
+    A(I,J)=I+J
+    B(I,J)=A(I,J)
+    END FORALL
+</PRE>
+
+<P>
+<BR><HR>
+<ADDRESS>
+root
+2015-12-02
+</ADDRESS>
+</BODY>
+</HTML>

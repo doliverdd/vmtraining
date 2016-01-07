@@ -1,0 +1,326 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2012 (1.2)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Building LAPACK</TITLE>
+<META NAME="description" CONTENT="Building LAPACK">
+<META NAME="keywords" CONTENT="chapter_libs">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2012">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="chapter_libs.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node1.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html64"
+  HREF="node5.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html62"
+  HREF="node1.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html56"
+  HREF="node3.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html65"
+  HREF="node5.html">Physics example: using LAPACK</A>
+<B> Up:</B> <A NAME="tex2html63"
+  HREF="node1.html">High-performance libraries</A>
+<B> Previous:</B> <A NAME="tex2html57"
+  HREF="node3.html">LAPACK, BLAS, ATLAS and</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00130000000000000000">
+Building LAPACK</A>
+</H1>
+Enough talking. Let's us now prepare our own version of
+LAPACK library from scratch.  To that end we will use ATLAS software since
+taking this route covers the broadest array of circumstances.  
+By the end of this
+unit I will tell you what is available in terms of vendor or ISV optimized
+BLAS.  We will proceed as follows:
+
+<P>
+
+<OL>
+<LI>Make directory <TT>usr/local/sourceforge</TT> 
+</LI>
+<LI>Download the latest, stable, platform-independent ATLAS 
+software from  <BR>
+<TT>math-atlas.sourceforge.net</TT> to this directory.
+</LI>
+<LI>Unzip and untar the file (you already know how to do this).
+</LI>
+<LI><TT>cd</TT> to the <TT>./ATLAS</TT> directory and apply fixes (string
+overrun) from the <BR>
+<TT>math-atlas.sourceforge.net/errata.html</TT>
+page.  Read this page carefully, it will save you a lot of time and work 
+down the road.
+</LI>
+<LI>Type <TT>make config CC=gcc</TT> (using the Portland <BR>
+Group compilers will result
+in error) and follow the script using the express setup, if possible.
+</LI>
+<LI>Type <TT>make install arch= <BR>
+&lt;architecture_as_detected_by_config&gt;</TT>
+</LI>
+<LI>Type <TT>make sanity_test arch= <BR>
+&lt;architecture_as_detected_by_config&gt;</TT> <BR>
+and <TT>make ptsanity_test arch= <BR>
+&lt;architecture_as_detected_by_config&gt;</TT> <BR>
+if you chose to build the threaded library.
+</LI>
+<LI>Time and test ATLAS as described in <BR>
+<TT>&nbsp;/ATLAS/doc/TestTime.txt</TT> 
+</LI>
+<LI>CacheEdge - more about memory layout and cache blocking.
+
+<P>
+As you now know, cache misses result in costly access to high 
+level memory.  To minimize the
+penalty ATLAS detects the <I>actual</I> size of the L1 data cache and 
+cache-blocks matmul kernel appropriately. <BR>
+Then, the rest of the code is further tuned
+to block for the L2 cache by an empirically determined parameter
+called CacheEdge. You can find the optimum value of CacheEdge by:
+
+<OL>
+<LI><TT>cd ./tune/blas/gemm/ <BR>
+&lt;architecture_as_detected_by_config</TT>
+</LI>
+<LI><TT>make xdfindCE</TT>
+</LI>
+<LI><TT>./xdfindCE -m 3500 -n 3500 -k 3500</TT> <BR>
+to find out what your CacheEdge might be.
+</LI>
+<LI><TT>cd ../../../.././include/ <BR>
+&lt;architecture_as_detected_by_config&gt;</TT>
+</LI>
+<LI><TT>vi atlas_cacheedge.h</TT> and substitute the <BR>
+value in the third 
+line by 524288. (524288 Bytes = 512 kBytes * 1024 Bytes/KBytes)
+</LI>
+<LI>you can now fine-tune CacheEdge in the following manner:
+
+<OL>
+<LI><TT>cd ../../../../</TT>
+</LI>
+<LI>edit <TT>Make. <BR>
+&lt;architecture_as_detected_by_config&gt;</TT> and define
+symbol BLASlib.  In the best scenario it should point to a location where you 
+have another, working copy of complete libblas.a  Otherwise get the 
+<I>FORTRAN 77 reference BLAS file</I> and build it into libblas.a or use
+ATLAS own C reference.
+</LI>
+<LI><TT>cd ../.././include/ <BR>
+&lt;architecture_as_detected_by_config&gt;</TT>
+</LI>
+<LI>change the value of CacheEdge in <BR>
+atlas_cacheedge.h
+</LI>
+<LI><TT>cd ../.././bin/ <BR>
+&lt;architecture_as_detected_by_config&gt;</TT>
+</LI>
+<LI><TT>make x[s,d,c,z]l[1,2,3]blastst</TT>
+</LI>
+<LI><TT>x[s,d,c,z]l[1,2,3]blastst</TT> save the results and repeat
+steps <TT>iii-vii</TT>
+</LI>
+<LI>once the best value for CacheEdge is found recompile ATLAS 
+by issuing <BR>
+<TT>make xdl3blastst xsl3blastst <BR>
+xcl3blastst xzl3blastst</TT> <BR>
+This will rebuild all libs with the new <BR>
+CacheEdge setting. <BR>
+(<TT>xdl3blastst xsl3blastst <BR>
+xcl3blastst xzl3blastst</TT> have the 
+correct dependencies to ensure a proper rebuild.)
+</LI>
+</OL>
+</LI>
+<LI>If you have not done it already as a part of CacheEdge fine-tuning
+procedure described <BR>
+above recompile ATLAS by issuing <BR>
+<TT>make xdl3blastst xsl3blastst <BR>
+xcl3blastst xzl3blastst</TT>
+</LI>
+</OL>
+
+<P>
+</LI>
+<LI>You have probably forgot by now that installing ATLAS was not our
+ultimate goal.  Our ultimate goal was to build the fastest implementation
+of LAPACK available for your machine.  Some more work remains to be done:
+
+<OL>
+<LI>Get from <TT>netlib.org</TT> and build LAPACK.  Here are the procedures:
+
+<OL>
+<LI>Make a directory <TT>/usr/local/netlib</TT> 
+</LI>
+<LI>Go to <TT>netlib.org</TT> <IMG
+ WIDTH="45" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"> browse <IMG
+ WIDTH="45" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"> lapack 
+<IMG
+ WIDTH="45" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"> scroll down and download file <TT>lapack.tgz</TT> into
+directory <BR>
+<TT>/usr/local/netlib</TT> 
+</LI>
+<LI><TT>gunzip lapack.tgz</TT> 
+</LI>
+<LI><TT>tar -xvf lapack.tar</TT> 
+</LI>
+<LI><TT>cd LAPACK</TT> and read file <TT>README</TT>  You will notice
+a link to a list of known problems, bugs and compiler errors for
+LAPACK <BR>
+maintained on <TT>netlib.org</TT> 
+Open your browser again and go
+to that address.  You will notice a LARGE errata.  Normally you
+would like to incorporate all the errata files in your original
+distribution to compile your working version of LAPACK.  In this
+bootcamp, since our time is limited, we will only correct
+the Makefiles.  This is necessary to compile the programs properly.
+</LI>
+<LI>Download the errata files <BR>
+<TT>LAPACK/INSTALL/make.inc.LINUX</TT> <BR>
+and <TT>LAPACK/TIMING/Makefile</TT> <BR>
+to the
+<TT>/usr/local/netlib</TT>
+directory.  You could, of course, download these files right into
+their proper directories.  The reason why we download the errata 
+files to 
+<TT>/usr/local/netlib</TT> is that if the compilation fails and for
+some reason we want to untar a brand new tree of LAPACK we do not
+need to download them again.
+</LI>
+<LI>Copy the errata files from <BR>
+<TT>/usr/local/netlib</TT> to their
+proper directories: <BR>
+<TT>cp /usr/local/netlib/make.inc.LINUX /usr/local/netlib/LAPACK/INSTALL</TT>
+<BR>
+<TT>cp /usr/local/netlib/Makefile</TT> <BR>
+<TT>/usr/local/netlib/LAPACK/TIMING</TT>
+</LI>
+<LI><PRE>
+cp ./INSTALL/make.inc.LINUX . 
+cp make.inc.LINUX make.inc
+</PRE>
+</LI>
+<LI><code>vi Makefile</code>  <BR>
+You should now substitute
+<PRE>
+lib: lapacklib tmglib
+#lib: blaslib lapacklib tmglib
+</PRE>
+by
+<PRE>
+#lib: lapacklib tmglib
+lib: blaslib lapacklib tmglib
+</PRE>
+to make BLAS, LAPACK and to time them.
+</LI>
+<LI><TT>make</TT>
+</LI>
+</OL>
+
+<P>
+</LI>
+<LI>in directory <TT>&nbsp;/ATLAS/lib/ <BR>
+&lt;architecture_as_detected_by_config&gt;</TT>
+    issue following commands:
+<PRE>
+    mkdir tmp
+    cd tmp
+    ar x ../liblapack.a
+    cp &lt;the_path_of_your_just_built
+       _LAPACK&gt;/liblapack.a 
+       ../liblapack.a
+    ar r ../liblapack.a *.o
+    cd ..
+    rm -rf tmp
+</PRE>
+Congratulations!, you have just replaced some netlib LAPACK
+routines with the ATLAS' optimized LAPACK routines.
+</LI>
+</OL>
+</LI>
+<LI>In the <TT>&nbsp;/ATLAS/lib/ <BR>
+&lt;architecture_as_detected_by_config&gt;</TT>
+    directory you should at least have:
+
+<UL>
+<LI>libatlas.a - the main ATLAS library
+</LI>
+<LI>liblapack.a - the full ATLAS optimized LAPACK library - the
+                  on you have just built
+</LI>
+<LI>libcblas.a - the C interface to BLAS
+</LI>
+<LI>libf77blas.a - the F77 interface to BLAS
+</LI>
+<LI>libptcblas.a - the C interface to threaded BLAS
+</LI>
+<LI>libptf77blas.a - the F77 interface to threaded BLAS
+</LI>
+</UL>
+</LI>
+<LI>Linking to these libraries must be done in a specific order:
+<TT>-LLIBDIR -llapack -lcblas -lf77blas <BR>-latlas</TT>, 
+where LIBDIR is the path to your libraries.
+</LI>
+</OL>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html64"
+  HREF="node5.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html62"
+  HREF="node1.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html56"
+  HREF="node3.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html65"
+  HREF="node5.html">Physics example: using LAPACK</A>
+<B> Up:</B> <A NAME="tex2html63"
+  HREF="node1.html">High-performance libraries</A>
+<B> Previous:</B> <A NAME="tex2html57"
+  HREF="node3.html">LAPACK, BLAS, ATLAS and</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+root
+2015-12-02
+</ADDRESS>
+</BODY>
+</HTML>

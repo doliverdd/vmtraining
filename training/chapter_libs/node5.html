@@ -1,0 +1,664 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2012 (1.2)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Physics example: using LAPACK in computing the ground state energy and wavefunction of the hydrogen atom</TITLE>
+<META NAME="description" CONTENT="Physics example: using LAPACK in computing the ground state energy and wavefunction of the hydrogen atom">
+<META NAME="keywords" CONTENT="chapter_libs">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2012">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="chapter_libs.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node1.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html74"
+  HREF="node6.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html72"
+  HREF="node1.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html66"
+  HREF="node4.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html75"
+  HREF="node6.html">Building your own libraries</A>
+<B> Up:</B> <A NAME="tex2html73"
+  HREF="node1.html">High-performance libraries</A>
+<B> Previous:</B> <A NAME="tex2html67"
+  HREF="node4.html">Building LAPACK</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00140000000000000000">
+Physics example: using LAPACK in computing the ground 
+state energy and wavefunction of the hydrogen atom</A>
+</H1>
+
+<P>
+We are now ready to use the fruit of our work in a real-life  scientific
+problem.  The code which we gave you calculates the ground state (lowest)
+energy and wavefunction of the hydrogen atom.
+Hydrogen atom consists of only one proton and only one electron.  
+The quantum theory tells us how to calculate energies and wave 
+functions for any atom, although only in an approximate manner.  The reason
+why we picked a hydrogen atom is two-fold.  First, this is the simplest 
+atomic system whose variational treatment leads to a set of linear-algebraic 
+equations.  If you forgot your quantum mechanics and do not understand what 
+``variational" means, do not panic - we will explain it 
+to you in a moment.  The important point is that the set of linear-algebraic
+equations just mentioned can be completely solved using
+just one LAPACK driver routine.  The second reason why we picked
+the hydrogen atom for our example is that in this particular case we
+are lucky enough to know the analytical solution and thus
+can check our work.  I want you to keep in mind, however, that for the great
+majority of current scientific problems the analytical solutions are not
+known and we have to rely on approximate ones, best of which can
+usually be obtained numerically, more often then not with the help of
+efficient scientific libraries.  In case of atomic physics these libraries 
+include 
+mainly LAPACK, fast Fourier transform, and various integration routines.
+
+<P>
+So how do we solve for the ground state of the hydrogen atom?  You have 
+probably heard about the Schr&#246;dinger equation for a wavefunction 
+<IMG
+ WIDTH="36" HEIGHT="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$\Psi$">.  Function <IMG
+ WIDTH="36" HEIGHT="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$\Psi$"> contains all information about a quantum
+system and the Schr&#246;dinger equation is a differential equation
+which describes its behavior.  The
+Schr&#246;dinger equation is in quantum mechanics what the familiar (Newton,
+Lagrange or Hamilton) equation of motion is in classical mechanics.  
+If we wrote down this equation  for the hydrogen atom we could then solve 
+it analytically and find its exact solution.  We could also <I>attempt</I> 
+to integrate this equation numerically on a preconceived grid of points in 
+space obtaining physically exact but mathematically approximate solution.
+However, there exists another approach, based on the Ritz variational 
+principle, which simply states that the true ground state energy of a quantum 
+system is a lower bound to a certain expression involving <I>trial</I>
+wavefunctions.  We are free to chose these trial wavefunction at will as
+long as they fulfill certain criteria. Mathematically, we talk about
+infinitely dimensional linear vector space, called the Hilbert space to
+which these trial wavefunctions belong.  In practice, we work with subspaces
+of the Hilbert space and build our trial functions out of truncated (at <IMG
+ WIDTH="14" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$N$">)
+series of so-called basis functions <IMG
+ WIDTH="16" HEIGHT="15" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$\phi_{i}$">:
+<BR>
+<DIV ALIGN="CENTER"><A NAME="equ:basis"></A>
+<!-- MATH
+ \begin{eqnarray}
+\Psi({\bf r}) = \sum_{i=1}^{N}C_{i} \phi_{i}({\bf r}), \,\,\,
+\phi_{i}({\bf r})=e^{-{\alpha}_{i}r^2}
+\end{eqnarray}
+ -->
+<TABLE ALIGN="CENTER" CELLPADDING="0" WIDTH="100%">
+<TR VALIGN="MIDDLE"><TD NOWRAP ALIGN="RIGHT"><IMG
+ WIDTH="16" HEIGHT="27" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$\displaystyle \Psi({\bf r}) = \sum_{i=1}^{N}C_{i} \phi_{i}({\bf r}), \,\,\,
+\phi_{i}({\bf r})=e^{-{\alpha}_{i}r^2}$"></TD>
+<TD>&nbsp;</TD>
+<TD>&nbsp;</TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+(1)</TD></TR>
+</TABLE></DIV>
+<BR CLEAR="ALL"><P></P>
+
+<P>
+It is then possible to rewrite the Ritz variational principle in terms of
+a set of algebraic equations which in matrix notation takes on a form of
+the eigenvalue problem
+<BR>
+<DIV ALIGN="RIGHT">
+
+<!-- MATH
+ \begin{equation}
+\underline{H} \cdot \vec{C}=\epsilon \cdot \vec{C}
+\end{equation}
+ -->
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="equ:eing"></A><IMG
+ WIDTH="247" HEIGHT="62" BORDER="0"
+ SRC="img13.png"
+ ALT="\begin{displaymath}
+\underline{H} \cdot \vec{C}=\epsilon \cdot \vec{C}
+\end{displaymath}"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+(2)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+or, if the basis functions are not orthonormal
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT">
+
+<!-- MATH
+ \begin{equation}
+\underline{H} \cdot \vec{C}=\epsilon \cdot
+\underline{S} \cdot \vec{C}
+\end{equation}
+ -->
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="equ:geneing"></A><IMG
+ WIDTH="91" HEIGHT="18" BORDER="0"
+ SRC="img14.png"
+ ALT="\begin{displaymath}
+\underline{H} \cdot \vec{C}=\epsilon \cdot
+\underline{S} \cdot \vec{C}
+\end{displaymath}"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+(3)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+Equation (<!-- MATH
+ $\ref{equ:geneing}$
+ -->
+<IMG
+ WIDTH="113" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.png"
+ ALT="% latex2html id marker 322
+$\ref{equ:geneing}$">) represents a so-called 
+generalized eigenvalue problem.
+Here, <IMG
+ WIDTH="22" HEIGHT="14" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$\underline{H}$"> is the Hamiltonian matrix, which contains 
+information about kinetic and potential energies of a quantum system
+and <IMG
+ WIDTH="16" HEIGHT="26" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$\underline{S}$"> is the so-called overlap matrix which arises
+from nonorthonormality of the basis functions.  In the current
+example we will not be concerned about these matrices.   Their
+elements can be easily calculated and they are, in fact, given to us 
+in the program.  The scalar <IMG
+ WIDTH="12" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$\epsilon$"> is the unknown ground state 
+energy of the hydrogen atom and the corresponding elements of
+the vector <IMG
+ WIDTH="8" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img19.png"
+ ALT="$\vec{C}$"> are the unknown expansion coefficients in
+equation (<!-- MATH
+ $\ref{equ:basis}$
+ -->
+<IMG
+ WIDTH="14" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img20.png"
+ ALT="% latex2html id marker 332
+$\ref{equ:basis}$">), for this energy.
+
+<P>
+The code is written in FORTRAN 90 and consists of two main modules.
+The module <TT>matrix_elements</TT> (file <BR><TT>matrielements.f90</TT>) casts the problem
+of solving a Schr&#246;dinger equation for the hydrogen atom into a
+linear algebraic problem of solving a generalized eigenvalue equation,
+as described above.
+Matrices <!-- MATH
+ $\underline{smatrix}(N,N)$
+ -->
+<IMG
+ WIDTH="22" HEIGHT="14" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.png"
+ ALT="$\underline{smatrix}(N,N)$"> and <!-- MATH
+ $\underline{hmatrix}(N,N)$
+ -->
+<IMG
+ WIDTH="107" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.png"
+ ALT="$\underline{hmatrix}(N,N)$">,
+where we now explicitly show their dimensions, enter the equation in the
+following manner:
+<BR>
+<DIV ALIGN="RIGHT">
+
+<!-- MATH
+ \begin{equation}
+\underline{hmatrix}(N,N) \cdot \vec{C}(N)=\epsilon \cdot 
+\underline{smatrix}(N,N) \cdot \vec{C}(N)
+\end{equation}
+ -->
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="equ:geneing1"></A><IMG
+ WIDTH="109" HEIGHT="29" BORDER="0"
+ SRC="img23.png"
+ ALT="\begin{displaymath}
+\underline{hmatrix}(N,N) \cdot \vec{C}(N)=\epsilon \cdot
+\underline{smatrix}(N,N) \cdot \vec{C}(N)
+\end{displaymath}"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+(4)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+Here, <IMG
+ WIDTH="353" HEIGHT="20" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.png"
+ ALT="$C(N)$"> are eigenvectors corresponding to <IMG
+ WIDTH="12" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$\epsilon$">
+Finding eigenvalues <IMG
+ WIDTH="12" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$\epsilon$"> and corresponding 
+eigenvectors <!-- MATH
+ $\vec{C_{\epsilon}}(N)$
+ -->
+<IMG
+ WIDTH="41" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.png"
+ ALT="$\vec{C_{\epsilon}}(N)$"> forms the
+solution to eq. (<!-- MATH
+ $\ref{equ:geneing1}$
+ -->
+<IMG
+ WIDTH="46" HEIGHT="37" ALIGN="BOTTOM" BORDER="0"
+ SRC="img26.png"
+ ALT="% latex2html id marker 346
+$\ref{equ:geneing1}$">). This is accomplished in the 
+second of the two main modules - module <BR><TT>eigenproblem</TT>
+(in file <TT>eigenproblem.f90</TT>).   Since the hydrogen 
+atom has only one electron we are interested in
+the <I>lowest</I> eigenvalue and its corresponding eigenvector.
+Only these solutions have a physical meaning and correspond to the 
+hydrogen atom ground state energy and the ground state wavefunction.
+
+<P>
+Some of you are probably guessing that the number
+N is arbitrary and that perhaps the larger it is the better the
+corresponding solution to our original problem may be.  RIGHT!.  BUT,
+there is a big price to pay if we try to increase <IMG
+ WIDTH="14" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$N$"> above a
+certain, reasonable number. The number of numerical operations
+to solve Eq. (<!-- MATH
+ $\ref{equ:geneing1}$
+ -->
+<IMG
+ WIDTH="22" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img27.png"
+ ALT="% latex2html id marker 350
+$\ref{equ:geneing1}$">) is at least <IMG
+ WIDTH="22" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img28.png"
+ ALT="$N \cdot N$"> - we say that 
+the algorithm which
+solves Eq. (<!-- MATH
+ $\ref{equ:geneing1}$
+ -->
+<IMG
+ WIDTH="42" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.png"
+ ALT="% latex2html id marker 354
+$\ref{equ:geneing1}$">) scales as <I>O</I><IMG
+ WIDTH="43" HEIGHT="15" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$(N^2)$"> with the size <IMG
+ WIDTH="14" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$N$"> 
+of a problem.
+Imagine, if your <IMG
+ WIDTH="14" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$N$"> is 10 you have (roughly!, and this number
+should be understood only logarithmically)&nbsp; <!-- MATH
+ $10 \cdot 10 = 100$
+ -->
+<IMG
+ WIDTH="22" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img30.png"
+ ALT="$10 \cdot 10 = 100$"> operations
+to do.  If your <IMG
+ WIDTH="14" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$N$"> is 100 you are looking at 10000 operations,
+if your <IMG
+ WIDTH="14" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$N$"> is 1000 you have 1000000 operations, etc.  Scary, isn't it?
+And what if I tell you that solving Eq. (<!-- MATH
+ $\ref{equ:geneing1}$
+ -->
+<IMG
+ WIDTH="90" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img31.png"
+ ALT="% latex2html id marker 368
+$\ref{equ:geneing1}$">)
+involves a very
+cumbersome and difficult to program algebra? What about optimization?
+Does this all seem hopeless?
+Before you decide not to become a quantum chemist let me share
+the good news with you.  We do not have to do all the work
+by ourselves! We have LAPACK, which you have just compiled,  at
+our disposal.  It will solve, as you will see in our next lab, 
+our problem expressed by Eq. (<!-- MATH
+ $\ref{equ:geneing1}$
+ -->
+<IMG
+ WIDTH="22" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img32.png"
+ ALT="% latex2html id marker 370
+$\ref{equ:geneing1}$">)
+in <I>just one call</I> to one of its driver routines.
+
+<P>
+We will now work with you through the code example to show you 
+how this is done.
+
+<OL>
+<LI>Login as a regular user. 
+</LI>
+<LI>Copy the FORTRAN 90 source code, as well as the input file
+<TT>ALPHA_IN_5</TT>, and <TT>compile.hatomf90</TT> and 
+<TT>link.hatomf90</TT> files into a directory of your choice.
+</LI>
+<LI>You should have:
+
+<OL>
+<LI><TT>ALPHA_IN_5</TT>
+</LI>
+<LI><TT>compile.hatomf90</TT>
+</LI>
+<LI><TT>constants.f90</TT>
+</LI>
+<LI><TT>declarations.f90</TT>
+</LI>
+<LI><TT>dsygvf77wrapper.f90</TT>
+</LI>
+<LI><TT>eigenproblem.f90</TT>
+</LI>
+<LI><TT>hydrogenmain.f90</TT>
+</LI>
+<LI><TT>ioerrors.f90</TT>
+</LI>
+<LI><TT>link.hatomf90</TT>
+</LI>
+<LI><TT>matrixelements.f90</TT>
+</LI>
+<LI><TT>precision.f90</TT>
+</LI>
+</OL>
+in your directory.  That's 11 files.
+</LI>
+<LI>The input file <TT>ALPHA_IN_5</TT> contains 5 exponent
+coefficients <IMG
+ WIDTH="22" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img33.png"
+ ALT="$\alpha$"> (cf. Eq. (<!-- MATH
+ $\ref{equ:basis}$
+ -->
+<IMG
+ WIDTH="12" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.png"
+ ALT="% latex2html id marker 374
+$\ref{equ:basis}$">)) and 3 parameters
+used in plotting the results.
+</LI>
+<LI>Refer to the code for explanations of the modules and subroutines.
+It is a good programming habit to comment the code itself so that the 
+explanations are always there when you need them.  In particular,
+make sure that you understand how the call to the general eigenproblem
+solver dsygv is made and what it returns.  This call is made in subroutine 
+<TT>solve_eigenproblem</TT> in file <TT>eigenproblem.f90</TT>
+</LI>
+<LI>Compile and link the code as suggested in <BR>
+<TT>compile.hatomf90</TT>
+and <TT>link.hatomf90</TT> using the Portland Group Compiler.  
+Notice the flag <TT>-g77libs</TT> when linking using pgf90 driver
+with libraries created by g77. By default pgf90 does not look
+for g77 support libraries to resolve references specific to g77 
+objects! 
+</LI>
+<LI><TT>cp ALPHA_IN_5 ALPHA_IN</TT>
+</LI>
+<LI>Run the program by typing <TT>hatom</TT>
+</LI>
+<LI>You should now find the following output files in your
+directory:
+
+<OL>
+<LI><TT>COMPUTED_WAVEFUNCTION</TT> - this file contains the values
+of the hydrogen atom ground state electronic wavefunction (1S) as a function 
+of the electron's distance from the nucleus, computed approximately
+from the Ritz variational principle.   Remember this state is
+<I>spherically symmetric</I>.
+</LI>
+<LI><TT>EXACT-COMPUTED_WAVEFUNCTION</TT> - this file contains the
+difference values between the <BR><TT>EXACT_WAVEFUNCTION</TT> described below
+and <BR>
+the <TT>COMPUTED_WAVEFUNCTION</TT> described above.  Notice 
+that by expanding our trial wavefunction, (cf. Eq. (<!-- MATH
+ $\ref{equ:basis}$
+ -->
+<IMG
+ WIDTH="22" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="% latex2html id marker 376
+$\ref{equ:basis}$">)),
+into only 5 primitive gaussians we get a very good agreement with
+the true ground state wavefunction.  Due to the shape of Gaussian 
+functions (which we <I>chose</I> to use) the agreement at <IMG
+ WIDTH="22" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img36.png"
+ ALT="$r=0$">
+is worse.  Physicists know how to improve this agreement by
+employing more sophisticated basis sets.
+</LI>
+<LI><TT>EXACT_WAVEFUNCTION</TT> - remember when we <BR>
+told you that
+the hydrogen atom is one of the very few systems for which the 
+analytical solution is known?  This file contains exact values
+of the hydrogen atom ground state electronic wavefunction as a function
+of the electron's distance from the nucleus - 1S state, tabulated from the
+analytical expression:
+<BR>
+<DIV ALIGN="RIGHT">
+
+<!-- MATH
+ \begin{equation}
+\Psi({\bf r}) = \frac{1}{\sqrt{\pi}}e^{-r}
+\end{equation}
+ -->
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="equ:analytic"></A><IMG
+ WIDTH="38" HEIGHT="14" BORDER="0"
+ SRC="img37.png"
+ ALT="\begin{displaymath}
+\Psi({\bf r}) = \frac{1}{\sqrt{\pi}}e^{-r}
+\end{displaymath}"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+(5)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+</LI>
+<LI><TT>GROUND_STATE_ENERGY</TT> - this file contains the value
+of the lowest eigenvalue <IMG
+ WIDTH="12" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$\epsilon$"> which is the ground state energy
+of our hydrogen atom system.
+</LI>
+<LI><TT>HAMILTONIAN_MATRIX</TT> - this file contains elements of
+the <!-- MATH
+ $\underline{hmatrix}(N,N)$
+ -->
+<IMG
+ WIDTH="107" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.png"
+ ALT="$\underline{hmatrix}(N,N)$"> described earlier.
+</LI>
+<LI><TT>OVERLAP_MATRIX</TT> - this file contains elements of
+the <!-- MATH
+ $\underline{smatrix}(N,N)$
+ -->
+<IMG
+ WIDTH="22" HEIGHT="14" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.png"
+ ALT="$\underline{smatrix}(N,N)$"> described earlier.
+</LI>
+<LI><TT>LOWEST_ENERGY_EIGENVECTOR</TT> - this file contains elements
+of the eigenvector <IMG
+ WIDTH="8" HEIGHT="11" ALIGN="BOTTOM" BORDER="0"
+ SRC="img19.png"
+ ALT="$\vec{C}$"> corresponding to the lowest eigenvalue 
+<IMG
+ WIDTH="12" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$\epsilon$">.  
+These elements are the expansion coefficients in Eq. (<!-- MATH
+ $\ref{equ:basis}$
+ -->
+<IMG
+ WIDTH="103" HEIGHT="37" ALIGN="BOTTOM" BORDER="0"
+ SRC="img38.png"
+ ALT="% latex2html id marker 390
+$\ref{equ:basis}$">).
+</LI>
+</OL>
+</LI>
+<LI>Simply looking at numbers in <BR>
+<TT>COMPUTED_WAVEFUNCTION</TT>, <BR>
+<TT>EXACT_WAVEFUNCTION</TT> <BR>
+or <TT>EXACT-COMPUTED_WAVEFUNCTION</TT> <BR>
+is usually inferior to having these results properly graphed.  As an added 
+exercise we will now install one of the best 2-D graphing Linux 
+tools (complete, with TeX interface!).  The best part is 
+that it is freely available on the net. 
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="fig:500one"></A><A NAME="248"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 6.3:</STRONG>
+Calculated () and exact values for the 1S state of the hydrogen
+atom.  Notice a very good agreement for all points but the ones close to
+the nucleus.</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER">[width=9.0cm] 300grace.eps
+</DIV></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="fig:500two"></A><A NAME="254"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 6.4:</STRONG>
+Difference between the exact and calculated ()
+values for the 1S state of the hydrogen atom.</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER">[width=9.0cm] 300diffgrace.eps
+</DIV></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<OL>
+<LI>Become a superuser.
+</LI>
+<LI><TT>mkdir /usr/local/grace</TT> 
+</LI>
+<LI>Download grace from <BR>
+<TT>http://plasma-gate.weizmann.ac.il/ <BR>
+Grace</TT> to <TT>/usr/local/grace</TT>
+</LI>
+<LI>Unzip and untar <TT>grace-5.1.16.tar.gz</TT>
+</LI>
+<LI><TT>cd grace-5.1.16</TT>
+</LI>
+<LI><TT>./configure -enable-grace-home= <BR>
+/usr/local/grace</TT>
+</LI>
+<LI><TT>make</TT>
+</LI>
+<LI><TT>make tests</TT> and close all the test instances of 
+xmgrace - be patient.
+</LI>
+<LI><TT>make install</TT>
+</LI>
+<LI><TT>make links</TT>
+</LI>
+<LI>Login as a regular user and go to your hatom example directory.
+</LI>
+<LI>Start grace by typing <BR>
+<TT>/usr/local/grace/bin/xmgrace</TT>
+</LI>
+<LI>Graph data in files <BR>
+<TT>COMPUTED_WAVEFUNCTION</TT>, <BR>
+<TT>EXACT_WAVEFUNCTION</TT> <BR>
+and <TT>EXACT-COMPUTED_WAVEFUNCTION</TT> <BR>
+You should obtain figures similar to Figs. (<A HREF="#fig:500one">6.3</A>)
+and (<A HREF="#fig:500two">6.4</A>). 
+
+<P>
+</LI>
+</OL>
+</LI>
+</OL>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html74"
+  HREF="node6.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html72"
+  HREF="node1.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html66"
+  HREF="node4.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html75"
+  HREF="node6.html">Building your own libraries</A>
+<B> Up:</B> <A NAME="tex2html73"
+  HREF="node1.html">High-performance libraries</A>
+<B> Previous:</B> <A NAME="tex2html67"
+  HREF="node4.html">Building LAPACK</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+root
+2015-12-02
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2012 (1.2)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Exercises</TITLE>
+<META NAME="description" CONTENT="Exercises">
+<META NAME="keywords" CONTENT="chapter_d_C">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2012">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="chapter_d_C.css">
+
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node2.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html107"
+  HREF="node6.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html105"
+  HREF="node2.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html101"
+  HREF="node4.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html108"
+  HREF="node6.html">Point to Point Communications</A>
+<B> Up:</B> <A NAME="tex2html106"
+  HREF="node2.html">A first program</A>
+<B> Previous:</B> <A NAME="tex2html102"
+  HREF="node4.html">A note on output</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00113000000000000000"></A>
+<A NAME="section:basicMPIex"></A>
+<BR>
+Exercises
+</H2>
+
+<OL>
+<LI>Hello Neighbor - Modify the Hello World Program so that each processor
+sends a message to the processor of the next highest rank, and receives a 
+message from the next lower rank.  The root process 0 should not receive a 
+message, and the processor with the largest rank should not send a message.
+After all of the messages are sent and received all of the non root processes
+should send the root process a message with their received message.  The 
+output should look something like:
+<PRE>
+process 1 received message Hello from process 0
+process 2 received message Hello from process 1
+   ...
+</PRE>
+</LI>
+<LI>Advanced Exercise - On each non-root processor define a one 
+dimensional array of integers and fill it with the product of the processor
+number and the index of the location in the array.  Send this vector to root. 
+On the root processor receive the vectors into rows of a matrix.  For 
+simplicity, assume that there are four processors and each vector has length
+3.  Then print out the matrix from the root process. The output should look 
+like:
+<PRE>
+   0 1 2
+   0 2 4
+   0 3 6
+</PRE>
+</LI>
+</OL>
+
+<P>
+<BR><HR>
+<ADDRESS>
+root
+2015-12-02
+</ADDRESS>
+</BODY>
+</HTML>

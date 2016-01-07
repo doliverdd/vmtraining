@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<TITLE>USF HPC Training</TITLE>
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine">
+<LINK REL="STYLESHEET" type="text/css" href="test.css">
+<script>
+function hover(element) {
+    element.setAttribute('src', 'q2.png');
+}
+function unhover(element) {
+    element.setAttribute('src', 'q.png');
+}
+</script>
+</HEAD>
+<body class="w3-container w3-margin-32" style="width:80%">
+
+	<div class="w3-row">
+		  <div class="w3-col" style="width:30%;">
+
+			<a href="chapter1.html"> Introduction to High Performance Computing</a>
+			</div>
+
+		<div class="w3-col" style="width:30%;padding-left:5%;">
+			<!-- Trigger/Open the Modal -->
+			<img onclick="document.getElementById('id01').style.display='block'" src="q.png" onmouseover="hover(this);" onmouseout="unhover(this);"style="height:3%;width:5%;">
+
+			<!-- The Modal -->
+			<div id="id01" class="modal">
+			  <div class="mcontent">
+			    <div class="mcontain" style="padding-bottom:5px">
+			      <span onclick="document.getElementById('id01').style.display='none'" 
+			      class="mclose">&times;</span>
+			      <h2>Chapter 1 Topics include:</h2>
+			      <p>Defining HPC, Hardware and Software components</p>
+				<input type="submit" class="mbutton" value="Chapter 1" onclick="window.location.href='chapter1.html'"/></input>
+			    </div>
+			  </div>
+			</div>
+			    
+			</div>
+	</div>
+	
+	
+</body>
+</html>
+

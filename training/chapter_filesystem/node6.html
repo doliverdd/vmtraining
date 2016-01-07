@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2012 (1.2)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Exercises</TITLE>
+<META NAME="description" CONTENT="Exercises">
+<META NAME="keywords" CONTENT="chapter_filesystem">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2012">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="chapter_filesystem.css">
+
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html84"
+  HREF="node7.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html82"
+  HREF="node3.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html78"
+  HREF="node5.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html85"
+  HREF="node7.html">About this document ...</A>
+<B> Up:</B> <A NAME="tex2html83"
+  HREF="node3.html">Basic File System Commands</A>
+<B> Previous:</B> <A NAME="tex2html79"
+  HREF="node5.html">man Pages</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00123000000000000000"></A>
+<A NAME="subsection:Ex1"></A>
+<BR>
+Exercises
+</H2>
+
+<OL>
+<LI>Read the man page for the ls command (used to list files and directories),
+and do the following.
+   
+<OL>
+<LI>Do a listing of your home directory.
+</LI>
+<LI>Do a long listing of your home directory and find out what fields
+are missing from the example in the text.
+</LI>
+<LI>In Linux files beginning with a "." are hidden files.  These do not
+show up on the default version of ls.  From the man page find out how to list
+these hidden files.
+</LI>
+<LI>Find out how to list the last time a file was accessed.
+   
+</LI>
+</OL>
+</LI>
+<LI>Read the man page for the cp, cd, and tar commands, copy the file bcCode.tar.gz from the <code>\tmp</code> directory and untar it&nbsp;(hint check out the x,v,f,and z options for tar).
+</LI>
+<LI>The new bcCode directory contains the example code for this course. Change directories into the bcCode directory (You did do the last assignment, right?) Try the following commands.
+   
+<OL>
+<LI>Make a recursive copy of the HELLO directory, called myHello.  You may need to reread the man page for cp. You will use this new directory to make your modifications.
+</LI>
+<LI>The find command will recursively search directories for a file name.  Read the man page for find, and try to find the file hello.c.
+</LI>
+<LI>Linux does not use the file extensions to determine the type of file. Instead there is a command called file.  Change to the myHello/C directory.  Do the command "file *" to find out the types of files in this directory.
+</LI>
+<LI>The cat command allows you to list the contents of a text file. Based on the output from the find command in the previous part of this exercise, which file can you "cat"? Try "catting" that file.  Now try typing "cat hello".  This should cause your terminal window to fill with junk.  Use the reset command to clear up this problem.
+   
+</LI>
+</OL>
+</LI>
+<LI>There are two interactive listing commands on Linux, "less" and "more". These allow you to move back and forth in the listing and do searches. Less 
+has more features than more, and so in this case "less is more". Change to the DOC subdirectory of the bcCode directory.  Type "less chapter2.tex". <A NAME="tex2html11"
+  HREF="footnode.html#foot57"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="file:/usr/share/latex2html/icons/footnote.png"></SUP></A>
+<P>
+
+<OL>
+<LI>Move up and down in the the file using the arrow keys and/or the Enter key.
+</LI>
+<LI>What happens when you hit the space bar?
+</LI>
+<LI>Searches are done in a different "mode".  Enter :&nbsp;Now you should
+be at the bottom of the window.  Type "/less is more" to find the code for this
+question. This is a forward search.
+</LI>
+<LI>Type :. Now type "?Exercises" to find the beginning of these exercises.  This is a backward search.
+   
+</LI>
+</OL>
+
+<P>
+</LI>
+</OL>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html84"
+  HREF="node7.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html82"
+  HREF="node3.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html78"
+  HREF="node5.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html85"
+  HREF="node7.html">About this document ...</A>
+<B> Up:</B> <A NAME="tex2html83"
+  HREF="node3.html">Basic File System Commands</A>
+<B> Previous:</B> <A NAME="tex2html79"
+  HREF="node5.html">man Pages</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+root
+2015-12-02
+</ADDRESS>
+</BODY>
+</HTML>

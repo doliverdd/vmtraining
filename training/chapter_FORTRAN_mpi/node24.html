@@ -1,0 +1,244 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2012 (1.2)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>The HPF EXTRINSIC Routine</TITLE>
+<META NAME="description" CONTENT="The HPF EXTRINSIC Routine">
+<META NAME="keywords" CONTENT="chapter_FORTRAN_mpi">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2012">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="chapter_FORTRAN_mpi.css">
+
+<LINK REL="previous" HREF="node23.html">
+<LINK REL="up" HREF="node23.html">
+<LINK REL="next" HREF="node25.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html326"
+  HREF="node25.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html324"
+  HREF="node23.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html320"
+  HREF="node23.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html327"
+  HREF="node25.html">Exercises</A>
+<B> Up:</B> <A NAME="tex2html325"
+  HREF="node23.html">Additional Information on HPF</A>
+<B> Previous:</B> <A NAME="tex2html321"
+  HREF="node23.html">Additional Information on HPF</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00153100000000000000">
+The HPF EXTRINSIC Routine</A>
+</H3>
+The HPF Extrinsic routine is provided to call a procedure beyond
+the HPF language or style. This is called a local procedure
+because HPF compiler calls it as though it were a serial routine
+on each node. A local procedure can be written in F77, F90, C, C++
+for example. It may be written even in HPF . An
+EXTRINSIC(HPF_LOCAL) subroutine can call library modules such as
+HPF_LOCAL_LIBRARY. This module includes some system inquiry
+procedures such as  MY_PROCESSOR which returns the identifying
+number of the calling physical processor.
+
+<P>
+Now let us examine the HPF version of the diffusion program.
+<PRE>
+    PROGRAM DIFFUSIONHPF
+    IMPLICIT NONE
+
+c   N,M: Number of grids in the x and y direction
+c   FLD,WKSP:Concentration of the solute
+c   DF: Diffusivity
+c   L:Length of one side of the square domain
+
+    INTEGER, PARAMETER :: N=2401, M=2401,
+  &amp;                  MAXCOUNT=10000 ,no=10
+    INTEGER   :: COUNT,I,nt,mynode
+    DOUBLE PRECISION, DIMENSION(N,M) ::BOUND,
+  &amp;          FLD,WKSP,CHANGE
+    DOUBLE PRECISION ::DIFF,DF,L,T
+    LOGICAL, DIMENSION (N,M) :: MASK
+    DOUBLE PRECISION :: delta1,delta2,
+  &amp;          deltat, deltax,deltay
+
+c   Variables used for opening an output file
+    INTEGER            :: unit_number
+    CHARACTER (LEN=32) :: file_name
+
+c    Variables used for timing
+    CHARACTER (LEN = 12) :: DATE,TIMED,TIMED2
+    INTEGER :: STARTTIME,COUNTRATE,ENDTIME
+    REAL :: ELAPSEDTIME
+
+c   Declares number of processors
+!HPF$   PROCESSORS PRNUM(2,2)
+
+c   Specifies the distribution of data
+c   onto processes
+!HPF$   DISTRIBUTE FLD(block,block) onto prnum
+
+c   Alignment of data objects
+!HPF$   ALIGN CHANGE(:,:) WITH FLD(:,:)
+!HPF$   ALIGN WKSP(:,:) WITH FLD(:,:)
+!HPF$   ALIGN MASK(:,:) WITH FLD(:,:)
+
+c   Starts the timer
+    CALL DATE_AND_TIME (DATE,TIMED)
+    CALL SYSTEM_CLOCK(starttime, countrate)
+
+c   Initialization of the parameters
+    L=100.0d0
+    T=10.0d0
+    DF=(10.0d0**(-4.0d0))*25.0d0
+    NT=100
+    DELTAT=T/NT
+    DELTAX=L/(N-1)
+    DELTAY=L/(M-1)
+    DELTA1=DELTAT/(DELTAX**2.0d0)
+    DELTA2=DELTAT/(DELTAY**2.0d0)
+
+
+c   OPEN (NO,FILE='dif.EX')
+
+c   Boundary Values
+    FLD=2.0d0
+    FLD(UBOUND(FLD,DIM=1),:)=1.0d0  !S
+    FLD(LBOUND(FLD,DIM=1),:)=1.0d0  !N
+    FLD(:,UBOUND(FLD,DIM=2))=1.0d0  !E
+    FLD(:,LBOUND(FLD,DIM=2))=1.0d0  !W
+
+    FLD(1190:1200,1190:1200)=5.0d0
+
+c   Assigns false to the Logical Variable
+c   Mask at the boundaries
+    MASK=.FALSE.
+    MASK(2:N-1,2:M-1)=.TRUE.
+
+c   Main Loop
+    COUNT=0
+
+    DO
+    WHERE(MASK)
+c   Updates the concentration using finite
+c   difference formula and  CSHIFT
+    WKSP=FLD+DELTA1*DF*(CSHIFT(FLD,1,1)+
+     &amp;  CSHIFT(FLD,-1,1)-2.0*FLD)
+     &amp;   +DELTA2*DF*(CSHIFT(FLD,1,2)+
+     &amp;  CSHIFT(FLD,-1,2)-2.0*FLD)
+
+    CHANGE=WKSP-FLD
+    ENDWHERE
+    FLD=FLD+CHANGE
+        write(*,*) fld(1195,1195)
+
+        COUNT=COUNT+1
+
+c   Checks whether the concentration in the
+c   middle of the small square is below 2.5
+
+    IF (FLD(1195,1195).LE.2.5) go to 5500
+    ENDDO
+    PRINT*, TIMED,TIMED2
+5500    PRINT*, count
+    PRINT*, FLD(1195,1195),'MIDFLD'
+
+c   Calls extrinsic subroutine to open
+c   an output file for each process
+
+500  call p_open (fld)
+1922    FORMAT (F17.15)
+
+c   Alternatively,  all data can be
+c   written in a single file
+
+    write(no,1922) fld
+
+c   Stop the timer
+    CALL DATE_AND_TIME (DATE,TIMED2)
+    CALL SYSTEM_CLOCK(EndTime)
+        ElapsedTime = REAL(EndTime -
+     &amp;  StartTime) / REAL(CountRate)
+        write(*,*) 'Wall clock time =
+     &amp;  ', ElapsedTime, ' seconds'
+        write (*,*) 'Start Time = ',TIMED
+        write (*,*) 'End Time = ',TIMED2
+
+    END PROGRAM DIFFUSIONHPF
+
+    extrinsic(hpf_local) subroutine p_open (UD)
+
+c   Allows using HPF_LOCAL_LIBRARY procedures
+c   such as MY_PROCESSOR
+    USE HPF_LOCAL_LIBRARY
+
+    integer  :: mynode
+    double precision, dimension(:,:),
+ &amp;              intent(in) :: UD
+    character(LEN=12) :: hostname
+    character(LEN=32)  ::filename
+    INTEGER  ::  hostnm, status
+
+c   The library "lib3f.h" should be
+c   included to be able to use the
+c   function hostnm in an HPF code
+    INCLUDE 'lib3f.h'
+
+!hpf$   distribute *(block,block) :: UD
+
+    mynode = MY_PROCESSOR()
+    status=hostnm(hostname)
+    write(*,*) hostname,mynode
+
+c   Each processor opens an output file
+c   as "filehpf.hostname
+         filename='filehpf.' // hostname
+1923     FORMAT (F17.15)
+
+    OPEN(unit=mynode,file=filename,
+     &amp;          status='unknown')
+    write(mynode,1923)UD
+
+    end subroutine p_open
+</PRE>
+
+<P>
+Note that CSHIFT(array,shift,dimension) performs a circular shift
+along a given dimension of an array
+
+<P>
+<PRE>
+    1 2 3                  4 5 6
+M=  4 5 6   CSHIFT(M,1,1)= 7 8 9
+    7 8 9                  1 2 3
+                   2 3 1
+    CSHIFT(M,1,2)= 5 6 4
+                   8 9 7
+</PRE>
+<BR><HR>
+<ADDRESS>
+root
+2015-12-02
+</ADDRESS>
+</BODY>
+</HTML>

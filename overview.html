@@ -1,0 +1,265 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<TITLE>Training </TITLE>
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine">
+<LINK REL="STYLESHEET" HREF="../css/main.css">
+</HEAD>
+<body class="w3-container w3-margin-32" style="width:80%">
+<h1>Overview </h1>
+
+<h3>Following is a list of the topics we will cover:</h3>
+<ul class="w3-ul">
+<li>Linux fundamentals.  This  is intended as a bridge for the user that is only familiar with the various MS 
+Windows operating systems.  The topics will only be covered in an introductory
+manner. </li> 
+
+<li>Download, use, and create scientific libraries.</li>
+<li>Parallel computing with an intro to MPI programming.</li>
+<li>C programming </li>
+</ul>
+<h3>Linux Fundamentals</h3>
+
+It is not necessary to become a Linux guru to be able to effectively
+use these systems.  In fact, most of your interaction with the system will be 
+through what is called a shell.  A shell is nothing more than a program
+that makes using the system resources easier.  Those of you that
+have used the "Command Tool" in Windows operating systems have used a shell 
+which is referred to as the DOS shell.  Although it may
+seem awkward at first for those of you that have only used a GUI based system
+like Windows, it will quickly become second nature.  Many people, after 
+becoming comfortable with the command line, find a GUI interface 
+somewhat restrictive.  This interface to the system resources is called a
+command line interface.
+
+<br>
+The default user shell for Linix is called bash.
+In this part of the training, you will find out how to access the system, use 
+the command line interface and the shell, work with file and 
+directories, and learn some basic commands. 
+
+       <p>
+
+<h4>Getting Started</h4>
+The first thing that you must know is how to access the system.  You should have
+been given an account name and password when you arrived in the lab today.  
+You will need both to access the system since Linux is a true multiuser system.
+Please keep the account name and password in a safe place.  
+For our examples we will assume that the system has
+a user with the account name "frodo". Notice that frodo is not capitalized. 
+This is because Linux is case sensitive. Before we log on to the system 
+let's take a look at the filesystem structure.  
+<br>
+The filesystem on Linux is composed of 
+directories and files.  The directories are synonymous with 
+folders in the Windows operating systems.  The main system directories
+are displayed below. On most Linux systems the contents
+of these main directories are fairly standard, although the reasons may not be
+clear. The common contents of some of the more important directories for users
+are listed here:
+
+<BR>
+<table>
+<tr>
+<td>/bin</td>
+<td>Command binaries </td>
+</tr>
+
+<tr>
+<td>/home </td>
+<td>Users home directories</td>
+</tr>
+
+<tr>
+<td> /lib</td>
+<td> System libraries</td>
+</tr>
+
+<tr>
+<td>/sbin </td>
+<td> System binaries</td>
+</tr>
+
+<tr>
+<td>/tmp </td>
+<td> Scratch Space </td>
+</tr>
+
+<tr>
+<td> /usr/bin</td>
+<td>Binaries for user commands </td>
+</tr>
+
+<tr>
+<td>/usr/include </td>
+<td> Header or include files</td>
+</tr>
+
+<tr>
+<td>/usr/lib </td>
+<td>Libraries  </td>
+</tr>
+
+<tr>
+<td> /usr/local</td>
+<td>Locally installed binaries,libraries,and includes </td>
+</tr>
+</table>
+<p>
+
+<h3>Basic File System Commands</h3>
+<h4>File System Security</h4>
+
+On most Linux systems users have a private directory which is usually 
+"/HOMEDIRECTORYPATH/username". A path is the 
+series of directories that indicate the location of a file.  For our purposes
+we will assume that "HOMEDIRECTORYPATH" is just the directory /home/usernameinitial/username.
+When we do a listing of/home/f/frodo, we get the following output.
+<p>
+<div class="w3-card w3-black" style="width:40%">
+[frodo@macros frodo]$ ls -lR<br>
+.:<br>
+total 12<br>
+drwxrwxr-x    2 frodo    users  ... bcCode<br>
+-rw-r--r--    1 frodo    users  ... bcCode.tar.gz<br>
+                                                     <br>                           
+./bcCode:<br>
+total 16<br>
+-rw-r--r--    1 frodo    users  ... hello<br>
+-rw-rw-r--    1 frodo    users  ... hello.c<br>
+[frodo@macros frodo]$</div>
+
+<h4>File permissions</h4>
+
+A few of the fields of this listing have been removed in the interest of 
+conserving space. Let's take a look at some of the parts of this listing.
+The term <p>[frodo@macros frodo]$<br>
+
+is the prompt.  This string is formated in the shell's configuration files. Here, "frodo" 
+refers to the account name, and "macros" is the name of the server.  The string
+<p>ls -lR<br>
+
+is a call to the command "ls", which is the command for listing files and/or
+directories. The "-lR" are the options.  This command/option structure is 
+standard for Linux.  We will see more about this when we discuss the "man"
+or help command. In this case the "l" in "-lR" means give the "long" or 
+detailed listing, and the "R" makes the listing recursive so that it will list
+files in the subdirectories.  We will be exploring other options to the ls 
+command later in the exercises.<br>
+
+The first group of files are those directly in Frodo's home
+directory.  You will notice that the line for bcCode starts with a "d".  This
+indicates that this file is a directory.  After the "d" you see the characters
+"rwxrwxr-x" these characters are the permissions field.  The permissions come
+in three groups of three letters.  The groups are owner, group, and world.  
+The possible letters are r, w and x which stand for read permissions, write
+permissions, and execute permissions respectively.  According to this output
+the owner Frodo and the group users, can read, write and execute this directory.
+So you may be wondering why a directory needs execution permission.  The 
+answer is that giving a user or group execute permissions on a directory means
+that they can "cd" or move into that directory. The last three characters on 
+this line r-x means that the world (another way of saying all users) have read
+and execute permissions on this directory, but they cannot write to it.  This
+means that any user can it cd to this directory and list the files, but they
+cannot create or delete files.
+<p>
+The file permissions are changed with the "chmod" command.
+You can use the letters u,g,o,a for users, group, others, or all and the letters
+w,r,x for read write and execute.  A "+" adds permissions and a "-" subtracts 
+permissions.  For example if Frodo wanted to let all users have write
+permissions on his directory (a very bad idea), he would give the command:
+<p>
+ chmod o+w bcCode<br>
+<p>
+The corresponding line in the above listing would become:
+<p>
+  drwxrwxrwx    2 frodo    users  ... bcCode<br>
+<p>
+<h4>man Pages</h4>
+
+One of the most useful commands in Linux is the man command.  This is 
+the Linux help system.  The man pages are broken up into it NAME, SYNOPSIS, 
+DESCRIPTION, OPTIONS, ENVIRONMENT, and SEE ALSO s. There may be some 
+additional s, but these are the most common.  The SYNOPSIS 
+gives the syntax of the command with  denoting optional parameters. Under 
+the DESCRIPTION  you will find a detail description of the action of
+the command in question.  OPTIONS give a detailed look at each possible option
+for the command.  In general Linux command options are preceded by 
+a "-" or a "-&nbsp;-".  The man page format becomes a very efficient help system once
+you become familiar with the layout.  You will practice with these pages in
+the following exercises.
+<h4> Exercises</h4>
+
+<ol class="w3-ol">
+   <li> Read the man page for the ls command (used to list files and directories),
+and do the following.</li>
+   
+	  <ol class="w3-ol" style="list-style-type:lower-alpha"><li> Do a listing of your home directory.</li>
+	  <li> Do a long listing of your home directory and find out what fields
+are missing from the example in the text.</li>
+	  <li> In Linux files beginning with a "." are hidden files.  These do not
+show up on the default version of ls.  From the man page find out how to list
+these hidden files.</li>
+	  <li> Find out how to list the last time a file was accessed.</li></ol>
+   
+   <li> Read the man page for the cp, cd, and tar commands, copy the file bcCode.tar.gz from the  \tmp<br> directory and untar it&nbsp;(hint check out the x,v,f,and z options for tar).</li>
+   The new bcCode directory contains the example code for this course. Change directories into the bcCode directory (You did do the last assignment, right?) Try the following commands.
+   
+<ol class="w3-ol" style="list-style-type:lower-alpha"> <li> Make a recursive copy of the HELLO directory, called myHello.  You may need to reread the man page for cp. You will use this new directory to make your modifications.</li>
+	  <li> The find command will recursively search directories for a file name.  Read the man page for find, and try to find the file hello.c.</li>
+	  <li> Linux does not use the file extensions to determine the type of file. Instead there is a command called file.  Change to the myHello/C directory.  Do the command "file *" to find out the types of files in this directory.</li>
+	  <li> The cat command allows you to list the contents of a text file. Based on the output from the find command in the previous part of this exercise, which file can you "cat"? Try "catting" that file.  Now try typing "cat hello".  This should cause your terminal window to fill with junk.  Use the reset command to clear up this problem.</li></ol>
+   
+   <li> There are two interactive listing commands on Linux, "less" and "more". These allow you to move back and forth in the listing and do searches. Less 
+has more features than more, and so in this case "less is more". Change to the DOC subdirectory of the bcCode directory.  Type "less .tex".  </li>
+	 <ol class="w3-ol" style="list-style-type:lower-alpha"><li> Move up and down in the the file using the arrow keys and/or the Enter key.</li>
+	  <li> What happens when you hit the space bar?</li>
+	  <li> Searches are done in a different "mode".  Enter :&nbsp;Now you should
+be at the bottom of the window.  Type "/less is more" to find the code for this
+question. This is a forward search.</li>
+	  <li> Type :/ Now type "?Exercises" to find the beginning of these exercises.  This is a backward search.</li></ol>
+   
+<p>
+<ul class="w3-pagination">
+<li><a href="index.html">Previous</a></li>
+  <li><a href="intro.html">Next</a></li>
+  
+  
+</ul>
+                
+                        <footer class="foot">
+
+                                <h5>HPC Training - University of South Florida</h5>
+                        </footer>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
