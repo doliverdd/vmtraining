@@ -5,7 +5,7 @@
 <TITLE>USF HPC Training</TITLE>
 <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
 <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine">
-<LINK REL="STYLESHEET" HREF="../css/main.css">
+<LINK REL="STYLESHEET" HREF="css/main.css">
 
 </HEAD>
 
@@ -21,12 +21,10 @@
 <h1>Compiling Basics and Make</h1>
 
 
-<p>
 Researchers must often write their own code, or at the very least modify code
 that someone else has written.  In the Linux world this means working with
 one of the compilers that are available, and more often than not, working
-with a makefile (or Makefile).  While
-we have several different compilers available on our systems we will concentrate
+with a makefile (or Makefile).  While we have several different compilers available on our systems we will concentrate
 on gcc for this .  Although different compilers have different options,
 the basic usage is the same. Concentrating on one compiler will allow us to avoid several complications.  The material should  
 easily translate to other compilers, and even other languages.
@@ -38,10 +36,10 @@ These problems are
 further complicated by trying to remember which files where changed and what
 are the interdependencies.  Fortunately, in the Linux world we have the command
 it make. indexmake With a properly formated it makefile, all of these
-problems are handled automatically.  indexmakefile 
+problems are handled automatically.
 <p>
-Compiling Basics
-label:compilingBasics
+<h4>Compiling Basics</h4>
+
 Lets start with a simple example. Let the following program be in the 
 file HiMom.c. 
 

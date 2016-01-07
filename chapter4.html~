@@ -281,12 +281,12 @@ have no access or can just read the script is a good starting place.  How
 to do this is left as an exercise for the reader. All of the example scripts
 are contained in the code directory. 
 
-<h4>Some Simple Scripts</h4
-
-#!/bin/bash
-export MY_NAME=frodo
-echo Hello from $MY_NAME
-
+<h4>Some Simple Scripts</h4>
+<div class="w3-card w3-black" style="width:40%">
+#!/bin/bash<br>
+export MY_NAME=frodo<br>
+echo Hello from $MY_NAME<br>
+</div>
 While this script doesn't do very much, it contains enough of the basics to begin
 discussing this type of programming.  One way
 of thinking about shell scripts is that they exist to automate the running
