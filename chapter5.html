@@ -32,22 +32,20 @@ easily translate to other compilers, and even other languages.
 Once programs reach a certain complexity, they may require certain libraries,
 include files, or may be contained in more than one file.  The command to
 compile such a program may consist of several lines.
-These problems are 
-further complicated by trying to remember which files where changed and what
-are the interdependencies.  Fortunately, in the Linux world we have the command
-it make. indexmake With a properly formated it makefile, all of these
-problems are handled automatically.
+These problems are further complicated by trying to remember which files where changed and what
+are the interdependncies.  Fortunately, in the Linux world we have the command <i> make</i>. 
+<br>
+With a properly formated <i> makefile</i>, all of these problems are handled automatically.
 <p>
 <h4>Compiling Basics</h4>
 
-Lets start with a simple example. Let the following program be in the 
-file HiMom.c. 
-
-main(){
-   printf("Hi Mom\n");
-}
-
-To compile this program we could just type it gcc HiMom.c.  This would
+Lets start with a simple example. Let the following program be in the file <br>HiMom.c </b>
+<div class="w3-card w3-black" style="width:40%">
+main(){<br>
+   printf("Hi Mom\n");<br>
+}<br>
+</div>
+To compile this program we could just type <i> gcc HiMom.c</i>.  This would
 produce a file called it a.out.  While this file would execute correctly,
 the next time you compiled a program in this directory you would loose this 
 compiled version.  Or worse yet when you came back two days latter would 
