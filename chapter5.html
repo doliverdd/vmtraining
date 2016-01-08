@@ -46,42 +46,41 @@ main(){<br>
 }<br>
 </div>
 To compile this program we could just type <i> gcc HiMom.c</i>.  This would
-produce a file called it a.out.  While this file would execute correctly,
-the next time you compiled a program in this directory you would loose this 
+produce a file called <i> a.out</i>.  While this file would execute correctly,
+the next time you compiled a program in this directory you would lose this 
 compiled version.  Or worse yet when you came back two days latter would 
 you remember what program was compiled into a.out?  It is best to always use
-the it -o option which lets you name the binary. Compiling the program with
-the -o option would look like it gcc -o HiMom HiMom.c. This would create the
-executable it HiMom. 
+the <i> -o </i>option which lets you name the binary. Compiling the program with
+the -o option would look like <i> gcc -o HiMom HiMom.c</i>. This would create the
+executable <i> HiMom</i>. 
 <p>
 Gcc does not print out all of the warnings that it finds compiling the code. 
 It will print out warnings if the code is so questionable that it seems as if
 the program will not execute correctly.  If you want the code to be portable,
 or if you may want to compile with a different compiler it is a good idea to
-compile your code with the it -Wall flag.  This tells the compiler to 
-print all warning messages.  Compiling the HiMom.c code with the command it
-gcc -Wall -o HiMom HiMom.c produces the following.
-
-HiMom.c:1: warning: return type defaults to `int'
-HiMom.c: In function `main':
-HiMom.c:2: warning: implicit declaration 
-						   of function `printf'
-HiMom.c:3: warning: control reaches end of 
-						   non-void function
-
+compile your code with the <i>-Wall</i> flag.  This tells the compiler to 
+print all warning messages.  Compiling the HiMom.c code with the command <i>
+gcc -Wall -o HiMom HiMom.c</i> produces the following.
+<div class="w3-card w3-black" style="width:40%">
+$frodo:cc -Wall -o HiMom HiMom.c
+$frodo: HiMom.c:1: warning: return type defaults to `int'<br>
+$frodo: HiMom.c: In function `main':<br>
+$frodo: HiMom.c:2: warning: implicit declaration of function `printf'<br>
+$frodo: HiMom.c:3: warning: control reaches end of non-void function<br>
+</div>
 <p>
 None of these warnings will cause problems with this program, but they might
 be of concern if they were coming from compilation of a subprogram.  Because 
 this is not a class on C programming we won't go into the details of the 
 warning messages, but the "fixed" code is given here for completeness.
-
-#include &lt;stdio.h&gt;
-#include &lt;stdlib.h&gt;
-int main(){
-   printf("Hi Mom\n");
-   exit(0);
-}
-
+<div class="w3-card w3-black" style="width:40%">
+#include &lt;stdio.h&gt;<br>
+#include &lt;stdlib.h&gt;<br>
+int main(){<br>
+   printf("Hi Mom\n");<br>
+   exit(0);<br>
+}<br>
+</div>
 <p>
 The characteristics of the executable produced by the compiler may be 
 determined by the use of various flags.  There are too many to cover in any
@@ -91,9 +90,9 @@ aware that the nature of your code will determine if a particular flag will
 be of benefit.  This is a matter of experience and sometimes brute force trial
 and error.
 <p>
-There are two very useful flags it -O and it -g that you should use on
+There are two very useful flags <i>-O </i>and <i> -g</i> that you should use on
 a regular basis. The -g flag produces extra debugging information that can
-be used when running a debugger or program tracer.  This make larger and 
+be used when running a debugger or program tracer.  This makes larger and 
 possibly slower code so it is often used during development and turned off
 for production code.  Most compilers can create binaries with different
 levels of optimization.  To increase the level of optimization use the -O
@@ -104,7 +103,7 @@ more information.
 So far we have dealt with compiling a single file that only requires the 
 standard libraries.  This is not usually the case for research codes.  They
 usually need external libraries, and are often contained in multiple files.
-Although the topic of libraries will be discussed in <p> ref<p>:libs,
+Although the topic of libraries will be discussed in the next chapter,
 we will give a brief introduction here.  
 <p>
 Most larger programs have code in several files that are compiled separately,
@@ -112,59 +111,58 @@ and then linked into the final code. We will use the following example that
 calls a function from another source file.  This is a trivial example that 
 we will build on later. 
 <p>
-
-----------------------------------------------
 File mainProgram.c
+<div class="w3-card w3-black" style="width:40%">
 
-/* This program calls a function that returns*/
-/* a value.  It is just for demonstration*/ 
-/* purposes */
 
-#include &lt;stdio.h&gt;
-#include &lt;stdlib.h&gt;
-#include "subProgram.h"
-int main(){
-   double myDouble;
-   myDouble=calcValue(5);
-   printf("calculated value %10.5f\n",myDouble);
-   exit(0);
-}
-----------------------------------------------
+/* This program calls a function that returns*/<br>
+/* a value.  It is just for demonstration*/ <br>
+/* purposes */<br>
 
-----------------------------------------------
+#include &lt;stdio.h&gt;<br>
+#include &lt;stdlib.h&gt;<br>
+#include "subProgram.h"<br>
+int main(){<br>
+   double myDouble;<br>
+   myDouble=calcValue(5);<br>
+   printf("calculated value %10.5f\n",myDouble);<br>
+   exit(0);<br>
+}<br>
+</div>
+
 File subProgram.h
+<div class="w3-card w3-black" style="width:40%">
+/* a trivial function to use as an example */<br>
 
-/* a trivial function to use as an example */
+double calcValue(int input);<br>
+</div>
 
-double calcValue(int input);
 
-----------------------------------------------
-
-----------------------------------------------
 File subProgram.c
+<div class="w3-card w3-black" style="width:40%">
 
-/* Code for a trivial function */
+/* Code for a trivial function */<br>
 
-#include "subProgram.h"
+#include "subProgram.h"<br>
 
-double calcValue(int input){
+double calcValue(int input){<br>
 
-   double returnVal;
+   double returnVal;<br>
    
-   returnVal = (input * input) - 3.14;
+   returnVal = (input * input) - 3.14;<br>
    
-   return(returnVal);
-}
-----------------------------------------------
+   return(returnVal);<br>
+}<br>
+</div>
 
 <p>
 These files can be compiled with the commands.
 <p>
 
-gcc -c -o subProgram.o subProgram.c
-gcc -c -o mainProgram.o mainProgram.c
-gcc -o myCalculation mainProgram.o subProgram.o
-
+<i>gcc -c -o subProgram.o subProgram.c<br>
+gcc -c -o mainProgram.o mainProgram.c<br>
+gcc -o myCalculation mainProgram.o subProgram.o<br>
+</i>
 <p>
 On the first two lines the it -c option tells gcc not to run the linker.
 Or in other words compile the file and assume that the undefined (but not 
@@ -180,24 +178,25 @@ computes the Bessel Function of order 0.  Then the subProgram.c file becomes:
 <p>
 
 /* Code for a trivial function */
+<div class="w3-card w3-black" style="width:40%">
+#include "subProgram.h"<br>
+#include &lt;gsl/gsl_sf_bessel.h&gt; <br>
 
-#include "subProgram.h"
-#include &lt;gsl/gsl_sf_bessel.h&gt; 
+double calcValue(double input){<br>
 
-double calcValue(double input){
-
-   double returnVal;
-   returnVal = gsl_sf_bessel_J0 (input);
+   double returnVal;<br>
+   returnVal = gsl_sf_bessel_J0 (input);<br>
    
-   return(returnVal);
-}
-
+   return(returnVal);<br>
+}<br>
+</div>
 <p>
-If we compile it with the same line as above we get the error message, "gsl/gsl_sf_bessel.h : No such file or directory".  This is because the gsl include
+If we compile it with the same line as above we get the error message, 
+"gsl/gsl_sf_bessel.h : No such file or directory".  This is because the gsl include
 files are not in one of the standard include paths. (Although in a default 
 installation they are put into /usr/local/include.) 
 Assume that the gsl libraries are in /opt/gsl/lib and
-the includes are in /opt/gsl/include. We can use the it -I option
+the includes are in /opt/gsl/include. We can use the <i> -I</i> option
 to add this new include directory to the include path for this program. We would
 change the line above to "gcc -c -I /opt/gsl/include -o subProgram.o 
 subProgram.c" and then the compile will work.  But now when we try to link the
@@ -210,7 +209,7 @@ collect2: ld returned 1 exit status
 
 <p>
 This is because the library file that contains the newline gsl_sf_bessel_J0 function
-is not is one of the standard library paths.  To get a compile without errors
+is not one of the standard library paths.  To get a compile without errors
 we must change the last gcc line to be:
 <p>
 
@@ -218,13 +217,13 @@ we must change the last gcc line to be:
 		 -o myCalc mainProgram.o subProgram.o
 
 <p>
-The line is broken only for space considerations and would be typed as one command.
-We have added the it -L and the it -l flags. The -L flag is to libraries
+
+We have added the <i> -L</i> and the <i> -l</i> flags. The -L flag is to libraries
 what the -I flag is to include files.  It says to add the directory, in this
 case /opt/gsl/lib, to the paths that are searched for the library files.
-the -l flag names library files that are to be used to find functions.  Althoughwe are not only linking the gsl library, but the gslcblas library file. 
+the -l flag names library files that are to be used to find functions.  Although we are not only linking the gsl library, but the gslcblas library file. 
 This must be done because the gsl library makes calls to the gslcblas libraries.
-Make
+<h4>Make</h4>
 As you can see by now the compiling and linking of large research codes can
 begin to be quite complicated.  Imagine that instead of three files in the
 last  we had been dealing with one hundred source and header files. 
