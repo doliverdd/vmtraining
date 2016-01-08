@@ -13,14 +13,15 @@
 <img src="header.png" alt="usf header" style = "width:100%"><div style="padding-bottom:2%"></div>
 <ul class="pag">
 <li><a href="index.html">Home</a></li>
-<li><a href="chapter3.html">Previous</a></li>
+<li><a href="chapter4.html">Previous</a></li>
   <li><a href="chapter5.html">Next</a></li>
   </ul>
 
 <h1>Chapter 5</h1>
 <h1>Compiling Basics and Make</h1>
 
-
+<div class="w3-row">
+		  <div class="col-70">
 Researchers must often write their own code, or at the very least modify code
 that someone else has written.  In the Linux world this means working with
 one of the compilers that are available, and more often than not, working
@@ -202,19 +203,18 @@ change the line above to "gcc -c -I /opt/gsl/include -o subProgram.o
 subProgram.c" and then the compile will work.  But now when we try to link the
 programs with the last gcc line above we get this output.
 <p>
-
-subProgram.o(.text+0x1c): In function `calcValue':
-: undefined reference to `gsl_sf_bessel_J0'
-collect2: ld returned 1 exit status
-
+<div class="w3-card w3-black" style="width:40%">
+subProgram.o(.text+0x1c): In function `calcValue':<br>
+: undefined reference to `gsl_sf_bessel_J0'<br>
+collect2: ld returned 1 exit status<br>
+</div>
 <p>
 This is because the library file that contains the newline gsl_sf_bessel_J0 function
 is not one of the standard library paths.  To get a compile without errors
 we must change the last gcc line to be:
 <p>
 
- gcc -L /opt/gsl/lib -lgsl -lgslcblas 
-		 -o myCalc mainProgram.o subProgram.o
+ gcc -L /opt/gsl/lib -lgsl -lgslcblas -o myCalc mainProgram.o subProgram.o
 
 <p>
 
@@ -225,60 +225,61 @@ the -l flag names library files that are to be used to find functions.  Although
 This must be done because the gsl library makes calls to the gslcblas libraries.
 <h4>Make</h4>
 As you can see by now the compiling and linking of large research codes can
-begin to be quite complicated.  Imagine that instead of three files in the
+begin to get quite complicated.  Imagine that instead of three files in the
 last  we had been dealing with one hundred source and header files. 
 Added to this problem is that if you change one of the source files it is 
 inefficient to have to recompile all of them.  But how can you keep track of 
 the dependencies and how can you know when a file was last compiled?  The 
-answer on Linux systems is it make indexmake.  
-Make is a program that is designed specifically to handle these problems. Among
-other things make can, keep track of 
+answer on Linux systems is <i>make</i>.  
+<i>Make</i> is a program that is designed specifically to handle these problems. Among
+other things <i>make</i> can keep track of 
 dependencies, and determine when program files need to be recompiled.  The
 syntax of a make file is not always clear, but with a little experience it
 can be very helpful.  
 <p>
-Make must know what you want to compile (it targets), what other files
-the program needs (it dependencies), and how you want to compile the
-program (it commands). indextargets indexdependencies indexcommands
+Make must know what you want to compile (<i> targets</i>), what other files
+the program needs (<i>dependencies</i>), and how you want to compile the
+program (<i>commands</i>).
 Lets suppose that we have the following rather typical scenario. We want to
-make a program myProgram.  The main file is called myProgram.c and it
+make a program <i>myProgram</i>.  The main file is called myProgram.c and it
 is dependent on two other source files sub1.c and sub2.c.  The programs
 use the math library (-lm) and a library abc which is contained in the /opt/lib
 directory.  The include files for abc are in the /opt/include directory.  
 Additionally each of the c files has an associated header file, and they
 may call functions from each other.  The make file for this may look like:
 <p>
+<div class="w3-card w3-black" style="width:40%">
+# Makefile for myProgram<br>
+myProgram: sub1.o sub2.o myProgram.o <br>
+   gcc -o myProgram -L/opt/lib -I/opt/include  \<br> 
+	  -labc -lm sub1.o sub2.o myProgram.o<br>
+<br>
+myProgram.o: myProgram.c sub1.h sub2.h<br>
+   gcc -c -o myProgram.o -L/opt/lib -I/opt/include \<br>
+      -labc -lm myProgram.c<br>
 
-# Makefile for myProgram
-myProgram: sub1.o sub2.o myProgram.o 
-   gcc -o myProgram -L/opt/lib -I/opt/include  \ 
-	  -labc -lm sub1.o sub2.o myProgram.o
-
-myProgram.o: myProgram.c sub1.h sub2.h
-   gcc -c -o myProgram.o -L/opt/lib -I/opt/include \
-      -labc -lm myProgram.c
-
-sub1.o: sub1.c sub1.h
-   gcc -c -o sub1.o -L/opt/lib -I/opt/include \
-      -labc  -lm sub1.c
-
-sub2.o: sub2.c sub2.h
-   gcc -c -o sub2.o -L/opt/lib -I/opt/include \
-      -labc -lm sub2.c
-
+sub1.o: sub1.c sub1.h<br>
+   gcc -c -o sub1.o -L/opt/lib -I/opt/include \<br>
+      -labc  -lm sub1.c<br>
+<br>
+sub2.o: sub2.c sub2.h<br>
+   gcc -c -o sub2.o -L/opt/lib -I/opt/include \<br>
+      -labc -lm sub2.c<br>
+<br>
+</div>
 <p>
 Let's look at this file in some detail. The first line is a comment.
 The lines that begin with a program 
 name and a colon followed by a list of files is a target-dependency line.
-What goes before the colon is the it target and the other files are the
-it dependencies.  Make will keep track of which of these files have
+What goes before the colon is the <i> target</i> and the other files are the
+<i>dependencies</i>.  Make will keep track of which of these files have
 changed since the target was last compiled, and will recompile them before 
 compiling the target. It will not recompile a target if none of the dependencies
-have changed.  Notice the  \<br> at the end of the first gcc line.  This is
+have changed.  Notice the  \ at the end of the first gcc line.  This is
 the continuation character for make so these two lines are treated as one. 
 Extra white space is deleted when a continuation character is used.  This 
 leads to one of the most frustrating aspects of the makefile for new users.
-The gcc lines must begin with a tab or make has a problem.  By default, make
+The gcc lines must begin with a <b>tab</b> or make has a problem.  By default, make
 compiles the first target.  If you want to compile one of the other targets
 you can (for example) just type make sub1.o and only that target and it's 
 dependencies (if necessary) will be compiled.
@@ -286,28 +287,28 @@ dependencies (if necessary) will be compiled.
 Make allows assigning values to variables.  This can clean up the lines of 
 a make file.  We've done this in the second version of the make file for
 myProgram.
-
-# Makefile for myProgram
-LIBS = -L /opt/lib -labc -lm
-INCLUDES = -I /opt/include
-OBJECTS = sub1.o sub2.o myProgram.o
-myProgram: $(OBJECTS) 
-   gcc -o myProgram $(INCLUDES) $(LIBS) $(OBJECTS)  
-	  
-
-myProgram.o: myProgram.c sub1.h sub2.h
-   gcc -c -o myProgram.o $(LIBS) $(INCLUDES)\
-      myProgram.c
-
-sub1.o: sub1.c sub1.h
-   gcc -c -o sub1.o $(INCLUDES) $(LIBS) sub1.c
-
-sub2.o: sub2.c sub2.h
-   gcc -c -o sub2.o $(INCLUDES) $(LIBS) sub2.c
-
-clean:
-   /bin/rm *.o
-
+<div class="w3-card w3-black" style="width:40%">
+# Makefile for myProgram<br>
+LIBS = -L /opt/lib -labc -lm<br>
+INCLUDES = -I /opt/include<br>
+OBJECTS = sub1.o sub2.o myProgram.o<br>
+myProgram: $(OBJECTS) <br>
+   gcc -o myProgram $(INCLUDES) $(LIBS) $(OBJECTS)<br>  
+	  <br>
+<br>
+myProgram.o: myProgram.c sub1.h sub2.h<br>
+   gcc -c -o myProgram.o $(LIBS) $(INCLUDES)\<br>
+      myProgram.c<br>
+<br>
+sub1.o: sub1.c sub1.h<br>
+   gcc -c -o sub1.o $(INCLUDES) $(LIBS) sub1.c<br>
+<br>
+sub2.o: sub2.c sub2.h<br>
+   gcc -c -o sub2.o $(INCLUDES) $(LIBS) sub2.c<br>
+<br>
+clean:<br>
+   /bin/rm *.o<br>
+</div>
 <p>
 In this version we assign the library directories, include directories, and
 object files to variables, which are then used in the dependencies and 
@@ -319,28 +320,33 @@ to handle changes in the library files.  In effect what it does is remove all
 of the .o files so that the next run will recompile everything. This dummy
 target adds significant flexibility to make.
 <p>
-Exercises
-<br>
-<br> Add a loop to the main program file in the example that calculates the
+<h4>Exercises</h4>
+<ol class="w3-ol">
+<li>Add a loop to the main program file in the example that calculates the
 Bessel function to call the sub-program a large number of times.  Experiment
 with the size of the loop so that the executions takes some significant amount
-of time. (Say  &gt;<br> 3 minutes) Use the Linux "time" command to time your 
-runs.(Check
-the man page.) Now try compiling the program with different levels of 
-optimization to see if the code gets faster.
-<br> Create a makefile so that the code from the Bessel function example can
-be compiled with make.  Extend the file so that if you want to compile with
+of time. (Say  &gt; 3 minutes) Use the Linux "time" command to time your 
+runs.(Check the man page.)</li> 
+<li>Now try compiling the program with different levels of
+optimization to see if the code gets faster.</li>
+<li>Create a makefile so that the code from the Bessel function example can
+be compiled with make.  </li>
+<li>Extend the file so that if you want to compile with
 the -g option you make one target, and if you want to compile without the
--g option you make another target. 
-<br> Advanced Exercise - Look up the the it -D option for gcc and see
+-g option you make another target. </li>
+</ol>
+<h4>Advanced Exercise</h4>
+Look up the the it -D option for gcc and see
 if you can use this to compile the program with the Bessel option sometimes
 and with some other function of your choice at other times.  (Even just square
 root as an example) Put these changes into the makefile so that you can
 make the version that you want with no changes to the code or makefile.
 <p>
+
+</div></div>
 <ul class="pag">
 <li><a href="index.html">Home</a></li>
-<li><a href="chapter3.html">Previous</a></li>
+<li><a href="chapter4.html">Previous</a></li>
   <li><a href="chapter5.html">Next</a></li>
   
   
