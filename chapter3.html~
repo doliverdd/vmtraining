@@ -19,7 +19,8 @@
 
 <h1>Chapter 3</h1>
 <h1>A Gentle Introduction to VI</h1>
-
+<div class="w3-row">
+		  <div class="col-70">
 
 To do any work on a system you must be able to manipulate the contents of files.
 There is an editor on all *nix systems called it VI
@@ -137,7 +138,7 @@ n to m. If the n,m is left out, the replacement will only be for the current lin
 left off, only the first occurrence on any line will be replaced.  Try replacing some words across multiple lines and for the whole file.  
 <p></li></ol>
  
-
+</div></div>
 
 <p>
 <ul class="pag">
