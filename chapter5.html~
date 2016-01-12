@@ -13,7 +13,7 @@
 <img src="header.png" alt="usf header" style = "width:100%"><div style="padding-bottom:2%"></div>
 <ul class="pag">
 <li><a href="index.html">Home</a></li>
-<li><a href="chapter3.html">Previous</a></li>
+<li><a href="chapter4.html">Previous</a></li>
   <li><a href="chapter5.html">Next</a></li>
   </ul>
 
@@ -346,7 +346,7 @@ make the version that you want with no changes to the code or makefile.
 </div></div>
 <ul class="pag">
 <li><a href="index.html">Home</a></li>
-<li><a href="chapter3.html">Previous</a></li>
+<li><a href="chapter4.html">Previous</a></li>
   <li><a href="chapter5.html">Next</a></li>
   
   

@@ -20,7 +20,8 @@
 <h1>Chapter 4</h1>
 <h1>Working With The Command Line Environment</h1>
 
-
+<div class="w3-row">
+		  <div class="col-70">
 As we noted at the beginning of the last chapter, the standard interface to 
 Linux systems is the command line interface. There are pluses and minuses 
 for both the command line and GUI environments.  In this chapter we will 
@@ -36,7 +37,10 @@ the queuing software on many systems are often shell scripts, which makes an
 ability to manipulate them (at least at a rudimentary level) necessary within
 the context of HPC and HTC..  
 <h3>Setting up your environment</h3>
-
+</div></div>
+<div class="w3-row">
+		  <div class="col-70">
+       <p>
 As noted above one of the advantages to a command line environment is the 
 ease with which that environment can be manipulated to make computing tasks
 easier.  How the environment is manipulated is determined by 
@@ -55,7 +59,26 @@ this  will help us in shell_scripts.
 Bash has built-in commands that make using the environment easier.  In this we will discuss several of the most common of these commands. This is
 by no means a complete listing.  You can (and should) use <i>man bash</i> to get
 more information.
+</div>
 
+<div class="col-30">
+				<div class="card4">
+				 
+				<header class="w3-container">
+				  <h3>Shell Scripts...</h3>
+				</header>
+
+					<div class="w3-container">
+					<p>are small easy to write programs that allow you to complete repetitve tasks with a  single command.</p>
+					</div>
+				</div>
+
+			  </div>
+
+	</div>
+</div>
+<div class="w3-row">
+		  <div class="col-70">
 <br> The <i>alias</i> command allows you
 to create a short hand or easy mnemonic for longer commands.  For example, one
 repetitive task that most people need is to find out which processes they have
@@ -96,12 +119,29 @@ to set environment variables so that any process called by the shell
 will be able to reference them.  
 <br> <i>exit</i>  The exit command causes the shell to quit.
 <br> <i>history</i>  Displays a list of past commands.  This command has many options and can be used to rerun commands.  In most bash installations, commands can be rerun, and you can scroll through this list by using the up and down arrows.  
-<br> <i>kill</i>  The kill command sends a signal to a process. The most common use is it kill -9 pid which will kill the process with process number pid.
+<br> <i>kill</i>  The kill command sends a signal to a process. The most common use is <i> kill -9 pid </i>which will kill the process with process number pid.
 <br> <i>printenv</i> Display the current state of your environment variables.
 <br> <i>pwd</i>  List the current directory.
 enddescription
 <br> Bash Configuration files
+</div>
+<div class="col-30">
+				<div class="card4">
+				 
+				<header class="w3-container">
+				  <h3>Bash internal commands...</h3>
+				</header>
 
+					<div class="w3-container">
+					<p>make the system easier to use.</p>
+					</div>
+				</div>
+
+			  </div>
+
+	</div>
+<div class="w3-row">
+		  <div class="col-70">
 Most modifications of the environment may be accomplished through the use of 
 two bash configuration files <i> .bash_profile</i> and <i>.bashrc.</i> (Note the
 periods at the beginning.) The .bash_profile file is a  personal profile 
@@ -154,7 +194,7 @@ string, and may include the following codes that are often useful:
 <h4> Redirection and piping</h4>
 
 On Linux systems almost all files, output and even devices are at their most
-basic level <br>streams</b> Streams are the way that the OS (or kernel) 
+basic level <b>streams</b>. Streams are the way that the OS (or kernel) 
 communicates with processes.  The details of this interface are (very far)
 beyond the scope of this class, however, you can think of files being read
 or written from a program as just a sequential "stream" of bytes.  All of the
@@ -162,8 +202,8 @@ input and output commands for files are just methods of controlling this stream.
 One interesting aspect of working with streams is
 that bash allows you to easily redirect the flow of these streams.  Before
 we take a look at how this is done we need a few definitions.
-begindescription
-<h4><i>pipe</i></h4> If you follow a command in Linux with the  |<br> character, the output
+
+<h4><i>pipe</i></h4> If you follow a command in Linux with the  | character, the output
 from that command will be fed into the input of the command that follows the
 pipe character.
 <h4><i>standard in or stdin</i></h4> This is the name given to the input to a program.  
@@ -359,9 +399,9 @@ done
 </div>
 <p>
 This script introduces another interesting aspect of the bash shell, the  `character.  This is not an apostrophe, but a backtick.  On most keyboards it is
-below the  ~ character on the upper left. When bash encounters these marksit evaluates the expression inside and substitutes the results in place.  So
-this script in effect lists the files in data and then loops through the listassigning one at a time to the variable dir.  
-While loops in bash are closer to typical programming loops.  But before we look at a while loop example, we need to discuss the  [ ]operator.  In bash [ ] is a link to the test program.  This program is most often used to check arithmetic conditions, logical conditions or file characteristics. Here is how it can be used in a while loop to create datafiles
+below the  ~ character on the upper left. When bash encounters these marks it evaluates the expression inside and substitutes the results in place.  So
+this script in effect lists the files in data and then loops through the list assigning one at a time to the variable dir.  
+<b>While</b> loops in bash are closer to typical programming loops.  But before we look at a while loop example, we need to discuss the  [ ]operator.  In bash [ ] is a link to the test program.  This program is most often used to check arithmetic conditions, logical conditions or file characteristics. Here is how it can be used in a while loop to create datafiles
 with numerical extensions.
 <div class="w3-card w3-black" style="width:40%">
 #!/bin/bash<br>
@@ -504,7 +544,7 @@ files are then removed.
 <p>
 
 <p>
-
+</div></div>
 
 <p>
 <ul class="pag">
