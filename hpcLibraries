@@ -1,0 +1,1088 @@
+
+
+<p>High-performance libraries
+label<p>:libs
+What are high-performance libraries?
+<p>
+Almost all scientific programs include a small number of repeating, common
+snippets of code which perform certain core, usually simple, mathematical
+operations such as multiplying a matrix by a vector.  It is
+therefore reasonable to consider these common snippets separately and mix
+them into a main program as needed, like, using a culinary metaphor,
+when baking a fruit cake.
+<p>
+Moreover, if you profile a scientific code you will notice that these snippets
+are, in fact, where the program spends most of its time.  It is therefore
+desirable to have them written very professionally, with precision
+and efficiency in mind, and have them tested thoroughly.
+<p>
+These two requirements are met, at least in principle, by libraries which are
+sets of object files that implement specific functions and routines, and which
+can be linked with the main object files to produce executables.
+<p>
+In general, we distinguish between two types of libraries:
+<br>
+<br> Static libraries are linked with the rest of the code when you build
+your executable.  In Unix (and Linux) these libraries have extension .a
+<br> Dynamic libraries are linked with the ``executable" image at runtime.
+In Unix these libraries have extension .so
+
+<p>
+It is important to realize that you need only one copy of a given
+library on a machine to which each user has an access but which they should
+not be able to modify.  It is usually a bad idea to try to modify a 
+``standard library".
+<p>
+In addition to ``standard" libraries, which are produced (and 
+often sold) by reputable organizations and companies, and which are 
+not supposed to contain errors, a user can create his/her own libraries.  
+Say you are a computational chemist, and your favorite algorithm involves 
+some kind of a spatial mesh and you like spherical harmonics.  Chances are, 
+most of the codes you will write in your career will include subroutines 
+which facilitate integration of spherical harmonics on a spatial mesh of
+one kind or another.
+You will probably want to include these routines in your library and use
+them repeatedly, without having to recompile, provided this library,
+too, is error free.  Later we will tell you how to create such a library.
+<p>
+Before we get to that we want to tell you how to build and use existing
+libraries because this is the scenario you will be most often confronted
+with.  We will concentrate and practice on one type (arguably the one 
+that is most widely used in today's scientific computations) of high 
+performance libraries - the linear algebra library.  
+After we go through this exercise you may assume that you have a
+general knowledge how to build and link to any library you find 
+useful in your work.  This, of course, if you stick around through
+this entire session.
+<p>
+LAPACK, BLAS, ATLAS and all that
+<p>
+Linear Algebra PACKage (LAPACK) is a transportable library of standardized
+FORTRAN 77 routines for solving systems of simultaneous linear equations,
+eigenvalue problems, and singular value problems.  It is used in a vast 
+majority of large-scale
+scientific programs.  The most up-to-date version is held in the online
+repository linebreak
+textttwww.netlib.org together with a number of other widely used
+libraries.  LAPACK has been around since 1991 when the National Science
+Foundation and the US Department of Energy decided to sponsor an effort
+to make EISPACK and LINPACK libraries run efficiently on shared memory vector
+and parallel processors. Without going into details this is achieved by moving
+the block matrix operations to the innermost loops which can then be optimized
+for a specific architecture to account for the memory hierarchy (this is
+mostly done in BLAS - read on...), thus achieving the highest cache reuse.
+Functionality is provided for real and complex matrices, in both single and
+double precision.  FORTRAN 95 (LAPACK95) interface is also available as well
+as the C version of LAPACK (CLAPACK) and its C++ (lapack++) interface (now
+superseded by the Template Numerical Toolkit (TNT)).
+<p>
+The structure of LAPACK and how to find a needed routine is described in
+the emphLAPACK User's Guide at 
+textttnetlib.org/lapack/lug/<br>.html 
+Just one look at emphDriver Routines and emphComputational Routines
+s of this guide will give you a good sense of what tasks can be 
+accomplished with this library.  For a set of LAPACK emphWorking Notes
+go to 
+textttwww.netlib.org/lapack/lawnsnewline
+/downloads
+Within LAPACK, each driver (which solves a complete problem and whose use is
+always recommended) and computational routine (which solves a smaller 
+algebraic
+task) are classified according to the scheme XYYZZZ, where X is equal to S,D,C 
+and Z (single, double precision, complex and complex *16), YY indicates the 
+matrix type, and ZZZ indicates the operation performed.  LAPACK also
+contains a certain number of auxiliary routines (usually low-level
+computations not included in BLAS).  Refer to the emphLAPACK User's Guide
+for a naming scheme of these routines.  In order to illustrate the process
+of selecting the needed routine from LAPACK let us assume for the moment
+(we will come back to this example later on) that we need to solve a
+real generalized symmetric-definite eigenproblem.  Say, we want to 
+use double precision and therefore the first symbol of XYYZZZ is D.
+SY stands for symmetric so the YY is SY.  Finally, inspection of the 
+emphLAPACK User's Guide <!-- MATH
+ $rightarrow$
+ -->
+<IMG
+ WIDTH="286" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$ rightarrow$">
+ Generalized Eigenvalue and Singular 
+Value Problems <!-- MATH
+ $rightarrow$
+ -->
+<IMG
+ WIDTH="286" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$ rightarrow$">
+ Generalized Symmetric Definite Eigenproblems 
+(GSEP) tells us that the proper choice of ZZZ is, in our case, GV (ZZZ may
+or may not contain all three symbols).  To verify this choice the user
+should look directly at the dsygv.f code in 
+texttt/usr/local/netlibtest1/LAPACK/SRC
+or type textttman dsygv  A word of caution:  the man pages for
+LAPACK are not included with the textttnetlib.org distribution.  
+The easiest way of acquiring them on a RedHat system is through a 
+textttrpm  To do this point your browser to 
+textttrpmfind.net/linux/RPM/ASP/i386/RPMS.9/ newline
+lapack-man-3.0-20.i386.html
+and download the textttrpm  Become a superuser and issue the 
+command textttrpm -ivh lapack-man-3.0-20.i386.rpm
+This will install the LAPACK man pages under texttt/usr/share/man/manl
+While we are at it go ahead and install BLAS man pages from 
+textttrpmfind.net/linux/RPM/ASP/i386/RPMS.9/blas-man-newline
+3.0-20.i386.html
+You will learn about BLAS very soon! (Beware, these BLAS man pages are
+incomplete.) 
+<p>
+LAPACK works by making dense calls to the Basic Linear Algebra Subprograms
+(BLAS) - a collection of routines that perform specific vector and matrix
+operations.  For that reason the performance of LAPACK depends on BLAS.
+BLAS, you guessed it, must be highly optimized and run very fast on YOUR
+computer.  You have two good options to accomplish this:
+<p>
+<br>
+<br> Get vendor or ISV (Independent Software Vendor) BLAS optimized for your
+processor architecture.  This library is usually already compiled for you.
+In our experience these BLAS are the fastest.
+<br> Compile the Automatically Tuned Linear Algebra Software (ATLAS) on your
+machine.  This contains BLAS and some LAPACK.  BLAS themselves consist of 
+``levels":
+<br>
+<br> <!-- MATH
+ $bf{level 1}$
+ -->
+<IMG
+ WIDTH="81" HEIGHT="27" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$ bf{level 1}$">
+ BLAS include elementary linear algebraic vector 
+operations, 
+usually involving just one level of looping and therefore having complexity of 
+emphO<IMG
+ WIDTH="59" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$ (N)$">
+. Dot product, constant times a vector plus vector, plane rotation,
+vector copy
+and swap, belong to such operations.  At the time of the development of these
+original BLASfootnoteC.L.Lawson, R.J.Hanson, D.R.Kincaid and F.T.Krogh, 
+ACM Trans.
+Math. Software bf 5, 308 (1979).
+(late 1970's) it was believed that almost all most common linear 
+algebra algorithms can be built from these highly portable and efficient routines
+without much penalty.
+<br> <!-- MATH
+ $bf{level 2}$
+ -->
+<IMG
+ WIDTH="28" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.png"
+ ALT="$ bf{level 2}$">
+ BLAS.  It soon become clear that for higher-level 
+algorithms
+optimization on at least matrix-vector level becomes necessary.  This
+could not be provided by level 1 BLAS and therefore level 2 BLAS were 
+implemented 
+in the late 1980's.footnoteJ.J.Dongara, J.Du Croz, S.Hammarling and R.J.Hanson, 
+ACM Trans. Math. Software bf 14, 1 (1988).
+ These BLAS include an extended but limited set of 
+highly portable and 
+efficient matrix-vector operations which occur frequently in most common 
+linear
+algebra algorithms.  These operations consist of  matrix-vector multiply, 
+rank-1 and
+rank-2 updates and solutions of triangular equations of certain forms. All
+these operations have complexity of emphO<IMG
+ WIDTH="59" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$ (N^2)$">
+. Of course, with the 
+increase
+of complexity grows the need for a selective optimization for various, 
+sometimes very diverse computer architectures.  
+<br> <!-- MATH
+ $bf{level 3}$
+ -->
+<IMG
+ WIDTH="36" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$ bf{level 3}$">
+ BLAS.  This need becomes even more urgent for the level 3
+BLAS which, as you properly guessed, concern matrix-matrix operations such as 
+matrix-matrix multiply-and-add operations, rank-k and rank-2k updates of
+a symmetric matrix, matrix-triangular matrix multiply operations, solving
+triangular systems of equations with multiple right-hand sides of certain
+forms, and their complex analogues.  If these operation names appear cryptic 
+to you 
+or you want to learn more about them please refer to the cited paper 
+which contains 
+description of what they are.footnoteJ.J.Dongara, J.Du Croz, 
+S.Hammarling and R.J.Hanson, ACM Trans. Math. Software bf 16, 
+1 (1990). 
+All of these operations have, of course,  
+complexity of emphO<IMG
+ WIDTH="59" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$ (N^3)$">
+ and, similarly to level 2 BLAS, are 
+limited in scope.
+We will not be concerned in this bootcamp about the naming convention
+for BLAS since this aspect is transparent for users like us who mostly 
+employ higher-level LAPACK driver routines rather than call particular 
+members of BLAS.
+<p>
+With the advent of cache and computers with hierarchical memory it was realized 
+that a usual approach of using modified level 2 BLAS routines developed for
+vector machines cannot be used efficiently on these type of architectures and 
+the paradigm of coding long vectors started being replaced by 
+emphcache blocking.  Modern level 3 BLAS fully exploit this 
+paradigm. 
+<p>
+beginfigure[hbt]
+hspace1.3cm
+centering
+includegraphics [width=7.0cm] memory.eps
+caption Rate of memory access
+labelfig:memory
+endfigure
+<p>
+A cache-based memory system has small blocks of very
+fast, low-latency, memory called cache (L1, L2, L3,
+etc., depending on how close to the CPU it is located) placed between
+main memory and CPU registers.  The idea is to have a quick access to 
+most frequently referenced data and sets of instructions.  However, cache
+memory is not cheap and there are other design constraints (usually cache
+is put directly on die) that do not 
+allow it to grow above a certain size.  Today, on desktop machines,
+this size is somewhere in the order of 32 kB-128 kB and 256 kB-8,192 kB 
+for L1 and L2 cache, respectively.  Intel P4 Extreme Edition 
+adds a 2,048 kB L3 cache. Typically, data transfer rate between
+memory subsystems scales as shown in Fig. (reffig:memory).
+<p>
+When ALU needs new data or a new instruction from a code stream the 
+processor CPU's front-end first checks whether this <br> is already stored 
+in the cache. If not, it is fetched from the main memory in a block 
+equal to the size of a emphcache line and placed in cache according to a 
+predefined cache placement policy.  This method of cache operation design 
+corresponds to the principle of spatial locality which 
+states that, as a general rule, if the CPU needs an <br> from memory at 
+any given moment it most likely needs its neighbors, too.
+<p>
+Such hierarchical memory system has problems of its own.  A lot of
+industrial resources as well as research is being dedicated to study
+associativity (cache placement policy), optimal cash line size, 
+replacement strategy and, in
+particular, data prefetching techniques to minimize cache pollution
+and main memory traffic, and to maximize cache hit rates.  In large-scale
+scientific programs, especially the ones which involve large, dense 
+matrices or other large dynamical sets of data, it is difficult to
+arrive at one, efficient, generally applicable caching strategy.
+For instance, when you think about
+simple multiplication of two large matrices (rows vs. columns) 
+then normal caching, even when combined with loop unrolling, software 
+pipelining, or more sophisticated hardware prefetchingfootnote
+J.L.Hennessy and D.A.Patterson emphComputer
+Architecture. A Quantitative Approach (Morgan Kaufmann Publishers,
+New York 2003). 
+schemes,
+will not prevent us from inevitable instances of cache data
+eviction. As a result it is not uncommon to observe for such programs
+a performance drop by up to 50%. Here, the technique which comes
+to our rescue is cache blocking.  
+<p>
+Cache blocking can be described as
+dividing a large problem into smaller blocks, resulting in reduced
+data granularity and therefore reduced number of requests to fetch 
+data from the main
+memory.  Such transportable ``on-die" calculations are the target of 
+Automated Empirical Optimization of Software (AEOS) approach described
+later in this <p>.
+It should be mentioned that in addition to ``controlling/enabling" 
+the utilization of the spatial locality principle, cache blocking can 
+improve the utilization of the 
+temporal locality principle (general rule that if an <br> in memory
+is accessed it will likely be accessed in a near future), as well.
+Of course, cache blocking and all the other cache optimization techniques
+mentioned above are NOT transparent to processor architecture.    
+<p>
+beginfigure[hbt]
+hspace1.3cm
+centering
+includegraphics [width=7.0cm] tiling.eps
+caption This cache blocking technique sets the
+inner loop to be traversed only tile_size times at a time.
+labelfig:tiling
+endfigure
+<p>
+An almost trivial example of cache blocking (or rather, in this
+instance, cache optimization) is a
+loop interchange in a matrix operation code.  Depending whether you
+use FORTAN (row-major ordering) or  C (column-major ordering) 
+you will want to interchange outer
+indices with inner indices to minimize cache misses.  (Usually a compiler
+is able to perform this task automatically.) A simple example
+of a non-trivial cache blocking coding is shown in Fig. (reffig:tiling)
+where the inner loop is traversed only tile_size times at a time. 
+<p>
+As mentioned above level 3 BLAS have achieved their remarkable efficiency 
+through extensive, but at the same time very shrewd, use of cache blocking 
+techniques.  In fact, level 3 BLAS are so efficient that, as mentioned earlier,
+employing them in a matrix-matrix problem significantly improves code
+performance as compared to the same problem solved with the exclusive use of 
+level 1 and level 2 BLAS routines.
+<p>
+
+<p>
+We have already hinted that optimal cache blocking can be a very challenging
+issue, especially when we need
+to ensure a high level of code transferability.  The latest and greatest 
+tool which addresses this challenge in the area of BLAS software is ATLAS, 
+a member of the AEOS family.  AEOS codes
+self-adapt to various architectural parameters such as memory hierarchies, 
+number and types of functional units and registers, cache sizes, CPU latencies,
+etc.  They do it by isolating performance-critical routines 
+and by adapting them 
+to differing environments by parameters adjustment, multiple implementation 
+and source generation. The best codes are then selected by robust, 
+context-sensitive, empirical timers.  The AEOS paradigm requires, 
+that the entire process of optimization be accessible not only to an
+expert but also to a regular user.  ATLAS meets these requirements by
+performing automatic parameterization and multiple implementation of the 
+level 1 and 2 BLAS routines 
+and by performing automatic parameterization, multiple implementation and 
+source code adaptation 
+(which involves generation of different code implementations for a given 
+operation) of a level 3 BLAS simple building-block matmul kernel.footnote
+R.C.Whaley, A.Petiet and J.J.Dongarra, Parallel Comput. 
+bf 27, 3 (2001). 
+From this optimized matmul kernel (actually, occurring in three slightly 
+different forms) the full level 3 BLAS operation for general
+matrix multiply and add (GEMM) can be built.  It can be shown that all 
+level 3 BLAS operations can be further constructed from GEMM and some 
+level 1 and level 2 BLAS (GEMV) operations.footnoteB.Kaagstr&#246;m, 
+P.Ling and C.Van Loan, ACM Trans.
+Math. Software bf 5, 268 (1998).
+<p>
+
+<p>
+NOTE:  If you do not follow one of the above paths the emphModel 
+Implementation of
+BLAS, which is included in the LAPACK distribution (both source and binaries),
+will be used by LAPACK.  However, in this case you will suffer a high and,
+unless you are doing something trivial, unacceptable performance penalty.
+<p>
+Building LAPACK
+Enough talking. Let's us now prepare our own version of
+LAPACK library from scratch.  To that end we will use ATLAS software since
+taking this route covers the broadest array of circumstances.  
+By the end of this
+unit I will tell you what is available in terms of vendor or ISV optimized
+BLAS.  We will proceed as follows:
+<p>
+<br>
+<br> Make directory textttusr/local/sourceforge 
+<br> Download the latest, stable, platform-independent ATLAS 
+software from  newline
+textttmath-atlas.sourceforge.net to this directory.
+<br> Unzip and untar the file (you already know how to do this).
+<br> textttcd to the texttt./ATLAS directory and apply fixes (string
+overrun) from the newline
+textttmath-atlas.sourceforge.net/errata.html
+page.  Read this page carefully, it will save you a lot of time and work 
+down the road.
+<br> Type textttmake config CC=gcc (using the Portland linebreak
+Group compilers will result
+in error) and follow the script using the express setup, if possible.
+<br> Type textttmake install arch= newline
+&lt;architecture_as_detected_by_config&gt;
+<br> Type textttmake sanity_test arch= newline
+&lt;architecture_as_detected_by_config&gt; newline
+and textttmake ptsanity_test arch= newline 
+&lt;architecture_as_detected_by_config&gt; newline
+if you chose to build the threaded library.
+<br> Time and test ATLAS as described in newline
+texttt&nbsp;/ATLAS/doc/TestTime.txt 
+<br> CacheEdge - more about memory layout and cache blocking.
+<p>
+As you now know, cache misses result in costly access to high 
+level memory.  To minimize the
+penalty ATLAS detects the emphactual size of the L1 data cache and 
+cache-blocks matmul kernel appropriately. linebreak
+Then, the rest of the code is further tuned
+to block for the L2 cache by an empirically determined parameter
+called CacheEdge. You can find the optimum value of CacheEdge by:
+<br>
+<br> textttcd ./tune/blas/gemm/ newline
+&lt;architecture_as_detected_by_config
+<br> textttmake xdfindCE
+<br> texttt./xdfindCE -m 3500 -n 3500 -k 3500 newline
+to find out what your CacheEdge might be.
+<br> textttcd ../../../.././include/ newline
+&lt;architecture_as_detected_by_config&gt;
+<br> textttvi atlas_cacheedge.h and substitute the linebreak
+value in the third 
+line by 524288. (524288 Bytes = 512 kBytes * 1024 Bytes/KBytes)
+<br> you can now fine-tune CacheEdge in the following manner:
+<br>
+<br> textttcd ../../../../
+<br> edit textttMake. newline
+&lt;architecture_as_detected_by_config&gt; and define
+symbol BLASlib.  In the best scenario it should point to a location where you 
+have another, working copy of complete libblas.a  Otherwise get the 
+emphFORTRAN 77 reference BLAS file and build it into libblas.a or use
+ATLAS own C reference.
+<br> textttcd ../.././include/ newline
+&lt;architecture_as_detected_by_config&gt;
+<br> change the value of CacheEdge in newline
+atlas_cacheedge.h
+<br> textttcd ../.././bin/ newline
+&lt;architecture_as_detected_by_config&gt;
+<br> textttmake x[s,d,c,z]l[1,2,3]blastst
+<br> textttx[s,d,c,z]l[1,2,3]blastst save the results and repeat
+steps textttiii-vii
+<br> once the best value for CacheEdge is found recompile ATLAS 
+by issuing newline
+textttmake xdl3blastst xsl3blastst newline
+xcl3blastst xzl3blastst newline
+This will rebuild all libs with the new newline
+CacheEdge setting. newline
+(textttxdl3blastst xsl3blastst newline 
+xcl3blastst xzl3blastst have the 
+correct dependencies to ensure a proper rebuild.)
+
+<br> If you have not done it already as a part of CacheEdge fine-tuning
+procedure described linebreak
+above recompile ATLAS by issuing newline
+textttmake xdl3blastst xsl3blastst newline
+xcl3blastst xzl3blastst
+
+<p>
+<br> You have probably forgot by now that installing ATLAS was not our
+ultimate goal.  Our ultimate goal was to build the fastest implementation
+of LAPACK available for your machine.  Some more work remains to be done:
+<br>
+<br> Get from textttnetlib.org and build LAPACK.  Here are the procedures:
+<br>
+<br> Make a directory texttt/usr/local/netlib 
+<br> Go to textttnetlib.org <!-- MATH
+ $rightarrow$
+ -->
+<IMG
+ WIDTH="286" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$ rightarrow$">
+ browse <!-- MATH
+ $rightarrow$
+ -->
+<IMG
+ WIDTH="286" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$ rightarrow$">
+ lapack 
+<!-- MATH
+ $rightarrow$
+ -->
+<IMG
+ WIDTH="286" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$ rightarrow$">
+ scroll down and download file textttlapack.tgz into
+directory newline
+texttt/usr/local/netlib 
+<br> textttgunzip lapack.tgz 
+<br> texttttar -xvf lapack.tar 
+<br> textttcd LAPACK and read file textttREADME  You will notice
+a link to a list of known problems, bugs and compiler errors for
+LAPACK linebreak
+maintained on textttnetlib.org 
+Open your browser again and go
+to that address.  You will notice a LARGE errata.  Normally you
+would like to incorporate all the errata files in your original
+distribution to compile your working version of LAPACK.  In this
+bootcamp, since our time is limited, we will only correct
+the Makefiles.  This is necessary to compile the programs properly.
+<br> Download the errata files newline
+textttLAPACK/INSTALL/make.inc.LINUX newline
+and textttLAPACK/TIMING/Makefile newline to the
+texttt/usr/local/netlib
+directory.  You could, of course, download these files right into
+their proper directories.  The reason why we download the errata 
+files to 
+texttt/usr/local/netlib is that if the compilation fails and for
+some reason we want to untar a brand new tree of LAPACK we do not
+need to download them again.
+<br> Copy the errata files from newline
+texttt/usr/local/netlib to their
+proper directories: newline
+textttcp /usr/local/netlib/make.inc.LINUX /usr/local/netlib/LAPACK/INSTALL
+newline 
+textttcp /usr/local/netlib/Makefile newline
+texttt/usr/local/netlib/LAPACK/TIMING
+<br> 
+
+cp ./INSTALL/make.inc.LINUX . 
+cp make.inc.LINUX make.inc
+
+<br> 
+ vi Makefile<br>  newline
+You should now substitute
+
+lib: lapacklib tmglib
+#lib: blaslib lapacklib tmglib
+
+by
+
+#lib: lapacklib tmglib
+lib: blaslib lapacklib tmglib
+
+to make BLAS, LAPACK and to time them.
+<br> textttmake
+
+<p>
+<br> in directory texttt&nbsp;/ATLAS/lib/ newline
+&lt;architecture_as_detected_by_config&gt;
+    issue following commands:
+
+    mkdir tmp
+    cd tmp
+    ar x ../liblapack.a
+    cp &lt;the_path_of_your_just_built
+       _LAPACK&gt;/liblapack.a 
+       ../liblapack.a
+    ar r ../liblapack.a *.o
+    cd ..
+    rm -rf tmp
+
+Congratulations!, you have just replaced some netlib LAPACK
+routines with the ATLAS' optimized LAPACK routines.
+
+<br> In the texttt&nbsp;/ATLAS/lib/ newline 
+&lt;architecture_as_detected_by_config&gt;
+    directory you should at least have:
+begin<br>ize
+<br>    libatlas.a - the main ATLAS library
+<br>    liblapack.a - the full ATLAS optimized LAPACK library - the
+                  on you have just built
+<br>    libcblas.a - the C interface to BLAS
+<br>    libf77blas.a - the F77 interface to BLAS
+<br>    libptcblas.a - the C interface to threaded BLAS
+<br>    libptf77blas.a - the F77 interface to threaded BLAS
+end<br>ize
+<br> Linking to these libraries must be done in a specific order:
+texttt-LLIBDIR -llapack -lcblas -lf77blas newline -latlas, 
+where LIBDIR is the path to your libraries.
+
+<p>
+Physics example: using LAPACK in computing the ground 
+state energy and wavefunction of the hydrogen atom
+<p>
+We are now ready to use the fruit of our work in a real-life  scientific
+problem.  The code which we gave you calculates the ground state (lowest)
+energy and wavefunction of the hydrogen atom.
+Hydrogen atom consists of only one proton and only one electron.  
+The quantum theory tells us how to calculate energies and wave 
+functions for any atom, although only in an approximate manner.  The reason
+why we picked a hydrogen atom is two-fold.  First, this is the simplest 
+atomic system whose variational treatment leads to a set of linear-algebraic 
+equations.  If you forgot your quantum mechanics and do not understand what 
+``variational" means, do not panic - we will explain it 
+to you in a moment.  The important point is that the set of linear-algebraic
+equations just mentioned can be completely solved using
+just one LAPACK driver routine.  The second reason why we picked
+the hydrogen atom for our example is that in this particular case we
+are lucky enough to know the analytical solution and thus
+can check our work.  I want you to keep in mind, however, that for the great
+majority of current scientific problems the analytical solutions are not
+known and we have to rely on approximate ones, best of which can
+usually be obtained numerically, more often then not with the help of
+efficient scientific libraries.  In case of atomic physics these libraries 
+include 
+mainly LAPACK, fast Fourier transform, and various integration routines.
+<p>
+So how do we solve for the ground state of the hydrogen atom?  You have 
+probably heard about the Schr&#246;dinger equation for a wavefunction 
+<IMG
+ WIDTH="36" HEIGHT="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.png"
+ ALT="$ Psi$">
+.  Function <IMG
+ WIDTH="36" HEIGHT="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.png"
+ ALT="$ Psi$">
+ contains all information about a quantum
+system and the Schr&#246;dinger equation is a differential equation
+which describes its behavior.  The
+Schr&#246;dinger equation is in quantum mechanics what the familiar (Newton,
+Lagrange or Hamilton) equation of motion is in classical mechanics.  
+If we wrote down this equation  for the hydrogen atom we could then solve 
+it analytically and find its exact solution.  We could also emphattempt 
+to integrate this equation numerically on a preconceived grid of points in 
+space obtaining physically exact but mathematically approximate solution.
+However, there exists another approach, based on the Ritz variational 
+principle, which simply states that the true ground state energy of a quantum 
+system is a lower bound to a certain expression involving emphtrial
+wavefunctions.  We are free to chose these trial wavefunction at will as
+long as they fulfill certain criteria. Mathematically, we talk about
+infinitely dimensional linear vector space, called the Hilbert space to
+which these trial wavefunctions belong.  In practice, we work with subspaces
+of the Hilbert space and build our trial functions out of truncated (at <IMG
+ WIDTH="27" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.png"
+ ALT="$ N$">
+)
+series of so-called basis functions <IMG
+ WIDTH="16" HEIGHT="15" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$ phi_{i}$">
+:
+begineqnarray
+Psi(bf r) = sum_i=1^NC_i phi_i(bf r), 
+phi_i(bf r)=e^-alpha_ir^2
+labelequ:basis
+endeqnarray
+<p>
+It is then possible to rewrite the Ritz variational principle in terms of
+a set of algebraic equations which in matrix notation takes on a form of
+the eigenvalue problem
+beginequation
+underlineH cdot vecC=epsilon cdot vecC
+labelequ:eing
+endequation
+<p>
+or, if the basis functions are not orthonormal
+<p>
+beginequation
+underlineH cdot vecC=epsilon cdot
+underlineS cdot vecC
+labelequ:geneing
+endequation
+<p>
+Equation (<!-- MATH
+ $ref{equ:geneing}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="27" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$ ref{equ:geneing}$">
+) represents a so-called 
+generalized eigenvalue problem.
+Here, <!-- MATH
+ $underline{H}$
+ -->
+<IMG
+ WIDTH="119" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$ underline{H}$">
+ is the Hamiltonian matrix, which contains 
+information about kinetic and potential energies of a quantum system
+and <!-- MATH
+ $underline{S}$
+ -->
+<IMG
+ WIDTH="86" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img19.png"
+ ALT="$ underline{S}$">
+ is the so-called overlap matrix which arises
+from nonorthonormality of the basis functions.  In the current
+example we will not be concerned about these matrices.   Their
+elements can be easily calculated and they are, in fact, given to us 
+in the program.  The scalar <IMG
+ WIDTH="82" HEIGHT="16" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.png"
+ ALT="$ epsilon$">
+ is the unknown ground state 
+energy of the hydrogen atom and the corresponding elements of
+the vector <IMG
+ WIDTH="52" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="img21.png"
+ ALT="$ vec{C}$">
+ are the unknown expansion coefficients in
+equation (<!-- MATH
+ $ref{equ:basis}$
+ -->
+<IMG
+ WIDTH="37" HEIGHT="16" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.png"
+ ALT="$ ref{equ:basis}$">
+), for this energy.
+<p>
+The code is written in FORTRAN 90 and consists of two main modules.
+The module textttmatrix_elements (file linebreak
+textttmatrielements.f90) casts the problem
+of solving a Schr&#246;dinger equation for the hydrogen atom into a
+linear algebraic problem of solving a generalized eigenvalue equation,
+as described above.
+Matrices <!-- MATH
+ $underline{smatrix}(N,N)$
+ -->
+<IMG
+ WIDTH="99" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.png"
+ ALT="$ underline{smatrix}(N,N)$">
+ and <!-- MATH
+ $underline{hmatrix}(N,N)$
+ -->
+<IMG
+ WIDTH="176" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.png"
+ ALT="$ underline{hmatrix}(N,N)$">
+,
+where we now explicitly show their dimensions, enter the equation in the
+following manner:
+beginequation
+underlinehmatrix(N,N) cdot vecC(N)=epsilon cdot 
+underlinesmatrix(N,N) cdot vecC(N)
+labelequ:geneing1
+endequation       
+Here, <IMG
+ WIDTH="178" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.png"
+ ALT="$ C(N)$">
+ are eigenvectors corresponding to <IMG
+ WIDTH="82" HEIGHT="16" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.png"
+ ALT="$ epsilon$">
+
+Finding eigenvalues <IMG
+ WIDTH="82" HEIGHT="16" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.png"
+ ALT="$ epsilon$">
+ and corresponding 
+eigenvectors <!-- MATH
+ $vec{C_{epsilon}}(N)$
+ -->
+<IMG
+ WIDTH="41" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$ vec{C_{epsilon}}(N)$">
+ forms the
+solution to eq. (<!-- MATH
+ $ref{equ:geneing1}$
+ -->
+<IMG
+ WIDTH="105" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.png"
+ ALT="$ ref{equ:geneing1}$">
+). This is accomplished in the 
+second of the two main modules - module linebreak 
+texttteigenproblem
+(in file texttteigenproblem.f90).   Since the hydrogen 
+atom has only one electron we are interested in
+the emphlowest eigenvalue and its corresponding eigenvector.
+Only these solutions have a physical meaning and correspond to the 
+hydrogen atom ground state energy and the ground state wavefunction.
+<p>
+Some of you are probably guessing that the number
+N is arbitrary and that perhaps the larger it is the better the
+corresponding solution to our original problem may be.  RIGHT!.  BUT,
+there is a big price to pay if we try to increase <IMG
+ WIDTH="27" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.png"
+ ALT="$ N$">
+ above a
+certain, reasonable number. The number of numerical operations
+to solve Eq. (<!-- MATH
+ $ref{equ:geneing1}$
+ -->
+<IMG
+ WIDTH="105" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.png"
+ ALT="$ ref{equ:geneing1}$">
+) is at least <IMG
+ WIDTH="127" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img28.png"
+ ALT="$ N cdot N$">
+ - we say that 
+the algorithm which
+solves Eq. (<!-- MATH
+ $ref{equ:geneing1}$
+ -->
+<IMG
+ WIDTH="105" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.png"
+ ALT="$ ref{equ:geneing1}$">
+) scales as emphO<IMG
+ WIDTH="59" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$ (N^2)$">
+ with the size <IMG
+ WIDTH="27" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.png"
+ ALT="$ N$">
+ 
+of a problem.
+Imagine, if your <IMG
+ WIDTH="27" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.png"
+ ALT="$ N$">
+ is 10 you have (roughly!, and this number
+should be understood only logarithmically)&nbsp; <!-- MATH
+ $10 cdot 10 = 100$
+ -->
+<IMG
+ WIDTH="59" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.png"
+ ALT="$ 10 cdot 10 = 100$">
+ operations
+to do.  If your <IMG
+ WIDTH="27" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.png"
+ ALT="$ N$">
+ is 100 you are looking at 10000 operations,
+if your <IMG
+ WIDTH="27" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.png"
+ ALT="$ N$">
+ is 1000 you have 1000000 operations, etc.  Scary, isn't it?
+And what if I tell you that solving Eq. (<!-- MATH
+ $ref{equ:geneing1}$
+ -->
+<IMG
+ WIDTH="105" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.png"
+ ALT="$ ref{equ:geneing1}$">
+)
+involves a very
+cumbersome and difficult to program algebra? What about optimization?
+Does this all seem hopeless?
+Before you decide not to become a quantum chemist let me share
+the good news with you.  We do not have to do all the work
+by ourselves! We have LAPACK, which you have just compiled,  at
+our disposal.  It will solve, as you will see in our next lab, 
+our problem expressed by Eq. (<!-- MATH
+ $ref{equ:geneing1}$
+ -->
+<IMG
+ WIDTH="105" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.png"
+ ALT="$ ref{equ:geneing1}$">
+)
+in emphjust one call to one of its driver routines.
+<p>
+We will now work with you through the code example to show you 
+how this is done.
+<br>
+<br> Login as a regular user. 
+<br> Copy the FORTRAN 90 source code, as well as the input file
+textttALPHA_IN_5, and textttcompile.hatomf90 and 
+textttlink.hatomf90 files into a directory of your choice.
+<br> You should have:
+<br>
+<br> textttALPHA_IN_5
+<br> textttcompile.hatomf90
+<br> textttconstants.f90
+<br> textttdeclarations.f90
+<br> textttdsygvf77wrapper.f90
+<br> texttteigenproblem.f90
+<br> texttthydrogenmain.f90
+<br> textttioerrors.f90
+<br> textttlink.hatomf90
+<br> textttmatrixelements.f90
+<br> textttprecision.f90
+
+in your directory.  That's 11 files.
+<br> The input file textttALPHA_IN_5 contains 5 exponent
+coefficients <IMG
+ WIDTH="107" HEIGHT="15" ALIGN="MIDDLE" BORDER="0"
+ SRC="img30.png"
+ ALT="$ alpha$">
+ (cf. Eq. (<!-- MATH
+ $ref{equ:basis}$
+ -->
+<IMG
+ WIDTH="37" HEIGHT="16" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.png"
+ ALT="$ ref{equ:basis}$">
+)) and 3 parameters
+used in plotting the results.
+<br> Refer to the code for explanations of the modules and subroutines.
+It is a good programming habit to comment the code itself so that the 
+explanations are always there when you need them.  In particular,
+make sure that you understand how the call to the general eigenproblem
+solver dsygv is made and what it returns.  This call is made in subroutine 
+textttsolve_eigenproblem in file texttteigenproblem.f90
+<br> Compile and link the code as suggested in newline
+textttcompile.hatomf90
+and textttlink.hatomf90 using the Portland Group Compiler.  
+Notice the flag texttt-g77libs when linking using pgf90 driver
+with libraries created by g77. By default pgf90 does not look
+for g77 support libraries to resolve references specific to g77 
+objects! 
+<br> textttcp ALPHA_IN_5 ALPHA_IN
+<br> Run the program by typing texttthatom
+<br> You should now find the following output files in your
+directory:
+<br>
+<br> textttCOMPUTED_WAVEFUNCTION - this file contains the values
+of the hydrogen atom ground state electronic wavefunction (1S) as a function 
+of the electron's distance from the nucleus, computed approximately
+from the Ritz variational principle.   Remember this state is
+emphspherically symmetric.
+<br> textttEXACT-COMPUTED_WAVEFUNCTION - this file contains the
+difference values between the linebreak
+textttEXACT_WAVEFUNCTION described below
+and newline
+the textttCOMPUTED_WAVEFUNCTION described above.  Notice 
+that by expanding our trial wavefunction, (cf. Eq. (<!-- MATH
+ $ref{equ:basis}$
+ -->
+<IMG
+ WIDTH="37" HEIGHT="16" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.png"
+ ALT="$ ref{equ:basis}$">
+)),
+into only 5 primitive gaussians we get a very good agreement with
+the true ground state wavefunction.  Due to the shape of Gaussian 
+functions (which we emphchose to use) the agreement at <IMG
+ WIDTH="41" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="img31.png"
+ ALT="$ r=0$">
+
+is worse.  Physicists know how to improve this agreement by
+employing more sophisticated basis sets.
+<br> textttEXACT_WAVEFUNCTION - remember when we linebreak 
+told you that
+the hydrogen atom is one of the very few systems for which the 
+analytical solution is known?  This file contains exact values
+of the hydrogen atom ground state electronic wavefunction as a function
+of the electron's distance from the nucleus - 1S state, tabulated from the
+analytical expression:
+beginequation
+Psi(bf r) = frac1sqrtpie^-r
+labelequ:analytic
+endequation
+<br> textttGROUND_STATE_ENERGY - this file contains the value
+of the lowest eigenvalue <IMG
+ WIDTH="82" HEIGHT="16" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.png"
+ ALT="$ epsilon$">
+ which is the ground state energy
+of our hydrogen atom system.
+<br> textttHAMILTONIAN_MATRIX - this file contains elements of
+the <!-- MATH
+ $underline{hmatrix}(N,N)$
+ -->
+<IMG
+ WIDTH="176" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.png"
+ ALT="$ underline{hmatrix}(N,N)$">
+ described earlier.
+<br> textttOVERLAP_MATRIX - this file contains elements of
+the <!-- MATH
+ $underline{smatrix}(N,N)$
+ -->
+<IMG
+ WIDTH="99" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.png"
+ ALT="$ underline{smatrix}(N,N)$">
+ described earlier.
+<br> textttLOWEST_ENERGY_EIGENVECTOR - this file contains elements
+of the eigenvector <IMG
+ WIDTH="52" HEIGHT="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="img21.png"
+ ALT="$ vec{C}$">
+ corresponding to the lowest eigenvalue 
+<IMG
+ WIDTH="82" HEIGHT="16" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.png"
+ ALT="$ epsilon$">
+.  
+These elements are the expansion coefficients in Eq. (<!-- MATH
+ $ref{equ:basis}$
+ -->
+<IMG
+ WIDTH="37" HEIGHT="16" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.png"
+ ALT="$ ref{equ:basis}$">
+).
+
+<br> Simply looking at numbers in newline
+textttCOMPUTED_WAVEFUNCTION, newline
+textttEXACT_WAVEFUNCTION newline
+or textttEXACT-COMPUTED_WAVEFUNCTION newline
+is usually inferior to having these results properly graphed.  As an added 
+exercise we will now install one of the best 2-D graphing Linux 
+tools (complete, with TeX interface!).  The best part is 
+that it is freely available on the net. 
+<p>
+beginfigure[hbt]
+vspace7mm
+centering
+includegraphics [width=9.0cm] 300grace.eps
+caption Calculated (<IMG
+ WIDTH="38" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img32.png"
+ ALT="$ N=5$">
+) and exact values for the 1S state of the hydrogen
+atom.  Notice a very good agreement for all points but the ones close to
+the nucleus.
+labelfig:500one
+endfigure
+<p>
+beginfigure[hbt]
+vspace7mm
+centering
+includegraphics [width=9.0cm] 300diffgrace.eps
+caption Difference between the exact and calculated (<IMG
+ WIDTH="38" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img32.png"
+ ALT="$ N=5$">
+)
+values for the 1S state of the hydrogen atom.
+labelfig:500two
+endfigure
+<p>
+<br>
+<br> Become a superuser.
+<br> textttmkdir /usr/local/grace 
+<br> Download grace from newline
+texttthttp://plasma-gate.weizmann.ac.il/ newline 
+Grace to texttt/usr/local/grace
+<br> Unzip and untar textttgrace-5.1.16.tar.gz
+<br> textttcd grace-5.1.16
+<br> texttt./configure -enable-grace-home= newline 
+/usr/local/grace
+<br> textttmake
+<br> textttmake tests and close all the test instances of 
+xmgrace - be patient.
+<br> textttmake install
+<br> textttmake links
+<br> Login as a regular user and go to your hatom example directory.
+<br> Start grace by typing newline
+texttt/usr/local/grace/bin/xmgrace
+<br> Graph data in files newline
+textttCOMPUTED_WAVEFUNCTION, newline
+textttEXACT_WAVEFUNCTION newline
+and textttEXACT-COMPUTED_WAVEFUNCTION newline
+You should obtain figures similar to Figs. (reffig:500one)
+and (reffig:500two). 
+<p>
+
+
+<p>
+Building your own libraries
+<p>
+As you develop your own suite of software you may find yourself
+reusing certain routines over and over.  In this case, instead 
+of recompiling them every time, you will want to include them 
+in one object file which you will compile once and for all (at least until
+you find a bug in one of these routines) and which you can then link 
+with your main program.  Returning to our example: say, you discovered 
+that the routines
+included in files textttprecision.f90 and textttioerrors.f90
+in our example look sort of like utilities which you want to use 
+every time with all the code you write.  You want to create a library
+called libutilities.a and use it every time you link your
+objects.  You can proceed as follows: 
+<br>
+<br> textttar rcs libutilities.a precision.o newline
+ioerrors.f90
+<br> ...and link with newline
+texttt-L/&lt;directory_where_libutilities.a newline
+_resides&gt; -lutilities
+
+Try this as an exercise.
+<p>
+
+
+<p>

@@ -1,0 +1,1199 @@
+<p>Introduction to MPI Programming in C
+<p>
+it MPI or it Message Passing Interface indexMPI is not a programming 
+language.  It is a standard for implementing message passing parallel 
+programming. It is in most implementations a library of functions or 
+subprograms that can be called from other languages, most often C or Fortran.
+MPI grew out from the frustrations of programmers and researchers whose 
+parallel code was not portable due to proprietary programming interfaces.  
+It was developed by a forum with members from academia, government, and 
+industry.  MPI allows development of portable and efficient parallel code.  
+These libraries make many of the lower level intricacies of parallel 
+programming transparent to the programmer.  
+<p>
+MPI is a form of message passing parallel programming, which is a very popular
+parallel programming model. In this paradigm, the processes run 
+independently, and use communications for synchronizing their efforts.
+For those of you with an interest in the theory
+behind parallel programming, MPI is a form of SIMD or SPMD parallel 
+architecture.  This means that all of the processors run the same program, 
+but on different data.  Unlike a pure SIMD architecture, MPI does not force
+the program to run exactly the same on all processors, but allows for 
+differential execution.
+<p>
+These notes are not intended to be an in depth exposition of
+even the introductory topics that are covered. Rather they are intended to
+lead you through the examples which should give you adequate exposure to 
+begin using MPI. For more in depth materials please see  
+ref:addmat which lists additional pedagogical materials.
+<p>
+There are several commercial and free versions of these libraries.  The 
+two most popular non-commercial implementations are it LAM-MPI and 
+it MPICH.  We will be using MPICH for this class. 
+<p>
+ A first program
+label:afp
+We will start with the traditional "Hello World" program.  This will allow us
+to take a detailed look at the minimal code necessary to run an MPI program.
+The code for this and the other examples in this <p> are include in the 
+bccode directory on the lab machines.  
+
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;mpi.h&gt;
+
+main(int argc,char* argv[]){
+	
+	int				my_rank;
+	int				p;
+	int				source;
+	int				dest;
+	int				tag=0;
+	char			message[100];
+	MPI_Status		status;
+
+	/*Start MPI*/
+	MPI_Init(&amp;argc,&amp;argv);
+
+	/*Find out process rank*/
+	MPI_Comm_rank(MPI_COMM_WORLD,&amp;my_rank);
+
+	/*Find out the number of processes*/
+	MPI_Comm_size(MPI_COMM_WORLD,&amp;p);
+
+	if(my_rank !=0){
+		/* Create Message */
+		sprintf(message,"Hello from process %d!",my_rank);
+		dest = 0;
+		/*Use strlen+1 so that '\0' gets transmitted */
+		MPI_Send(message,strlen(message)+1,
+					 MPI_CHAR,dest,tag,MPI_COMM_WORLD);
+	}else{
+		for (source =1;source&lt;p;source++){
+			MPI_Recv(message,100,MPI_CHAR,
+				  source,tag,MPI_COMM_WORLD,&amp;status);
+			printf("%s\n",message);
+		}
+	}
+
+	/* Shutdown MPI */
+	MPI_Finalize();
+
+}
+
+In C, MPI programs require the include file mpi.h.
+MPI defines many internal datatypes, and the first one used in this program
+is it MPI_Status. MPI_Status is a structure
+that contains the fields MPI_SOURCE, MPI_TAG, and MPI_ERROR. It is used to 
+return the status of the MPI communications functions. 
+For now just think of the status variable as the place where MPI puts the 
+error codes for its functions.
+<p>
+Now we will start looking at the MPI functions used in this program.  The first
+is MPI_Init which has the following definition:
+<p>
+ int MPI_Init(int *argc, char ***argv)<br>
+<p>
+MPI_Init must be the first MPI function call in your program, as it initializes
+the state of the program for all other MPI calls.  Although the call to 
+MPI_Init allows the passing of the command line parameters, their use is not
+defined in the MPI standard.  This means that using them is not necessarily 
+portable, and that they should be used with caution.  Their use is beyond the
+scope of this class. Also note that for most installations, you can get 
+information on the MPI functions by using the man command.
+<p>
+With the next call we begin to delve into some of the mechanisms of MPI 
+programming.  
+<p>
+
+   /*Find out process rank*/
+   MPI_Comm_rank(MPI_COMM_WORLD,&amp;my_rank);
+
+   /*Find out the number of processes*/
+   MPI_Comm_size(MPI_COMM_WORLD,&amp;p);
+
+<p>
+Both MPI_Comm_rank and MPI_Comm_size have as their first parameter 
+the constant MPI_COMM_WORLD, which is of type MPI_Comm. 
+An MPI_Comm is the data type used to reference a it communicator.  
+A communicator indexcommunicator 
+is a collection of processes.  As your programs and the underlying tasks 
+become more complicated, you may need to set up different groups of processors
+to accomplish different tasks and may need to create your own communicators.  
+MPI by default sets up the 
+global communicator MPI_COMM_WORLD.  The MPI_Comm_rank command returns the 
+process number or "rank" within the communicator. 
+MPI_Comm_size puts the size of the given communicator into the
+location pointed to by the second parameter.  The rank of the process and the 
+communicator's size are often used to control the local flow of the program.
+We can see this in the next code segment.
+<p>
+
+ 
+if(my_rank !=0){
+   /* Create Message */
+   sprintf(message,"Hello from process %d!",my_rank);
+   dest = 0;
+   /*Use strlen+1 so that '\0' gets transmitted */
+   MPI_Send(message,strlen(message)+1,
+			MPI_CHAR,dest,tag,MPI_COMM_WORLD);
+}else{
+   for (source =1;source&lt;p;source++){
+	  MPI_Recv(message,100,MPI_CHAR,
+		 source,tag,MPI_COMM_WORLD,&amp;status);
+	  printf("%s\n",message);
+   }
+}
+
+<p>
+In this snippet we see two very common MPI constructions.  First the it
+if .. else construction where one (or more) process(es) are executing one
+set of instructions, and another set of processes are executing another.  
+In this case we see that each process other than the root process (rank = 0)
+is sending a message.  Meanwhile, the root process is receiving messages
+in a for loop which runs from 1 to the size of the communicator.  
+Note that there is nothing in this code that forces an order on the 
+communications from the non-root processes.  Rather they will each run the
+code asynchronously.  One might ask how is it that the root process is able
+to receive the messages in the correct order?  To answer that question, we
+must take a more in depth look at the it MPI_Recv and it MPI_Send
+commands. This is the subject of the next , but we will take a brief
+look at these commands here, paying particular attention to the parameter 
+types and what they mean.
+<p>
+The MPI_Send command has the definition:
+
+int MPI_Send( void *buf, int count, 
+			   MPI_Datatype datatype, int dest,
+			   int tag, MPI_Comm comm )
+
+<p>
+begindescription
+   <br> [buf] This is the initial address of the send buffer, in our case it is
+the beginning of the string message.  
+   <br> [count] Number of elements in send buffer. We set this to the length
+of the string message +1 to account for the null terminator character. The 
+count is not the number of bytes but number of <br>s.  This allows more
+complex data types to be handled easily, and maintains portability.
+   <br> [datatype] Datatype of each send buffer element.  Note that this is
+not a standard C datatype but one of the data types defined by MPI. Although
+MPI has many datatypes and functions for manipulating them, our examples will
+draw from the basic types given in the following list.
+   <br>
+	  <br> MPI_CHAR
+	  <br> MPI_SHORT
+	  <br> MPI_INT
+	  <br> MPI_LONG
+	  <br> MPI_UNSIGNED_CHAR
+	  <br> MPI_UNSIGNED_SHORT
+	  <br> MPI_UNSIGNED
+	  <br> MPI_UNSIGNED_LONG
+	  <br> MPI_FLOAT
+	  <br> MPI_DOUBLE
+	  <br> MPI_LONG_DOUBLE
+	  <br> MPI_BYTE
+	  <br> MPI_PACKED
+   
+   <br> [dest] Rank of the destination.
+   <br> [tag] The use of the message tag is left to the program. It may be 
+used to classify messages. 
+   <br> [comm] Communicator.
+enddescription
+<p>
+The MPI_Recv has the definition:
+
+int MPI_Recv( void *buf, int count, 
+			   MPI_Datatype datatype, int source, int tag, 
+			   MPI_Comm comm, MPI_Status *status )
+ 
+<p>
+Let's take a look at the differences between MPI_Send and MPI_Recv.
+The it buf in the MPI_Recv call is the initial address of the receive buffer 
+instead of the send buffer.  We have replaced dest or the destination of the
+message with the source of the message.  MPI_Recv also returns a MPI_Status
+variable as described above.  
+<p>
+With just a little more information we can now answer the question, how does 
+the root process receive the messages in order. MPI buffers messages. Although
+MPI does not guarantee that the messages from different processes arrive 
+in any specific order, the root process reads them  from the buffer in 
+processor number order.
+MPI does however insure that messages from the same processor do
+arrive in order.  We will explore other types of point-to-point
+communications and their details in the following .
+<p>
+<br>Compiling and running MPI programs
+To compile MPI programs you must make sure that the MPI_HOME/include 
+directory is in your include path, and that the MPI_HOME/lib directory is in your library path.  On the lab machines this should be the default 
+configuration. If these requirements are met 
+the program above can be compiled with the command:
+
+   gcc -o HelloWorld HelloWorld.c -lmpi
+
+On most installations of MPI there is some script to make sure that you
+have included the correct libraries and paths.  For our machines the command is
+it mpicc.  So you can replace the above command with:
+
+   mpicc -o HelloWorld HelloWorld.c
+
+<p>
+Once the program is compiled you can use the it mpirun command to run the
+program.  The following example should work on your lab machine:
+
+mpirun -np 4 -machinefile /usr/local/nodes HelloWorld
+
+<p>
+<br>A note on output
+Getting output from an MPI program is not as straightforward as it is in
+serial programming.  This is a topic of much discussion, and research.  In
+general if you put a print statement into an MPI program, it will not 
+necessarily print in some convenient fashion.  Remember that each node 
+operates independently. Suppose that an MPI program has the following code,
+and that the float value in the second printf is equal to the rank of the
+process.
+
+printf("my rank is %d\n",local_rank);   
+...
+processing code
+...
+printf("my value is %3.1f\n",val);
+
+The output from this bit of code could be in any order.
+
+my rank is 0
+my rank is 1
+my rank is 2
+my value is 0.0 
+my value is 1.0
+my value is 2.0
+
+or
+
+my rank is 0
+my value is 0.0
+my rank is 2
+my rank is 1
+my value is 1.0
+my value is 2.0
+
+The only thing that you can be sure of is that the program will run sequentially
+on each processor.  There are advanced methods of I/O for MPI, and there are
+some parallel I/O calls that you may want to explore as you become more
+familiar with MPI.  For now you should do one of two things.  If you want to 
+have nice tidy output, send messages to the root process and print from
+there, or make sure that each line of output includes the rank of the process
+so that you can be sure of which process is doing the output.
+<p>
+<br>Exercises
+label:basicMPIex
+<br>
+   <br> Hello Neighbor - Modify the Hello World Program so that each processor
+sends a message to the processor of the next higher rank, and receives a 
+message from the next lower rank.  The root process 0 should not receive a 
+message, and the processor with the largest rank should not send a message.
+After all of the messages are sent and received, all of the non root processes
+should send the root process a message with their received message.  The 
+output should look something like:
+
+process 1 received message Hello from process 0
+process 2 received message Hello from process 1
+   ...
+
+   <br> Advanced Exercise - On each non-root processor, define a one 
+dimensional array of integers and fill it with the product of the processor
+number and the <br> of the location in the array.  Send this vector to root. 
+On the root processor receive the vectors into rows of a matrix.  For 
+simplicity, assume that there are four processors and each vector has length
+3.  Then print out the matrix from the root process. The output should look 
+like:
+
+   0 1 2
+   0 2 4
+   0 3 6
+
+
+<p>
+ Point to Point Communications
+In this , we will examine point to point message passing
+which allows data transfer from one process to another.  Unlike
+collective communications, point to point message passing involves
+only a pair of processes.
+<p>
+Sending a scalar variable or an array from one process requires
+calling one of the MPI send subroutines. This initiates data transfer from
+the user buffer to the system buffer. The corresponding receive
+call, on the other hand, allows data to be copied from the system
+buffer to the user buffer in the destination process. There is a
+variety of MPI send subroutines allowing communication in
+different modes  - synchronous, buffered, ready, standard blocking
+and non-blocking.  Unlike send, there are only two types of
+receive subroutines: standard blocking and nonblocking. Here, we
+will focus on blocking and nonblocking communications, as they are
+the most commonly used modes.
+<p>
+When we use the blocking send subroutine, MPI_Send, control does
+not return to the program until the data transfer to the system
+buffer is complete. Similarly, control returns from the blocking
+receive subroutine, newline MPI_Recv, only after the data is copied to the
+user buffer. On the other hand, nonblocking communication
+subroutines, MPI_Isend and MPI_Irecv, indicate that the data
+transfer has only begun. Control immediately returns to the
+program while data transfer continues in the background. Note that
+incorrect communications occur if we change the buffer content
+before data transfer is complete. Therefore, somewhere in the
+program, we have to make sure that the communication is over by
+calling  MPI_Wait. The format for  MPI_Wait is as follows:
+<p>
+
+int MPI_Wait (
+               MPI_Request  *request,
+               MPI_Status   *status)
+
+<p>
+Now, let us take a look at the following example program where a
+different scalar variable is initialized on each process.  The
+processes communicate and calculate the sum of these variables.
+To handle the boundry conditions we introduce the it MPI_PROC_NULL
+constant.indexMPI_PROC_NULL This constant is the equivalent of
+using /dev/null in normal programming.  Messages sent to MPI_PROC_NULL
+are treated as if the send and receive completed immediately, but not
+communications occur. 
+<p>
+
+/* This program shows the correct and incorrect use*/
+/*of the MPI_Isend and MPI_Irecv functions */
+
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;mpi.h&gt;
+
+
+main(int argc, char* argv[]){
+   int my_rank,root=0;
+   int nprocs;
+   int inext,iprev,result=0;
+   int a=0,b=0,c=0,d=0,f=0,e=0;
+   MPI_Status status;
+   MPI_Request sendReq1,sendReq2,recvReq1,recvReq2;
+   
+   /*Start MPI*/
+   MPI_Init(&amp;argc, &amp;argv);
+   
+   /*Find out process rank*/
+   MPI_Comm_rank(MPI_COMM_WORLD, &amp;my_rank);
+   
+   /*Find out the number of processes*/
+   MPI_Comm_size(MPI_COMM_WORLD, &amp;nprocs);
+  
+   /*Define next and previous processes in */
+   /*terms of ranks*/
+   inext=my_rank+1;
+   iprev=my_rank-1;
+   
+   /* define proc null for falling off the end */
+   if (my_rank == (nprocs-1)) inext=MPI_PROC_NULL; 
+   
+   if  (my_rank == root) iprev=MPI_PROC_NULL;
+
+   /* Initialize a in process 0 and b in process 1 */
+   a = my_rank;
+   b = my_rank+10;
+   d = my_rank;
+   e = my_rank+10;
+   /*    Data exchange    */
+   MPI_Isend(&amp;a,1,MPI_INT,
+      inext,0,MPI_COMM_WORLD,&amp;sendReq1);
+
+   MPI_Isend(&amp;b,1,MPI_INT,
+      inext,0,MPI_COMM_WORLD,&amp;sendReq2);
+
+   MPI_Irecv(&amp;a,1,MPI_INT,
+      iprev,0,MPI_COMM_WORLD,&amp;recvReq1);
+
+   MPI_Irecv(&amp;b,1,MPI_INT,
+      iprev,0,MPI_COMM_WORLD,&amp;recvReq2);
+
+
+   /*   Calculate c  and d before MPI_WAIT */
+   c=a+b;
+   f=d+e; 
+   printf("Process %d before wait c= %d f= %d\n",
+			 my_rank,c,f);
+	    
+   MPI_Wait(&amp;sendReq1,&amp;status);
+   MPI_Wait(&amp;sendReq2,&amp;status);
+   MPI_Wait(&amp;recvReq1,&amp;status);
+   MPI_Wait(&amp;recvReq2,&amp;status);
+
+   /*   Calculate c after MPI_Wait */
+   c=a+b;
+   f=d+e; 
+   printf("Process %d after wait c= %d f=%d\n", 
+			   my_rank,c,f);
+
+   /* Shutdown MPI */
+   MPI_Finalize();
+
+}
+
+*********************************************
+Output from program (Sorted for easy reading)
+Process 0 before wait c= 10 f= 10
+Process 0 after wait c= 10 f=10
+Process 1 before wait c= 12 f= 12
+Process 1 after wait c= 10 f=12
+Process 2 before wait c= 14 f= 14
+Process 2 after wait c= 12 f=14
+
+<p>
+This program generates a wrong value for c when it is calculated
+before the MPI_WAIT call.  MPI_Wait is used to block both
+sending and receiving processes until the communication is
+complete. Since the variable f can be calculated correctly during
+data exchange, it is safe to post MPI_Wait calls afterwards. On
+the other hand, placing MPI_Wait just after the immediate Send
+and Receive calls would be the same as using blocking
+communications. Please note that, to reduce synchronization
+overhead, we should post MPI_Wait in the program as late as
+possible. Notice one other aspect of this program.  The values are
+correct for Process 0, because it receives from MPI_PROC_NULL.  
+So special care must be taken in debugging these situations.
+<p>
+We use immediate calls because they are faster than blocking
+communications. Also, blocking calls may fail when the sent
+message is too large.
+<p>
+<br>Transferring Data from Arrays
+We specify the location of the first element to be sent or
+received when we call MPI communication subroutines. For a
+successful communication, the rest of the elements to be transferred
+must be contiguous in the memory. Since C stores the
+elements of a two-dimensional array in row major order, sending
+a row of an array is straightforward.  Let us examine the
+following program that computes the elapsed time for the data
+exchange between two processes.
+<p>
+
+/* Demonstration of communicating an array */
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;mpi.h&gt;
+#define ARRAY_SIZE 25
+main(int argc,char* argv[]){
+	
+   int				my_rank;
+   int				p;
+   int				source;
+   int				dest;
+   int				tag=0;
+   int			    i,j;
+   double		    a[ARRAY_SIZE][ARRAY_SIZE]; 
+   double		    b[ARRAY_SIZE][ARRAY_SIZE]; 
+   double		    t1,t2,resol;
+   char			    message[100];
+   MPI_Status		status;
+
+   /*Start MPI*/
+   MPI_Init(&amp;argc,&amp;argv);
+   /*Find out process rank*/
+   MPI_Comm_rank(MPI_COMM_WORLD,&amp;my_rank);
+   /*Find out the number of processes*/
+   MPI_Comm_size(MPI_COMM_WORLD,&amp;p);
+
+   resol=MPI_Wtick();
+   printf("clock resolution %f\n",resol);
+
+   if (my_rank==0){ 
+      for(i=0;i&lt;ARRAY_SIZE;i++)
+        for(j=0;j&lt;ARRAY_SIZE;j++){
+           a[i][j]=1.0;
+           b[i][j]=0.0;
+        }
+   }        
+   if (my_rank==1){
+      for(i=0;i&lt;ARRAY_SIZE;i++)
+        for(j=0;j&lt;ARRAY_SIZE;j++){
+           a[i][j]=0.0;
+           b[i][j]=2.0;
+        }
+   }
+   MPI_Barrier(MPI_COMM_WORLD);
+
+   if (my_rank==0){
+        t1=MPI_Wtime();
+
+      MPI_Send(a,ARRAY_SIZE*2,
+         MPI_DOUBLE,1,tag,MPI_COMM_WORLD);
+      MPI_Recv(b,ARRAY_SIZE*2,
+         MPI_DOUBLE,1,tag,MPI_COMM_WORLD,&amp;status);
+
+      t2=MPI_Wtime();
+	  printf("communication time %10.5f process %d\n",
+			  t2-t1,my_rank);
+   }
+   if (my_rank==1){
+      t1=MPI_Wtime();
+      MPI_Send(b,ARRAY_SIZE*2,
+         MPI_DOUBLE,0,tag,MPI_COMM_WORLD);
+      MPI_Recv(a,ARRAY_SIZE*2,
+         MPI_DOUBLE,0,tag,MPI_COMM_WORLD,&amp;status);
+      t2=MPI_Wtime();
+	  printf("communication time %10.5f process %d\n",
+			  t2-t1,my_rank);
+   }
+   MPI_Finalize();
+}
+
+First, let us explain briefly some of the subroutines we have used
+for the first time. MPI_Wtick is used to determine the clock
+resolution and MPI_Wtime gives the elapsed time.
+<p>
+The MPI_Barrier subroutine blocks each process until each one has
+called it. It is used for synchronization. In other words,  it
+ensures that the processes start sending and receiving at the same
+time. MPI_Barrier can be used for blocking multiple processes; it
+is a collective communication subroutine.  We will see more about
+collective communications in the next .
+<p>
+In this program, each process transfers the first and second
+rows of the array initialized on them. If we increased the
+number of rows to be transferred more and more, MPI_Send and
+MPI_Recv would eventually fail. In this case, non-blocking
+calls would still be working.
+sub<br>Derived Data Types
+Now, let us see how to transfer columns in an array.  A new data type
+must be defined in order to send and receive columns because this
+time the data is not contiguous in the memory. The following
+Send/Receive pair can be used to transfer the first column of the
+following array.
+
+            1 2 3 4
+            1 2 3 4
+            1 2 3 4
+            1 2 3 4
+
+<p>
+
+   MPI_Type_vector(4,1,4,MPI_INT,&amp;coltype);
+   MPI_Type_commit(&amp;coltype);
+
+   if (my_rank==0)
+     MPI_Send(a,1,coltype,
+         1,tag,MPI_COMM_WORLD);
+
+   if (my_rank==1) 
+      MPI_Recv(a,1,coltype,
+         0,tag,MPI_COMM_WORLD,&amp;status);
+
+   MPI_Type_free(&amp;coltype);
+
+<p>
+The MPI_Type_vector subroutine is used to define a new data type
+representing equally spaced blocks.  It has the following format:
+<p>
+
+int MPI_Type_vector(
+               int count,
+               int blocklen,
+               int stride,
+               MPI_Datatype old_type,
+               MPI_Datatype *newtype )
+
+<p>
+The MPI_Type_commit makes the new data type ready to be used in
+communication. The new data type is freed by the MPI_Type_free
+call. In other words, the MPI_Type_free routine sets the new
+data type to newline MPI_DATATYPE_NULL.
+<p>
+<br>Exercises
+<br>
+<br> On each process, define a 4X4  array.  The first process
+will have 1s in the first row, the second process will have 2s
+in the second row and so on. The rest of the elements of the
+array will be zero. Using blocking communication subroutines,
+complete the array on each process. Assume that the number of
+processes is 4. The output should look like as follows.
+<p>
+
+            1 1 1 1
+            2 2 2 2
+            3 3 3 3
+            4 4 4 4
+
+Rewrite the program using non-blocking communications.
+<p>
+<br> Advanced Exercise: Modify the array of the previous exercise
+such that only one column should contain nonzero elements initially.
+Complete the array on each process using derived data types and
+point to point communications.
+
+<p>
+Collective Communications
+label:collective_communications
+Until this point we've only discussed communications coming from a single 
+process and going to a single process.  MPI also contains it collective
+communications indexcollective communications which loosely defined are 
+those communications that involve multiple processors on the sending end, 
+the receiving end or both.  The MPI_Barrier command that was described
+in the last , is often included as a collective communication. In the
+following s we will describe some of the most commonly used 
+communications of this type.  The reader should be aware that this is a 
+rich, complex and useful area within MPI, and these notes barely scratch the
+surface.
+<br>One to All
+<br>:bcast
+To send messages from one process to all other processes MPI contains the
+function MPI_Bcast. indexMPI_Bcast The format for MPI_Bcast is
+<p>
+
+int MPI_Bcast ( void *buffer, int count, 
+			   MPI_Datatype datatype, 
+			   int root,MPI_Comm comm )
+
+<p>
+There are several differences between MPI_Bcast and the point-to-point 
+communications that we have looked at in the previous s.  First both
+the sender and the receivers use the same function call. Root in the case of
+MPI_Bcast is the rank of the process sending and it must be the same on all
+processes or there will be an error.  
+<p>
+It is important to understand that although you can 
+accomplish the same data transfer by using individual sends and receives, 
+using MPI_Bcast is more efficient.  This is generally true of the collective
+communications.  Let's take a brief look at why.  When you do individual sends 
+and receives, at each iteration of the loop there is one message being sent 
+from the sending process to each of the receiving processes.  There are other
+possible methods of getting the data to each process that are more efficient.
+Let's assume for the sake of simplicity that the root process in our 
+communication is process 0, and we have 8 nodes. In this case we could 
+send the communications in the manner depicted in Figure reffig:bcastC.
+<p>
+beginfigure[b]
+    centering
+    epsffilebcast.eps
+<p>
+caption A more efficient communication scheme
+    labelfig:bcastC
+endfigure
+<p>
+Notice that this completes the communication in three timesteps instead of 
+the eight needed by sending all messages from root.  This is not to say that
+TCP/IP communications are this simple, or that there aren`t more efficient
+schemes. The efficiency of such a scheme is dependent on the underlying 
+network topology. Fortunately, we don't have to come up with an 
+efficient scheme each
+time we want to distribute data.  The implementations of MPI_Bcast handle the
+details for us.  This is especially important when one considers portability
+issues.  With out using the MPI built in routines, you would have to determine
+the best scheme each time you wanted to run the program in a different 
+environment, or even a different number of processors.
+<p>
+<br>All to one
+<br>:reduce
+So you're probably thinking that if MPI has an efficient method of broadcasting
+from one process to all of the others, that there should be some way of 
+collecting data from all of the nodes onto one.  There are several.  
+The first ones that we will examine involve reduction operations.  For example,
+suppose that you have a value on each processor and that you wanted to 
+get a global sum of these values.  If we send all of the data to the root node
+by using individual calls we have created several bottlenecks in the program.
+Also, once
+the data is collected the other processors must wait until the root processor
+is finished with the calculation before they can proceed. (If they need the
+result.)  The function MPI_Reduce takes care of the first of these problems. 
+<p>
+
+int MPI_Reduce ( void *sendbuf,void *recvbuf,
+			    int count, MPI_Datatype datatype, 
+			   MPI_Op op,int root,MPI_Comm comm )
+
+<p>
+Lets take a look at an example. Assume that all of the variables are define
+appropriately.
+
+MPI_Reduce(&amp;val,&amp;total,1,MPI_INT,MPI_SUM,0,
+						MPI_COMM_WORLD);
+
+<p>
+Each process calls MPI_Reduce with the same parameters.  Even though
+the sum is accumulated only on process 0. After the call above, the
+variable total will contain the global sum.  What if you want to do some
+other operation than summation? MPI predefines several operations for
+the parameter MPI_Op. It can take on the following values. 
+begindescription
+    <br> [MPI_MAX] maximum
+	<br> [MPI_MIN] minimum
+	<br> [MPI_SUM] sum
+	<br> [MPI_PROD] product
+	<br> [MPI_LAND] logical and
+	<br> [MPI_BAND] bit-wise and
+	<br> [MPI_LOR] logical or
+	<br> [MPI_BOR] bit-wise or
+	<br> [MPI_LXOR] logical xor
+	<br> [MPI_BXOR] bit-wise xor
+	<br> [MPI_MAXLOC] max value and location of maximum
+	<br> [MPI_MINLOC] min value and location of minimum
+enddescription
+<p>
+The operators MPI_MAXLOC and MPI_MINLOC use predefined MPI datatypes to
+be able to return the value and the location.
+<p>
+While MPI_Reduce solves the problem of efficiently communicating the data to
+the root node it leaves open the question of how to distribute the result to 
+all of the processes. We could follow the call to MPI_Reduce
+with a call to MPI_Bcast, but this isn't the most efficient method. 
+Instead MPI uses a communication structure called the it butterfly which
+communicates the results of partial operations in such a way that at the 
+end of the call 
+all of the processors have the result.  The details of this communication scheme
+are beyond the scope of these notes, but it should suffice at this stage to
+assume that for doing one of the global reduction operations and having
+the result be available to all of the processors, MPI_Allreduce is the
+function of choice. The definition of MPI_Allreduce is given below.
+<p>
+
+int MPI_Allreduce ( void *sendbuf, void *recvbuf, 
+					 int count, MPI_Datatype datatype, 
+					 MPI_Op op, MPI_Comm comm )
+
+<p>
+<br>Scatter and Gather
+<br>:scattergather
+We have looked at collective communications that take the same data and 
+communicate it to all processors, and those that reduce data from all processes
+to one.  But these communication functions will not allow us send different 
+information to each process.  Nor will they allow us to collect separate bits
+of information from all of the processes onto one.  For these tasks we can
+use MPI_Scatter and MPI_Gather.  
+<p>
+
+int MPI_Scatter (
+               void *sendbuf,
+               int sendcnt,
+               MPI_Datatype sendtype,
+               void *recvbuf,
+               int recvcnt,
+               MPI_Datatype recvtype,
+               int root,
+               MPI_Comm comm )
+
+int MPI_Gather ( 
+               void *sendbuf, 
+               int sendcnt, 
+               MPI_Datatype sendtype,
+               void *recvbuf, int recvcount, 
+               MPI_Datatype recvtype,
+               int root, 
+               MPI_Comm comm )
+
+<p>
+The meanings of these parameters are similar to previous commands that we have
+studied.  The sendcnt is usually the same as the recvcnt, and the sendtype
+is usually the same as the recvtype. We can look at the follow example to see
+how MPI_Scatter works.  
+<p>
+
+	
+main(int argc, char * argv[]){
+     int i,vec[4]={0,0,0,0};
+     // Initialize MPI 
+     MPI_Init(&amp;argc,&amp;argv);
+     MPI_Comm_size(MPI_COMM_WORLD,&amp;numOfProcessors);  
+     MPI_Comm_rank(MPI_COMM_WORLD,&amp;localRank);
+     if(localRank==0){
+         for(i=0;i&lt;4;i++) vec[i]=i*2;
+     }
+     MPI_Scatter(&amp;vec,1,MPI_INT,&amp;vec,1,MPI_INT,0,
+                          MPI_COMM_WORLD);
+
+     MPI_Finalize();
+}
+
+<p>
+This code will distribute each of the entries of vector vec to the
+processes in MPI_COMM_WORLD.  Figure reffig:scatC shows the effects 
+of the MPI_Scatter command on the memory for each process. Note that the
+blank memory locations are really set to a value of 0.
+beginfigure[h]
+    centering
+    epsffilescat.eps
+<p>
+caption The effects of MPI_Scatter
+    labelfig:scatC
+endfigure
+<p>
+MPI_Gather is in some sense the inverse operation to MPI_Scatter.  Instead 
+of distributing values, it gathers them together.  The following code and
+Figure reffig:gatherC show the effects of the MPI_Gather operation.
+<p>
+
+main(int argc, char * argv[]){
+   int i,vec[4]={0,0,0,0};
+	// Initialize MPI 
+	MPI_Init(&amp;argc,&amp;argv);
+	MPI_Comm_size(MPI_COMM_WORLD,&amp;numOfProcessors);  
+	MPI_Comm_rank(MPI_COMM_WORLD,&amp;localRank);
+	if(localRank!=0){
+	   vec[0]=localRank*2;	
+	}
+    MPI_Gather(&amp;vec,1,MPI_INT,&amp;vec,1,MPI_INT,0,
+								 MPI_COMM_WORLD);
+
+	MPI_Finalize();
+
+<p>
+beginfigure[h]
+    centering
+    epsffilegather.eps
+<p>
+caption The effects of MPI_Gather
+    labelfig:gatherC
+endfigure
+<br>Exercises
+<br>:reductionEx
+<br>
+   <br> Write a program using MPI_Bcast and MPI_Reduce to calculate the
+dot product of two vectors.  For simplicity, initialize and assign values to
+the integer vectors of length 20 (Do this only the root process and 
+assign the values as you wish). Assume the the the number of processors 
+evenly divides 20.
+   <br> Matrix-Vector multiplication. For this example assume that you will be using 4 processors.  On on the root process initialize a 4x4 matrix and 
+a 4x1 vector.  Multiply the matrix by the 
+vector using MPI_Scatter to distribute the matrix  and MPI_Bcast to distribute
+the vector to the non-root processes.  
+Then use MPI_Gather to collect the result.
+   <br> Advanced Exercise - Write a program using newline MPI_AllReduce to 
+calculate 
+the integral of <IMG
+ WIDTH="45" HEIGHT="15" ALIGN="MIDDLE" BORDER="0"
+ SRC="img33.png"
+ ALT="$ f(x)=x^2$">
+ in the interval 0 to 12 using the Trapezoid rule. 
+Assume  4 processors, you can use the intervals <!-- MATH
+ $[a,b] = [p*3,(p+1)*3]$
+ -->
+<IMG
+ WIDTH="70" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img34.png"
+ ALT="$ [a,b] = [p*3,(p+1)*3]$">
+. 
+Can you extend this program to handle any interval with any number of processes?
+
+Putting All Together: A Diffusion Problem in MPI
+In this , we will apply what we have  learned to a two
+dimensional diffusion problem for which  the prototype system is
+shown in Figure reffig:proto. Here, the concentration of a solute in a liquid
+is held constant at 1 at the boundaries of a square domain.
+Initially, the concentration is  2 inside, except a small square
+in the middle.
+beginfigure[H]
+centering
+includegraphics figure1.eps
+captionThe Prototype System
+labelfig:proto
+endfigure
+As Fick's Law states, the solute will diffuse from high
+concentration to  low concentration region. To determine the
+concentration at any point and time, we need to solve the
+following partial differential equation.Here, C stands for
+concentration; t for time; x and y for space dimensions; and D for
+diffusivity.
+<p>
+beginequation
+ fracpartial Cpartial t  = Dbigg{fracpartial ^2 Cpartial x^2+fracpartial ^2 Cpartial y^2bigg}
+endequation
+linebreak
+<p>
+We will use the explicit finite difference method to solve
+this equation. The formulation is as follows:
+beginfigure[H]
+centering
+includegraphics[width=9cm] figure2.eps
+captionDiscretization of the Domain
+endfigure
+<p>
+Second order partial derivatives in the x and y
+direction:
+<p>
+beginequation
+fracpartial^2 Cpartial x^2  = frac1triangle x^2bigg{C^k_i+1,j-2C^k_i,j+C^k_i-1,j  bigg}
+endequation
+<p>
+beginequation
+fracpartial^2 Cpartial y^2  = frac1triangle y^2bigg{C^k_i,j+1-2C^k_i,j+C^k_i,j-1  bigg}
+endequation
+linebreak
+<p>
+Time derivative:
+<p>
+beginequation
+ fracpartial Cpartial t  = frac1triangle tbigg{C^k+1_i,j-C^k_i,j  bigg}
+endequation
+linebreak
+<p>
+The partial differential equation in terms of finite difference
+formulas
+<p>
+beginalign
+labelequation:pde5
+ frac1triangle tbig(C^k+1_i,j-C^k_i,jbig)  &amp;=D frac1triangle x^2bigg{C^k_i+1,j-2C^k_i,j+C^k_i-1,j bigg}notag 
+<BR> &amp;+D frac1triangle y^2bigg{C^k_i,j+1-2C^k_i,j+C^k_i,j-1bigg}
+endalign
+linebreak linebreak linebreak
+<p>
+Rearranging Equation refequation:pde5
+<p>
+beginalign
+C^k+1_i,j =C^k_i,j&amp;+D fractriangle ttriangle  x^2bigg{C^k_i+1,j-2C^k_i,j+C^k_i-1,jbigg}notag
+<BR>&amp;+D fractriangle ttriangle
+y^2bigg{C^k_i,j+1-2C^k_i,j+C^k_i,j-1bigg}
+endalign
+linebreak
+<p>
+The explicit finite difference method  requires small time steps in order to
+overcome the stability problem which makes it   computationally
+expensive. However, this method is simple and easy to parallelize. The
+square domain is divided among two processes  in Figure reffig:fig3.
+Each process is responsible for one rectangular grid and
+the boundary elements are transferred to neighboring processes through message
+passing. Note that, in columnwise distribution, the
+boundary elements are contiguous in the memory and they can be
+transferred without using derived data types.
+beginfigure[H]
+centering
+includegraphics [width=6cm] figure3.eps
+captionDividing the domain between two Processes 
+labelfig:fig3
+endfigure
+<p>
+Now let us examine the program to see how  to divide the domain
+among the processes; express the initial and boundary conditions
+in a parallel program; and also, generate output files.
+<p>
+
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;mpi.h&gt;
+#include &lt;time.h&gt;
+#include &lt;math.h&gt;
+
+#define SIZE 500
+#define SPIKE_SIZE 5
+/* take the minimum of two integers */
+int imin(int a,int b){
+   if(a&lt;=b) return a; else return b;
+}
+
+main(int argc, char* argv[]){
+   int my_rank,work1,work2;
+   int nprocs,cnt,tag=0;
+   int inext,iprev;
+   int row,col,i,j;
+   int N, M, ROOT,NT;
+   int COUNT,I,J,JSTA,JSTA2,JEND,JEND1;
+   int done;
+   double FLD[SIZE][SIZE], WKSP[SIZE][SIZE];
+   double DELTA,DELTAT,DELTAX;
+   double DELTAY,DELTA1,DELTA2;
+   double DF,L,T;
+   char hostname[25],filename[50];
+   int wallTime,starttime,endtime;
+   time_t startSec,endSec;
+   FILE * outf;
+   MPI_Status status;
+   MPI_Request send1,send2,recv1,recv2;
+   
+   /*Start MPI*/
+   MPI_Init(&amp;argc, &amp;argv);
+   
+   /*Find out process rank*/
+   MPI_Comm_rank(MPI_COMM_WORLD, &amp;my_rank);
+   
+   /*Find out the number of processes*/
+   MPI_Comm_size(MPI_COMM_WORLD, &amp;nprocs);
+
+   /*integer ISTATUS(MPI_STATUS_SIZE)*/
+
+   /* Start the timer */
+   if(my_rank==0) {
+      startSec=time(NULL);
+   }
+   /* Initialize parameters */
+   N=SIZE;
+   M=SIZE;
+   T=10.0;
+   NT=100;
+   DELTAT=T/NT;
+   L=100.0;
+   DELTAX=L/(N);
+   DELTAY=L/(M);
+   DELTA1=DELTAT/pow(DELTAX,2.0);
+   DELTA2=DELTAT/pow(DELTAY,2.0);
+   DF=(pow(10.0,-4.0))*25.0;
+   done=0;
+
+   MPI_Comm_size(MPI_COMM_WORLD,&amp;nprocs);
+   MPI_Comm_rank(MPI_COMM_WORLD,&amp;my_rank);
+
+   /*distribute the array onto the processes. */
+   /*JSTA and JEND  stand for the first and */
+   /*the last row mapped to each process. */
+   
+   work1=SIZE/nprocs;
+   /*Determines the offset */
+   work2=SIZE%nprocs;
+   /*Distributes the extra columns to the */
+   /*processes. If mod()is 2 for example, */
+   /*an extra column will  be mapped to */
+   /*process 0 and process 1*/
+   JSTA=my_rank*work1+imin(my_rank,work2);
+   if(my_rank&lt;work2) JEND=JSTA+work1;
+   else JEND=JSTA+work1-1;   
+
+   ROOT=(nprocs-1)/2;
+   JSTA2=JSTA;
+   JEND1=JEND;
+   if (my_rank==0) JSTA2=1;
+   if (my_rank==(nprocs-1)) JEND1=M-2;
+   inext=my_rank+1;
+   iprev=my_rank-1;
+   if (my_rank==(nprocs-1))inext=MPI_PROC_NULL;
+   if (my_rank==0) iprev=MPI_PROC_NULL;
+
+   /*Initial Conditions */
+   for(row=JSTA2;row&lt;=JEND1;row++)
+     for(col=1;col&lt;SIZE-1;col++)
+	  FLD[row][col]=2.0;
+   /* for middle processor set spike value */
+   if (my_rank==ROOT){ 
+      for(i=0;i&lt;SPIKE_SIZE;i++)
+        for(j=0;j&lt;SPIKE_SIZE;j++)
+   	    FLD[(SIZE/2)-SPIKE_SIZE+i]
+			   [SIZE/2-SPIKE_SIZE+j]=5.0;
+   }
+  /* Boundary Conditions*/
+  for(row=JSTA;row&lt;=JEND;row++){
+    FLD[row][0]=1.0;
+    FLD[row][SIZE-1]=1.0;
+  }
+  if (my_rank==0) {
+   for(col=0;col&lt;SIZE;col++)
+      FLD[0][col]=1.0;
+  }
+  if(my_rank==(nprocs-1)){
+      for(col=0;col&lt;SIZE;col++)
+         FLD[JEND][col]=1.0;
+  } 
+  /*Main Processing Loop */
+  /* set a counter to stop execution after some*/
+  /* sane number of itterations*/
+  cnt = 0;
+  while((!done)&amp;&amp;(cnt&lt;2500)){  
+   /* Transfer the boundary elements to  */
+  /* neigboring processes */
+   MPI_Isend(&amp;(FLD[JEND][0]),SIZE,MPI_DOUBLE,
+      inext,tag,MPI_COMM_WORLD,&amp;send1);
+   MPI_Isend(&amp;(FLD[JSTA][0]),SIZE,MPI_DOUBLE,
+      iprev,tag,MPI_COMM_WORLD,&amp;send2);
+   MPI_Irecv(&amp;(FLD[JSTA-1][0]),SIZE,MPI_DOUBLE,
+      iprev,tag,MPI_COMM_WORLD,&amp;recv1);
+   MPI_Irecv(&amp;(FLD[JEND+1][0]),SIZE,MPI_DOUBLE,
+      inext,tag,MPI_COMM_WORLD,&amp;recv2);
+
+   MPI_Wait(&amp;send1,&amp;status);
+   MPI_Wait(&amp;send2,&amp;status);
+   MPI_Wait(&amp;recv1,&amp;status);
+   MPI_Wait(&amp;recv2,&amp;status);
+
+   /*Updates the concentration using the finite*/  
+   /*difference formula */
+   for(row=JSTA2;row&lt;=JEND1;row++)
+      for(col=1;col&lt;SIZE-1;col++)
+         WKSP[row][col]=FLD[row][col]+
+            DELTA1*DF*(FLD[row+1][col]
+            -2.0*FLD[row][col]+FLD[row-1][col])
+            +DELTA2*DF*(FLD[row][col+1]
+            -2.0*FLD[row][col]+FLD[row][col-1]);
+
+   for(row=JSTA2;row&lt;=JEND1;row++)
+      for(col=1;col&lt;SIZE-1;col++)
+         FLD[row][col]=WKSP[row][col];
+
+
+   /*Check whether the concentration in the middle */ 
+   /*of the small square is below 3.0. */
+   /If so, change done to true */
+   if (my_rank==ROOT){
+      if(FLD[SIZE/2-SPIKE_SIZE/2]
+         [SIZE/2-SPIKE_SIZE/2]&lt;=3.0){
+         done=1;
+      }
+   }
+
+   /*Collective Communication*/ 
+   /*"done" is transferred from root*/
+   /*to all processes*/
+   MPI_Bcast(&amp;done,1,MPI_INT,ROOT,MPI_COMM_WORLD);
+   cnt++;
+  } 
+
+
+   /*Opens a file for each process for I/O as*/ 
+   /*"diffout.my_rank"*/
+
+   sprintf(filename,"diffout.%d",my_rank); 
+   if((outf=fopen(filename,"w+"))==NULL){
+      printf("unable to open file %s for 
+            process %d\n",filename,my_rank);
+      exit(0);  
+   }
+   for(row=JSTA;row&lt;=JEND;row++){
+      for(col=0;col&lt;SIZE;col++){
+         fprintf(outf,"%7.4f ",FLD[row][col]);
+      }
+      fprintf(outf,"\n");
+   }
+   if(my_rank == 0){
+      endSec=time(NULL);
+      wallTime=(int) (endSec-startSec);
+      fprintf(stderr, 
+       "\n processing time %d seconds\n",wallTime);
+   }
+
+   MPI_Finalize();
+}
+
+<p>
+The following figures show the initial and final states of the
+system.
+beginfigure[H]
+includegraphics [width=13cm] result1.eps
+captionSolute Concentration at t=0 
+endfigure
+beginfigure[H]
+includegraphics [width=13cm] result2.eps
+captionSolute Concentration after 366 iterations 
+endfigure
+<br>Exercises
+<br>
+<br> Modify the diffusion program for the following system.  Run
+the code with 1,2,3 and 4 nodes and compare the execution times.
+Try both non-blocking and blocking communications.
+beginfigure[H]
+centering
+includegraphics [height=6cm]ex1.eps
+captionThe Prototype System for Exercise1
+endfigure
+<br> Advanced Exercise. This time, there are two high
+concentration regions as shown in the following Figure. Assume
+that these regions are 10 grids away from the boundaries in the y
+direction. The location of the squares in the x direction is the
+same as before. Program should terminate when both of the
+concentrations  go below 3.5. Again,run the program with different
+numbers of nodes and compare the results.
+beginfigure[H]
+centering
+includegraphics [height=6cm] ex2.eps
+captionThe Prototype System for Exercise2 
+endfigure
+
