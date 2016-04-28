@@ -1,0 +1,24 @@
+
+<?php
+
+include ('../connect/connect.php');
+mysql_select_db('hosts') or die(mysql_error());
+$q = $_REQUEST["q"];
+
+$result = mysql_query("select * from hostinfo where hostinfo.hostname = '$q';");
+
+while ($row = mysql_fetch_array($result)) {
+
+	echo '<br>';
+echo 'Hostname:' . $row['hostname'] . '<br>';
+echo $row['location'] . '<br>';
+echo $row['serialno'] . '<br>';
+echo $row['OS'] . '<br>';
+echo $row['purchase_year'] . '<br>';
+echo $row['Hardware_category'] . '<br>';
+}
+
+mysql_close($conn);
+
+?>
+

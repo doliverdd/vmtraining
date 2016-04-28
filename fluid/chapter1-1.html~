@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<HTML>
+<HEAD>
+<TITLE>USF HPC Training</TITLE>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine">
+<LINK REL="STYLESHEET" HREF="css/main.css">
+
+</HEAD>
+
+<body class="w3-container w3-margin-32" style="width:80%">
+
+
+	<h1>Chapter 1</h1>
+	<h1>Introduction to High Performance Computing</h1>
+		<div class="w3-row">
+				  <div class="col-70">
+		<h3>What is High Performance Computing?</h3>
+	
+	  High Performance computing is an often poorly defined concept.
+		There are several terms that are often confused with High Performance Computing,
+		such as; High Throughput Computing, Parallel Computing, Numerically 
+		Intensive Computing, Grid Computing, etc. In fact all of these are facets of 
+		High Performance Computing.  For our purposes we will define High Performance
+		Computing to consist of hardware and software resources used for computational
+		science that are beyond what is commonly found on the desktop machine. 
+		 </div>
+			 
+		  
+	</div>
+
+
+	
+</BODY>
+</HTML>
