@@ -1,0 +1,86 @@
+<h4>Getting Started</h4>
+The first thing that you must know is how to access the system.  You should have
+been given an account name and password when you arrived in the lab today.  
+You will need both to access the system since Linux is a true multiuser system.
+Please keep the account name and password in a safe place.  
+For our examples we will assume that the system has
+a user with the account name <i>frodo</i>. Notice that frodo is not capitalized. 
+This is because Linux is case sensitive. Before we log on to the system 
+let's take a look at the filesystem structure.  
+<br>
+The filesystem on Linux is composed of 
+directories and files.  The directories are synonymous with 
+folders in the Windows operating systems.  The main system directories
+are displayed below. On most Linux systems the contents
+of these main directories are fairly standard, although the reasons may not be
+clear. The common contents of some of the more important directories for users
+are listed here:
+</div>
+
+	<div class="col-30">
+				<div class="card4">
+				 
+				<header class="w3-container">
+				  <h3>Linux directories...</h3>
+				</header>
+
+					<div class="w3-container">
+					<p>Linux directories are the same as Windows folders.  On most Linux systems, the main directory structure is fairly standard.</p>
+					</div>
+				</div>
+
+			  </div>
+
+	</div>
+	<p>
+	<table>
+		<tr><th>Directory</th><th>Contents</th>
+		<tr>
+			<td>/bin</td>
+			<td>Command binaries </td>
+		</tr>
+
+		<tr>
+			<td>/home </td>
+			<td>Users home directories</td>
+		</tr>
+
+		<tr>
+			<td> /lib</td>
+			<td> System libraries</td>
+		</tr>
+
+		<tr>
+			<td>/sbin </td>
+			<td> System binaries</td>
+		</tr>
+
+		<tr>
+			<td>/tmp </td>
+			<td> Scratch Space </td>
+		</tr>
+
+		<tr>
+			<td> /usr/bin</td>
+			<td>Binaries for user commands </td>
+		</tr>
+
+		<tr>
+			<td>/usr/include </td>
+			<td> Header or include files</td>
+		</tr>
+
+		<tr>
+			<td>/usr/lib </td>
+			<td>Libraries  </td>
+		</tr>
+
+		<tr>
+			<td> /usr/local</td>
+			<td>Locally installed binaries,libraries,and includes </td>
+		</tr>
+	</table>
+	<p>
+	<div class="w3-row">
+		<div class="col-70">
+	       <p>

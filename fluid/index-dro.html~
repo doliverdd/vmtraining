@@ -49,15 +49,15 @@
       
       
    <div id="introhpc" class="panel-collapse collapse">
-  		<ul class="list-group m1" id="ul1">
-    		<li class="list-group-item m1" id="1-1" >High Performance Computing</li>
-    		<li class="list-group-item m1" id="1-2">HPC Hardware</li>
-    		<li class="list-group-item m1" id="1-3">Grid Computing</li>
-    		<li class="list-group-item m1" id="1-4">Large Scale SMP</li>
-    		<li class="list-group-item m1" id="1-5">HPC Software</li>
-    		<li class="list-group-item m1" id="1-6">Linux</li>
-    		<li class="list-group-item m1" id="1-7">Compilers</li>
-    		<li class="list-group-item m1" id="1-8">Libraries</li>
+  		<ul class="list-group">
+    		<li class="list-group-item" id="0" >High Performance Computing</li>
+    		<li class="list-group-item" id="1">HPC Hardware</li>
+    		<li class="list-group-item">Grid Computing</li>
+    		<li class="list-group-item">Large Scale SMP</li>
+    		<li class="list-group-item">HPC Software</li>
+    		<li class="list-group-item">Linux</li>
+    		<li class="list-group-item">Compilers</li>
+    		<li class="list-group-item">Libraries</li>
   		</ul>
   	</div>
   	<div class="panel-heading">
@@ -66,10 +66,10 @@
         </h4>
    </div>
       <div id="linuxfund" class="panel-collapse collapse">
-  			<ul class="list-group" id="ul2">
-    			<li class="list-group-item" id="2-1">Getting Started With Linux</li>
-    			<li class="list-group-item" id="2-2">Basic File System Commands</li>
-    			<li class="list-group-item" id="2-3">Man Pages</li>
+  			<ul class="list-group">
+    			<li class="list-group-item" id="intro" >Getting Started With Linux</li>
+    			<li class="list-group-item">Basic File System Commands</li>
+    			<li class="list-group-item">Man Pages</li>
     
   			</ul>
   		</div>
@@ -89,11 +89,15 @@
 	<div class="container-fluid">
 		<div class="row">	
 		
-			<div class="col-md-4" style="height:100px;">		
+			<div class="col-md-3 " style="height:100px;">		
 			
 				<div id="pag">
 		  			<ul class="pagination">
-  						
+  						<li class="active"><a href="#">1</a></li>
+  						<li ><a id="c1-2" href="#">2</a></li>
+  						<li><a href="#">3</a></li>
+  						<li><a href="#">4</a></li>
+  						<li><a href="#">5</a></li>
 					</ul>
 				</div>
 			</div>			
@@ -123,49 +127,52 @@
     
     <script>
 		
-<!--  JQUERY TO LOAD CONTENT BASED ON MENU SELECTION ---------------------------------------------------------------------------------------------------- -->
-<!-- 			CHAPTER NAMES MUST CONFORM TO THE IDs OF LEFT SIDE MENU ITEMS (i.e. FIRST MENU ITEM IS ID 1-1 SO CHAPTER MUST BE NAMED CHAPTER1-1.HTML) ----- -->		
 	
 	$(document).ready(function(){
-	
 		$('#pag').hide();
+		$('#0').click(function (){
 		
-		
-
-
-		
-			
-			
-		$('ul.list-group li').click(function(e) {
-			
-			var menuItem = $(this).attr('id');
-			
-				
-			var menuList = $(this).parents('ul').attr('id');
-			
-			var mList = $('ul#' + menuList + ' li');	
-			
-		var cList = $('ul.pagination');
-		
-		$.each(mList, function(i)
-		{
-			var li = $('<li/>')
-				.appendTo(cList);
-			var inc = (i + 1);
-			var aa = $('<a>' + inc + '</a>')
-				.appendTo(li);
-			
-			
-				});
-			
-			
-			$('#content').load('chapter' + menuItem + '.html');
-			$('#pag').show();	
-			});
-	
+			$('#content').load('chapterone-1.html');
+			$('ul li').eq(1).css('background-color', 'white');
+			$('ul li').eq(0).css('background-color', '#e8e38e');
+			$('#pag').show();
+			$('ul.pagination li').eq(0).addClass('active');
+			$('ul.pagination li').eq(1).removeClass('active');
 		
 		});
-			
+		
+		$('ul.pagination li').click(function(){
+			$('ul.pagination li').eq(0).removeClass('active');
+			$('ul.pagination li').eq(1).addClass('active');
+			$('ul li').eq(0).css('background-color', 'white');
+			$('ul li').eq(1).css('background-color', '#e8e38e');
+		});		
+		
+		$('#1').click(function (){
+		
+			$('#content').load('chapter1-2.html');
+			$('ul li').eq(0).css('background-color', 'white');
+			$('ul li').eq(1).css('background-color', '#e8e38e');
+			$('ul.pagination li').eq(0).addClass('active');
+			$('ul.pagination li').eq(1).removeClass('active');
+		
+		
+			});
+		
+		$('#c1-2').click(function (){
+		
+			$('#content').load('chapter1-2.html');
+			$('ul li').eq(1).css('background-color', 'white');
+			$('ul li').eq(0).css('background-color', '#e8e38e');
+			$('ul.pagination li').eq(0).addClass('active');
+			$('ul.pagination li').eq(1).removeClass('active');
+			$('#pag').show();
+		
+		});		
+		
+	});
+		
+		
 		</script>
 	
   </body>

@@ -4,19 +4,17 @@
 <HEAD>
 <TITLE>USF HPC Training</TITLE>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
-<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine">
-<LINK REL="STYLESHEET" HREF="css/main.css">
+
 
 </HEAD>
 
-<body class="w3-container w3-margin-32" style="width:80%">
-
+<body >
+<div>
 
 	<h1>Chapter 1</h1>
-	<h1>Introduction to High Performance Computing</h1>
-		<div class="w3-row">
-				  <div class="col-70">
+	<h1>Introduction to HPC</h1>
+		
+				  
 		<h3>What is High Performance Computing?</h3>
 	
 	  High Performance computing is an often poorly defined concept.
@@ -28,10 +26,37 @@
 		science that are beyond what is commonly found on the desktop machine. 
 		 </div>
 			 
-		  
-	</div>
+		  <div>
+		  <ul class="pagination">
+  <li class="active"><a href="#">1</a></li>
+  <li ><a id="c1-2" href="chapter1-2.html">2</a></li>
+  <li><a href="#">3</a></li>
+  <li><a href="#">4</a></li>
+  <li><a href="#">5</a></li>
+</ul>
+</div>
+	
 
-
+ <script src="js/bootstrap.min.js"></script>
+ 
+ <script>
+	$(document).ready(function(){
+	$('#c1-2').click(function (){
+		
+		$('#content').load('chapter1-2.html');
+		$('.list-group-item').css('background-color', 'white');
+		$('#hpc').css('background-color', '#e8e38e');
+		
+		});
+		$('#hpchard').click(function (){
+		
+		$('#content').load('chapter1-2.html');
+		$('.list-group-item').css('background-color', 'white');
+		$('#hpchard').css('background-color', '#e8e38e');
+		
+		});
+		});
+	</script>
 	
 </BODY>
 </HTML>
