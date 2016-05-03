@@ -53,12 +53,17 @@
 					</div>      
 <!-- 	LEFT SIDE MENU ITEMS ---------------------------------------------------------------------------------------------------------- -->      
       
+ <!-- the classes and class order assocated with each list item is important
+		if the 2nd class is 'ac' then the additional content area will be shown, this should be accompanied with the youtube video number you wish
+		to display in the content area (listed as the 3rd class)
+		The id assocated with the list item should be the last part of the html file to be displayed (example 1-1 will try to display a file called chapter1-1.html) --> 
+ 
       
    					<div id="introhpc" class="panel-collapse collapse">
   							<ul class="list-group m1" id="ul1">
-    							<li class="list-group-item" id="1-1">High Performance Computing</li>
+    							<li class="list-group-item ac zTIKUxO9kf4" id="1-1">High Performance Computing<span class="glyphicon glyphicon-film" style = "padding-left:20px;font-size:1.5em;"</span></li>
     							<li class="list-group-item" id="1-2">HPC Hardware</li>
-    							<li class="list-group-item" id="1-3">Grid Computing</li>
+    							<li class="list-group-item ac 59MiSspGYuI" id="1-3">Grid Computing<span class="glyphicon glyphicon-film" style = "padding-left:20px;font-size:1.5em;"</span></li>
     							<li class="list-group-item" id="1-4">Large Scale SMP</li>
     							<li class="list-group-item" id="1-5">HPC Software</li>
     							<li class="list-group-item" id="1-6">Linux</li>
@@ -76,7 +81,7 @@
       			<div id="linuxfund" class="panel-collapse collapse">
   						<ul class="list-group" id="ul2">
     						<li class="list-group-item" id="2-1">Getting Started With Linux</li>
-    						<li class="list-group-item" id="2-2">Basic File System Commands</li>
+    						<li class="list-group-item ac hbzRWQjA6kI" id="2-2">Basic File System Commands<span class="glyphicon glyphicon-film" style = "padding-left:20px;font-size:1.5em;"</span></li>
     						<li class="list-group-item" id="2-3">Man Pages</li>
     
   						</ul>
@@ -120,16 +125,19 @@
 <!--  RELATED CONTENT AREA ---------------------------------------------------------------------------------------------------------- -->
 
 			
-			<div class="col-md-8 well well-lg" style="height:300px;"> 
-				<span class="glyphicon glyphicon-film" style="font-size: 5.5em;"></span>Related Content
+			<div class="col-md-8 well well-lg" id="rcontent"> 
+				
+				<div class="embed-responsive embed-responsive-16by9" >
+    
+				</div>
 			</div>
 		</div>
 	</div>
 		</div>
 	</div>
 		<div class="container-fluid">
-			<div class="row">
-				<div class="col-md-10" style="height:100px;padding-top:5px;margin-top:10px;margin-left:10px;text-align:center;color:white;background-color:#12825f;"> 
+			<div class="row ">
+				<div class="navbar" style="height:100px;padding-top:5px;margin-top:10px;margin-left:10px;text-align:center;color:white;background-color:#12825f;"> 
 					<h5>HPC Training - University of South Florida</h5></div>
 			</div>
 		</div>
@@ -149,17 +157,40 @@
 	
 	$(document).ready(function(){
 	
-	//hide the paging div until content is loaded
-	
+	//hide the paging and additional content div until content is loaded
+		$('#rcontent').hide();
 		$('#pag').hide();
 
-   //on click, add paging at bottom of content area		
+   //on click, bunch of functionality when selecting menu items from the left		
 					
 		$('ul.list-group li').click(function(e) {
 		
+		
+	// stop all videos from playing when selecting another menu item 
+		
+			$("iframe").each(function() { 
+        		var src= $(this).attr('src');
+        		$(this).attr('src',src);  
+					});
+		
 	//get the index of the menu item selected and use that to set the page number 
 		
+						
 		var pageNo = $(this).index();
+		
+	// if menu item has 'ac' class then show the addition content area with appropriate content.		
+		
+		
+				if ($(this).hasClass('ac')) {
+					$('#rcontent').show();
+					var video = $(this).attr('class').split(' ')[2];
+					$('.embed-responsive').append('<iframe id="player" class="embed-responsive-item" src="//www.youtube.com/embed/' + video + '"></iframe>');
+														}	
+						else {
+							$('#rcontent').hide();
+							
+								}
+		
 		
 			$('ul.pagination li').remove();
 			var menuItem = $(this).attr('id');
@@ -178,6 +209,7 @@
 					var inc = (i + 1);
 					var aa = $('<a>' + inc + '</a>')
 						.appendTo(li);
+								
 				
 				});
 	//load content based on menu item selected		
@@ -193,6 +225,7 @@
 			$("ul.pagination li").eq(pageNo).addClass("active");
 															
 	
+// attempt at making the progress area more functional
 	
 //	$('ul.pagination li').click(function(f) {
 	
