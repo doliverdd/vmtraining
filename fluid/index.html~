@@ -27,7 +27,9 @@
     
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-md-11" style="height:200px;padding:5px;margin:10px;"> <img src="header.png" alt="usf header" style = "width:100%"></div>
+			<div class="col-md-11" style="height:200px;padding:5px;margin:10px;"> 
+				<img src="header.png" alt="usf header" style = "width:100%">
+			</div>
 			 
 		</div>
 	</div>
@@ -39,73 +41,92 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-2" style="height:805px;padding:5px;margin-left:10px;"> 
-			<h4>Chapters</h4>
- <div class="panel-group" id="panel1">
-        <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#panel1" href="#introhpc">Introduction To HPC</a>
-        </h4>
-      
+				<a href="index.html"><span class="glyphicon glyphicon-home" style="font-size: 1.5em;"></a></span>
+				<h4>Training Outline</h4>
+				
+ 					<div class="panel-group" id="panel1">
+ 						<div class="panel panel-default">
+ 					<div class="panel-heading"> 
+        				<h4 class="panel-title">
+          				<a data-toggle="collapse" data-parent="panel1" href="#introhpc">Introduction To HPC</a>
+        				</h4>
+					</div>      
 <!-- 	LEFT SIDE MENU ITEMS ---------------------------------------------------------------------------------------------------------- -->      
       
       
-   <div id="introhpc" class="panel-collapse collapse">
-  		<ul class="list-group m1" id="ul1">
-    		<li class="list-group-item m1" id="1-1" >High Performance Computing</li>
-    		<li class="list-group-item m1" id="1-2">HPC Hardware</li>
-    		<li class="list-group-item m1" id="1-3">Grid Computing</li>
-    		<li class="list-group-item m1" id="1-4">Large Scale SMP</li>
-    		<li class="list-group-item m1" id="1-5">HPC Software</li>
-    		<li class="list-group-item m1" id="1-6">Linux</li>
-    		<li class="list-group-item m1" id="1-7">Compilers</li>
-    		<li class="list-group-item m1" id="1-8">Libraries</li>
-  		</ul>
-  	</div>
-  	<div class="panel-heading">
-        <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#panel1"href="#linuxfund">Linux Fundamentals</a>
-        </h4>
-   </div>
-      <div id="linuxfund" class="panel-collapse collapse">
-  			<ul class="list-group" id="ul2">
-    			<li class="list-group-item" id="2-1">Getting Started With Linux</li>
-    			<li class="list-group-item" id="2-2">Basic File System Commands</li>
-    			<li class="list-group-item" id="2-3">Man Pages</li>
+   					<div id="introhpc" class="panel-collapse collapse">
+  							<ul class="list-group m1" id="ul1">
+    							<li class="list-group-item" id="1-1">High Performance Computing</li>
+    							<li class="list-group-item" id="1-2">HPC Hardware</li>
+    							<li class="list-group-item" id="1-3">Grid Computing</li>
+    							<li class="list-group-item" id="1-4">Large Scale SMP</li>
+    							<li class="list-group-item" id="1-5">HPC Software</li>
+    							<li class="list-group-item" id="1-6">Linux</li>
+    							<li class="list-group-item" id="1-7">Compilers</li>
+    							<li class="list-group-item" id="1-8">Libraries</li>
+  							</ul>
+  					</div>
+  					<div class="panel-group" id="panel1">
+ 						<div class="panel panel-default">
+  					<div class="panel-heading">  
+        				<h4 class="panel-title"> 
+          				<a data-toggle="collapse" data-parent="#panel1" href="#linuxfund">Linux Fundamentals</a>
+        				</h4>
+   				</div>
+      			<div id="linuxfund" class="panel-collapse collapse">
+  						<ul class="list-group" id="ul2">
+    						<li class="list-group-item" id="2-1">Getting Started With Linux</li>
+    						<li class="list-group-item" id="2-2">Basic File System Commands</li>
+    						<li class="list-group-item" id="2-3">Man Pages</li>
     
-  			</ul>
+  						</ul>
+  					</div>
+  				</div>
+  				</div>
+  				</div>
   		</div>
-  </div>
   		</div>
   	
 <!-- CENTER AREA TO DISPLAY CONTENT ------------------------------------------------------------------------------------------------ -->
 		
 			<div class="col-md-8" id="content" style="padding:5px;margin-left:3px;">
+			<h1>Welcome to HPC</h1>
+		
+				  
 			
+	  Research Computing, a department within Information Technology, has been established to promote 
+	  the availability of high performance computing resources essential to effective research at the University of South Florida. 
+	  Research Computing supports software tools, high performance computer hardware, and training for both faculty and students.
 			</div>
 			
 			
 <!-- PAGINATION AREA BELOW CONTENT -->			
 			
 			
-	<div class="container-fluid">
-		<div class="row">	
+		<div class="container-fluid">
+			<div class="row">	
 		
-			<div class="col-md-4" style="height:100px;">		
+				<div class="col-md-4" style="height:100px;">		
 			
-				<div id="pag">
-		  			<ul class="pagination">
+					<div id="pag">
+						<div><span style="color:blue"><h4>Chapter Progress</h4></span></div>
+		  				<ul class="pagination">
   						
-					</ul>
-				</div>
-			</div>			
+						</ul>
+					</div>
+				</div>			
 
 
 <!--  RELATED CONTENT AREA ---------------------------------------------------------------------------------------------------------- -->
 
 			
-			<div class="col-md-8 well well-lg" style="height:300px;"> <span class="glyphicon glyphicon-film" style="font-size: 5.5em;"></span>Related Content</div>
+			<div class="col-md-8 well well-lg" style="height:300px;"> 
+				<span class="glyphicon glyphicon-film" style="font-size: 5.5em;"></span>Related Content
+			</div>
 		</div>
 	</div>
-		
+		</div>
+	</div>
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-10" style="height:100px;padding-top:5px;margin-top:10px;margin-left:10px;text-align:center;color:white;background-color:#12825f;"> 
@@ -128,43 +149,71 @@
 	
 	$(document).ready(function(){
 	
+	//hide the paging div until content is loaded
+	
 		$('#pag').hide();
-		
-		
 
-
-		
-			
-			
+   //on click, add paging at bottom of content area		
+					
 		$('ul.list-group li').click(function(e) {
-			
-			var menuItem = $(this).attr('id');
-			
-				
-			var menuList = $(this).parents('ul').attr('id');
-			
-			var mList = $('ul#' + menuList + ' li');	
-			
-		var cList = $('ul.pagination');
 		
-		$.each(mList, function(i)
-		{
-			var li = $('<li/>')
-				.appendTo(cList);
-			var inc = (i + 1);
-			var aa = $('<a>' + inc + '</a>')
-				.appendTo(li);
+	//get the index of the menu item selected and use that to set the page number 
+		
+		var pageNo = $(this).index();
+		
+			$('ul.pagination li').remove();
+			var menuItem = $(this).attr('id');
+			var menuList = $(this).parents('ul').attr('id');
+			var mList = $('ul#' + menuList + ' li');	
+			var cList = $('ul.pagination');
+		
+	//Insert <li> (page number) elements for each menu item	
+		
 			
-			
+		
+				$.each(mList, function(i)
+				{
+					var li = $('<li/>')
+						.appendTo(cList);
+					var inc = (i + 1);
+					var aa = $('<a>' + inc + '</a>')
+						.appendTo(li);
+				
 				});
-			
+	//load content based on menu item selected		
 			
 			$('#content').load('chapter' + menuItem + '.html');
-			$('#pag').show();	
-			});
+			
+	//show the paging div		
+			
+			$('#pag').show();
 	
+  //highlight page number	
+			
+			$("ul.pagination li").eq(pageNo).addClass("active");
+															
+	
+	
+	$('ul.pagination li').click(function(f) {
+	
+	var pageIndex = $(this).index();
 		
-		});
+	
+	var test3 = $('ul.list-group li').eq(pageIndex).attr('id');
+	
+	
+	$('ul.pagination li').removeClass('active');
+	$('ul.pagination li').eq(pageIndex).addClass('active');
+	$('#content').load('chapter' + test3 + '.html')
+
+	
+	
+	});
+			
+	});									
+										});
+											
+										
 			
 		</script>
 	
