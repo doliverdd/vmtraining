@@ -141,16 +141,16 @@
 $(document).ready(function(){
 
 
-	function timer() {
-		setTimeout(timeOut, 2000)}
-
-
-	$('.col-md-1').css('background-color', 'blue');
-	$('.col-md-1').css('color', 'blue');
+	$('.col-md-1').css({
+			'background-color': 'blue',
+			'color' : 'blue',
+			'border' : 'solid',
+			'border-color' : 'white' });
 
 	var clicks = [];
 	var elementId = [];
 	var tileCount = 0;
+	var alreadyClicked = [];
 
 $('.col-md-1').click(function(e) {
 	
@@ -160,6 +160,7 @@ $('.col-md-1').click(function(e) {
 	
 	clicks.push(clicked);
 	elementId.push(eId);
+	alreadyClicked.push(eId);
 	
 	
 	$(this).css("background-color", "yellow");
@@ -182,6 +183,7 @@ $('.col-md-1').click(function(e) {
 						clicks = [];
 						elementId = [];
 						tileCount = 0;
+						alreadyClicked = [];
 							}
 							
 				
@@ -189,13 +191,19 @@ $('.col-md-1').click(function(e) {
 
 				else {
 				
-					function timeOut(){
+					
 					$('.col-md-4').html('Too bad...Try again');
+					alert('Too bad...Try again');
 					document.getElementById(elementId[0]).style.backgroundColor="blue";		
-					document.getElementById(elementId[1]).style.backgroundColor="blue";				
+					document.getElementById(elementId[1]).style.backgroundColor="blue";
+					l = alreadyClicked.length;
+					alert(l);
+					m = l - 2;
+					alreadyClicked.splice(m,2);
+					alert(alreadyClicked);				
 					clicks = [];
 					elementId = [];
-						} }}
+						} }
 			else	{
 			$('.col-md-4').html('You must click two different tiles');
 			document.getElementById(elementId[0]).style.backgroundColor="blue";		

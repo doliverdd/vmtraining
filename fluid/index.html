@@ -38,55 +38,87 @@
 		<div class="row">
 			<div class="col-md-2" style="height:805px;padding:5px;margin-left:10px;"> 
 				<a href="index.html"><span class="glyphicon glyphicon-home" style="font-size: 1.5em;"></a></span>
-				<h4>Training Outline</h4>
-				
- 					<div class="panel-group" id="panel1">
- 						<div class="panel panel-default">
- 					<div class="panel-heading"> 
-        				<h4 class="panel-title">
-          				<a data-toggle="collapse" data-parent="panel1" href="#introhpc">Introduction To HPC</a>
-        				</h4>
-					</div>      
-<!-- 	LEFT SIDE MENU ITEMS ---------------------------------------------------------------------------------------------------------- -->      
+	
+	<!-- 	LEFT SIDE MENU ITEMS ---------------------------------------------------------------------------------------------------------- -->      
       
  <!-- the classes and class order assocated with each list item is important
 		if the 2nd class is 'ac' then the additional content area will be shown, this should be accompanied with the youtube video number you wish
 		to display in the content area (listed as the 3rd class)
 		The id assocated with the list item should be the last part of the html file to be displayed (example 1-1 will try to display a file called chapter1-1.html) --> 
- 
+ 	
+	
+				<h4>Training Outline</h4>
+				
+ 					<div class="panel-group" id="panel1">
+ 						<div class="panel panel-default">
+ 					<div class="panel-heading" style="background-color:#f1ecbd;"> 
+        				<h4 class="panel-title">
+          				<a data-toggle="collapse" data-parent="#panel1" href="#introhpc">Introduction To HPC</a>
+        				</h4>
+					</div>      
+
      					<div id="introhpc" class="panel-collapse collapse">
   							<ul class="list-group m1" id="ul1">
+  							   
   							   <li class="list-group-item" id="1-0">Unit 1 Overview</li>
     							<li class="list-group-item ac zTIKUxO9kf4" id="1-1">High Performance Computing<span class="glyphicon glyphicon-film" style = "padding-left:20px;font-size:1.5em;"</span></li>
-    							<li class="list-group-item" id="1-2">HPC Hardware</li>
-    							<li class="list-group-item ac 59MiSspGYuI" id="1-3">Grid Computing<span class="glyphicon glyphicon-film" style = "padding-left:20px;font-size:1.5em;"</span></li>
-    							<li class="list-group-item" id="1-4">Large Scale SMP</li>
-    							<li class="list-group-item" id="1-5">HPC Software</li>
-    							<li class="list-group-item" id="1-6">Linux</li>
-    							<li class="list-group-item" id="1-7">Compilers</li>
-    							<li class="list-group-item" id="1-8">Libraries</li>
+    							<li class="list-group-item" id="1-2">What is Advanced Computing</li>
+    							<li class="list-group-item ac 59MiSspGYuI" id="1-3">When to use Advanced Computing<span class="glyphicon glyphicon-film" style = "padding-left:20px;font-size:1.5em;"</span></li>
+    							<li class="list-group-item" id="1-4">Resources at USF</li>
     							<li class="list-group-item" id="1-r">Unit 1 Review</li>
+    							<li class="list-group-item" id="1-g">Review Game</li>
+    							
   							</ul>
   					</div>
-  					<div class="panel-group" id="panel1">
- 						<div class="panel panel-default">
-  					<div class="panel-heading">  
-        				<h4 class="panel-title"> 
-          				<a data-toggle="collapse" data-parent="#panel1" href="#linuxfund">Linux Fundamentals</a>
+  					
+ 						
+  					<div class="panel-heading" style="background-color:#f1ecbd;">  
+        				<h4 class="panel-title" > 
+          				<a data-toggle="collapse" data-parent="#panel1" href="#linuxfund" >Getting Started</a>
         				</h4>
    				</div>
       			<div id="linuxfund" class="panel-collapse collapse">
   						<ul class="list-group" id="ul2">
+  							
   						   <li class="list-group-item" id="2-0">Unit 2 Overview</li>
-    						<li class="list-group-item" id="2-1">Getting Started With Linux</li>
+    						<li class="list-group-item" id="2-1">SSH with Putty</li>
     						<li class="list-group-item ac hbzRWQjA6kI" id="2-2">Basic File System Commands<span class="glyphicon glyphicon-film" style = "padding-left:20px;font-size:1.5em;"</span></li>
-    						<li class="list-group-item" id="2-3">Man Pages</li>
+    						<li class="list-group-item" id="2-3">Managing Files</li>
+							<li class="list-group-item" id="2-4">X2Go for Xsessions</li>
     						<li class="list-group-item" id="2-r">Unit 2 Review</li>
-    
+							<li class="list-group-item" id="2-e">Unit 2 Exercises</li>
+    						
   						</ul>
   					</div>
-					  </div>
-  				</div>
+					  
+  					<div class="panel-heading" style="background-color:#f1ecbd;">  
+        				<h4 class="panel-title"> 
+          				<a data-toggle="collapse" data-parent="#panel1" href="#slurm">Introduction To Slurm</a>
+        				</h4>
+   				</div>
+      			<div id="slurm" class="panel-collapse collapse">
+  						<ul class="list-group" id="ul3">
+											   
+  						   <li class="list-group-item" id="3-0">Unit 3 Overview</li>
+    						<li class="list-group-item" id="3-1">What is SlURM</li>
+    						<li class="list-group-item ac hbzRWQjA6kI" id="3-2">What does SLURM do?<span class="glyphicon glyphicon-film" style = "padding-left:20px;font-size:1.5em;"</span></li>
+    						<li class="list-group-item" id="3-3">How Does RC Utilize SLURM?</li>
+							<li class="list-group-item" id="3-4">How Can I Benefit From Using SLURM?</li>
+							<li class="list-group-item" id="3-5">Basic SLURM Usage</li>
+							<li class="list-group-item" id="3-6">Baisc SLURM Script</li>
+							<li class="list-group-item" id="3-7">SLURM Submission</li>
+							<li class="list-group-item" id="3-8">SLURM Node Features</li>
+							<li class="list-group-item" id="3-9">SLURM Eye Candy</li>
+							<li class="list-group-item" id="3-10">Advanced SLURM Usage</li>
+							<li class="list-group-item" id="3-11">Interactive SLURM Sessions</li>
+    						<li class="list-group-item" id="3-r">Unit 3 Review</li>
+							<li class="list-group-item" id="3-e">Unit 3 Exercises</li>
+    						
+  						</ul>
+  					</div>
+					  
+  				
+		
   				</div>
   		</div>
   		</div>
