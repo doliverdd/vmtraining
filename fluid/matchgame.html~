@@ -46,7 +46,10 @@
 										
 				</div>
 				
-			
+				<div class="col-md-4 8" style="height:50px;">		
+			Feedback
+										
+				</div>			
 		</div>
 		
 		<div class="row">	
@@ -137,47 +140,75 @@
 
 $(document).ready(function(){
 
-var clicks = [];
 
-var elementId = [];
+	function timer() {
+		setTimeout(timeOut, 2000)}
+
+
+	$('.col-md-1').css('background-color', 'blue');
+	$('.col-md-1').css('color', 'blue');
+
+	var clicks = [];
+	var elementId = [];
+	var tileCount = 0;
 
 $('.col-md-1').click(function(e) {
-
+	
+	
 	var clicked = $(this).attr('class').split(' ')[1];
-
 	var eId = $(this).attr('id');
 	
 	clicks.push(clicked);
 	elementId.push(eId);
 	
-
-$(this).css("background-color", "yellow");
-
-if(clicks.length == 2) {
-
-
-	if(clicks[0] == clicks[1]) {
 	
-		alert("yea!");	
-		clicks = [];
-		elementId = [];
-		
-			}
+	$(this).css("background-color", "yellow");
+				
+
+		if(clicks.length == 2) {
+
+			if(elementId[0] != elementId[1])
+			{
+			if(clicks[0] == clicks[1]) {
+	
+				$('.col-md-4').html('That\'s a Match!!');	
+				clicks = [];
+				elementId = [];
+				tileCount += 2;
+					if(tileCount==16) {
+						$('.col-md-4').html('Great Job!!  Game Over...');
+						$('.col-md-1').css('background-color', 'blue');
+						$('.col-md-1').css('color', 'blue');		
+						clicks = [];
+						elementId = [];
+						tileCount = 0;
+							}
+							
+				
+					}
 
 				else {
-					alert("too bad")
-					document.getElementById(elementId[0]).style.backgroundColor="white";		
-					document.getElementById(elementId[1]).style.backgroundColor="white";				
+				
+					function timeOut(){
+					$('.col-md-4').html('Too bad...Try again');
+					document.getElementById(elementId[0]).style.backgroundColor="blue";		
+					document.getElementById(elementId[1]).style.backgroundColor="blue";				
 					clicks = [];
-						}
-
+					elementId = [];
+						} }}
+			else	{
+			$('.col-md-4').html('You must click two different tiles');
+			document.getElementById(elementId[0]).style.backgroundColor="blue";		
+			document.getElementById(elementId[1]).style.backgroundColor="blue";
+			clicks = [];
+			elementId = [];
+			}
 }
 
 });
+
+		
 });
 </script>
 </body>
 </html>
-
-
-
