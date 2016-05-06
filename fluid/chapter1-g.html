@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<style>
+#q1 {width:350px;height:20px;padding:10px;border:1px solid #aaaaaa;}
+#q2 {width:350px;height:20px;padding:10px;border:1px solid #aaaaaa;}
+</style>
+<script>
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+
+var questions = ["q1", "q2"];
+var answers = ["a1", "a2"];
+
+
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+	
+		
+	if(questions.indexOf(ev.target.id) == answers.indexOf(data)) {
+    	
+    	ev.target.appendChild(document.getElementById(data));
+			document.getElementById(ev.target.id).style.backgroundColor="#27e833";    		
+    		
+
+    								}
+    	else {
+    		alert("Sorry, That's not the correct answer.");
+    }
+}
+</script>
+</head>
+<body>
+
+<p>Drag the correct answer onto the question:</p>
+
+<div>This is the question</div>
+	<div id="q1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+<div>This is another question</div>
+	<div id="q2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+
+
+<br>
+<span id="a1" draggable="true" ondragstart="drag(event)" width="336" height="69">I'm the correct answer to question 1</span><p><p>
+<span id="a2" draggable="true" ondragstart="drag(event)" width="336" height="69">I'm the correct answer to question 2</span>
+
+</body>
+</html>

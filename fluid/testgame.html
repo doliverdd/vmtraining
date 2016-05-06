@@ -1,0 +1,122 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<style>
+#s1 {width:550px;height:20px;padding:10px;border:1px solid #aaaaaa;}
+#s2 {width:550px;height:20px;padding:10px;border:1px solid #aaaaaa;}
+#s3 {width:550px;height:20px;padding:10px;border:1px solid #aaaaaa;}
+#s4 {width:550px;height:20px;padding:10px;border:1px solid #aaaaaa;}
+#s5 {width:550px;height:20px;padding:10px;border:1px solid #aaaaaa;}
+#s6 {width:550px;height:20px;padding:10px;border:1px solid #aaaaaa;}
+#s7 {width:550px;height:20px;padding:10px;border:1px solid #aaaaaa;}
+#s8 {width:550px;height:20px;padding:10px;border:1px solid #aaaaaa;}
+#s9 {width:550px;height:20px;padding:10px;border:1px solid #aaaaaa;}
+#s10 {width:550px;height:20px;padding:10px;border:1px solid #aaaaaa;}
+#s11 {width:550px;height:20px;padding:10px;border:1px solid #aaaaaa;}
+
+</style>
+<script>
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+
+
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+	
+	sBit = document.getElementById(data).className;
+	
+	
+	cname = ev.target.id;
+	cPositionCname = document.getElementById(cname).className;
+				
+	if(sBit == cPositionCname) {
+    	
+    	ev.target.appendChild(document.getElementById(data));
+			document.getElementById(ev.target.id).style.backgroundColor="#27e833"; 
+			
+    		   								}
+    	else {
+    		alert("Sorry, That's not the correct answer.");
+    		
+    }
+}
+</script>
+</head>
+<body>
+
+<!--  CLASS NAMES ARE IMPORTANT FOR THIS EXERCISE
+		SINCE #SBATCH COMMANDS CAN TECHNICALLY BE USED IN ANY ORDER THE SOLUTION NEEDS TO TAKE INTO ACCOUNT #SBATCH COMMANDS IN VARIOUS ORDERS
+		HENCE, ANSWERS CAN GO INTO ANY SPOT WITH THE SAME CLASS NAME FOR THE ANSWERS AND ANSWER BLANKS
+-->
+
+<p>Put the script in correct order:</p>
+
+
+<!-- THESE ARE THE BLANKS TO DROP THE ANSWERS INTO -->
+
+			<div id="s1" class="c1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+			<div id="s2" class="c2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+			<div id="s3" class="c2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+			<div id="s4" class="c2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+			<div id="s5" class="c2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+			<div id="s6" class="c2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+			<div id="s7" class="c2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+			<div id="s8" class="c3" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+			<div id="s9" class="c4" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+			<div id="s10" class="c5" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+			<div id="s11" class="c6" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+
+
+<br>
+
+
+<!-- THESE ARE THE ANSWERS WHICH CAN BE DRAGGED ONTO THE BLANKS ABOVE -->
+
+<span id="a3" class="c2" draggable="true" ondragstart="drag(event)" width="336" height="69">#SBATCH --nodes=2</span><p><p>
+<span id="a11" class="c6" draggable="true" ondragstart="drag(event)" width="336" height="69">mpirun -np $SLURM_NTASKS -ppn $SLURM_NTASKS_PER_NODE abinit &lt test.files &gt test.log</span><p><p>
+<span id="a4" class="c2" draggable="true" ondragstart="drag(event)" width="336" height="69">#SBATCH --ntasks-per-node=5 </span><p><p>
+<span id="a9" class="c4" draggable="true" ondragstart="drag(event)" width="336" height="69">module load apps/abinit/7.10.5</span><p><p>
+<span id="a1" class="c1" draggable="true" ondragstart="drag(event)" width="336" height="69">#!/bin/bash</span><p><p>
+<span id="a6" class="c2" draggable="true" ondragstart="drag(event)" width="336" height="69">#SBATCH --output=output.%j.abinit-test</span><p><p>
+<span id="a7" class="c2" draggable="true" ondragstart="drag(event)" width="336" height="69">#SBATCH --time=00:10:00</span><p><p>
+<span id="a8" class="c3" draggable="true" ondragstart="drag(event)" width="336" height="69">module purge</span><p><p>
+<span id="a2" class="c2" draggable="true" ondragstart="drag(event)" width="336" height="69">#SBATCH --comment=abinit-test</span><p><p>
+<span id="a10" class="c5" draggable="true" ondragstart="drag(event)" width="336" height="69">export PSM_RANKS_PER_CONTEXT=4</span><p><p>
+<span id="a5" class="c2" draggable="true" ondragstart="drag(event)" width="336" height="69">#SBATCH --job-name=abinit-test</span><p><p>
+
+
+</body>
+</html>
+
+
+
+
+<!--
+
+CORRECT COMMAND SEQUENCE FROM THE DOCS -- HOWEVER #SBATCH COMMANDS CAN BE USED IN ANY ORDER
+
+
+#!/bin/bash
+
+#SBATCH --comment=abinit-test
+#SBATCH --nodes=2
+#SBATCH --ntasks-per-node=5 
+#SBATCH --job-name=abinit-test
+#SBATCH --output=output.%j.abinit-test
+#SBATCH --time=00:10:00
+
+module purge
+module load apps/abinit/7.10.5
+
+export PSM_RANKS_PER_CONTEXT=4
+
+mpirun -np $SLURM_NTASKS -ppn $SLURM_NTASKS_PER_NODE abinit < test.files > test.log
+
+-->
