@@ -1,0 +1,33 @@
+$(document).ready(function(){
+	
+		$('#pag').hide();
+		
+		var n = $('.m1').length;
+		alert("there are " + n + " items in menu");
+
+
+		var mList = $('li.m1');	
+		var cList = $('ul.pagination');
+		$.each(mList, function(i)
+		{
+			var li = $('<li/>')
+				.appendTo(cList);
+			var inc = (i + 1);
+			var aa = $('<a>' + inc + '</a>')
+				.appendTo(li);
+			
+			
+				});
+			
+			
+		$('ul.list-group li').click(function(e) {
+			var menuItem = $(this).attr('id');
+			$('#content').load('chapter' + menuItem + '.html');
+			$('#pag').show();	
+			});
+			
+			
+		
+		
+		
+		});

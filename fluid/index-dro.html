@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>RC HPC Training</title>
+
+ <!-- BOOTSTRAP --------------------------------------------------------------------------------------------------------------------- -->
+    
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	
+	
+  </head>
+  <body>
+
+<!-- HEADER ROW ------USF LOGO---------------------------------------------------------------------------------------------------------------- -->
+    
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-11" style="height:200px;padding:5px;margin:10px;"> <img src="header.png" alt="usf header" style = "width:100%"></div>
+			 
+		</div>
+	</div>
+	
+	
+<!-- LEFT SIDE PANEL NAVIGATION ------------------------------------------------------------------------------------------------------ -->	
+	
+	
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-2" style="height:805px;padding:5px;margin-left:10px;"> 
+			<h4>Chapters</h4>
+ <div class="panel-group" id="panel1">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#panel1" href="#introhpc">Introduction To HPC</a>
+        </h4>
+      
+<!-- 	LEFT SIDE MENU ITEMS ---------------------------------------------------------------------------------------------------------- -->      
+      
+      
+   <div id="introhpc" class="panel-collapse collapse">
+  		<ul class="list-group">
+    		<li class="list-group-item" id="0" >High Performance Computing</li>
+    		<li class="list-group-item" id="1">HPC Hardware</li>
+    		<li class="list-group-item">Grid Computing</li>
+    		<li class="list-group-item">Large Scale SMP</li>
+    		<li class="list-group-item">HPC Software</li>
+    		<li class="list-group-item">Linux</li>
+    		<li class="list-group-item">Compilers</li>
+    		<li class="list-group-item">Libraries</li>
+  		</ul>
+  	</div>
+  	<div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#panel1"href="#linuxfund">Linux Fundamentals</a>
+        </h4>
+   </div>
+      <div id="linuxfund" class="panel-collapse collapse">
+  			<ul class="list-group">
+    			<li class="list-group-item" id="intro" >Getting Started With Linux</li>
+    			<li class="list-group-item">Basic File System Commands</li>
+    			<li class="list-group-item">Man Pages</li>
+    
+  			</ul>
+  		</div>
+  </div>
+  		</div>
+  	
+<!-- CENTER AREA TO DISPLAY CONTENT ------------------------------------------------------------------------------------------------ -->
+		
+			<div class="col-md-8" id="content" style="padding:5px;margin-left:3px;">
+			
+			</div>
+			
+			
+<!-- PAGINATION AREA BELOW CONTENT -->			
+			
+			
+	<div class="container-fluid">
+		<div class="row">	
+		
+			<div class="col-md-3 " style="height:100px;">		
+			
+				<div id="pag">
+		  			<ul class="pagination">
+  						<li class="active"><a href="#">1</a></li>
+  						<li ><a id="c1-2" href="#">2</a></li>
+  						<li><a href="#">3</a></li>
+  						<li><a href="#">4</a></li>
+  						<li><a href="#">5</a></li>
+					</ul>
+				</div>
+			</div>			
+
+
+<!--  RELATED CONTENT AREA ---------------------------------------------------------------------------------------------------------- -->
+
+			
+			<div class="col-md-8 well well-lg" style="height:300px;"> <span class="glyphicon glyphicon-film" style="font-size: 5.5em;"></span>Related Content</div>
+		</div>
+	</div>
+		
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-10" style="height:100px;padding-top:5px;margin-top:10px;margin-left:10px;text-align:center;color:white;background-color:#12825f;"> 
+					<h5>HPC Training - University of South Florida</h5></div>
+			</div>
+		</div>
+	
+<!-- JQUERY AND ASSOCIATED SCRIPTS ------------------------------------------------------------------------------------------------- -->	
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    
+    <script>
+		
+	
+	$(document).ready(function(){
+		$('#pag').hide();
+		$('#0').click(function (){
+		
+			$('#content').load('chapterone-1.html');
+			$('ul li').eq(1).css('background-color', 'white');
+			$('ul li').eq(0).css('background-color', '#e8e38e');
+			$('#pag').show();
+			$('ul.pagination li').eq(0).addClass('active');
+			$('ul.pagination li').eq(1).removeClass('active');
+		
+		});
+		
+		$('ul.pagination li').click(function(){
+			$('ul.pagination li').eq(0).removeClass('active');
+			$('ul.pagination li').eq(1).addClass('active');
+			$('ul li').eq(0).css('background-color', 'white');
+			$('ul li').eq(1).css('background-color', '#e8e38e');
+		});		
+		
+		$('#1').click(function (){
+		
+			$('#content').load('chapter1-2.html');
+			$('ul li').eq(0).css('background-color', 'white');
+			$('ul li').eq(1).css('background-color', '#e8e38e');
+			$('ul.pagination li').eq(1).addClass('active');
+			$('ul.pagination li').eq(0).removeClass('active');
+		
+		
+			});
+		
+		$('#c1-2').click(function (){
+		
+			$('#content').load('chapter1-2.html');
+			$('ul li').eq(1).css('background-color', 'white');
+			$('ul li').eq(0).css('background-color', '#e8e38e');
+			$('ul.pagination li').eq(0).addClass('active');
+			$('ul.pagination li').eq(1).removeClass('active');
+			$('#pag').show();
+		
+		});		
+		
+	});
+		
+		
+		</script>
+	
+  </body>
+</html>
